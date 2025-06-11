@@ -3,8 +3,10 @@ import Card from './Card';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 function Features() {
-  const scrollRef = useRef(null);
-
+  const scrollRef = useRef(null); //This creates a React ref object.
+// scrollRef will be attached to a DOM element (your scroll container).
+// This lets you directly access the native DOM element in React.
+ 
   const scroll = (direction) => {
     const { current } = scrollRef;
     if (current) {
@@ -16,6 +18,8 @@ function Features() {
       }
     }
   };
+
+  
 
   return (
     <div className="py-10 px-5 bg-gray-100 relative">
