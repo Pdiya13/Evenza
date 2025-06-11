@@ -5,11 +5,10 @@ function App() {
   return (
     <>
       <div>
-        
+        rtjrj
       </div>
     </>
   )
-
 }
 
 export default App;
