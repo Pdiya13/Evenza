@@ -7,6 +7,7 @@ export default {
     extend: {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
+        lexend: ['"Lexend Giga"', 'sans-serif'],
       },
     },
   },

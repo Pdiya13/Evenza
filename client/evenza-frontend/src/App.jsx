@@ -4,9 +4,9 @@ import "./App.css";
 function App() {
   return (
     <>
-      <div className='text-white w-screen h-full bg-black m-0 p-0 flex flex-row items-center justify-between gap-[20px]'>
+      <div className='font-poppins text-white w-screen h-full bg-black m-0 p-0 flex flex-row items-center justify-between gap-[20px]'>
         <div className='text-xl font-md p-6 ml-4'>EVENZA</div>
-        <ul className="flex flex-row gap-[20px] p-6 mr-4">
+        <ul className="flex flex-row gap-[20px] p-6 mr-4 font-lexend">
           <li>Home</li>
           <li>Services</li>
           <li>Work</li>
