@@ -4,7 +4,7 @@ import Footer from './Footer'
 
 function Intro() {
   return (
-    <div>
+    <div className='bg-black w-screen h-screen'>
       <Header />
       <Footer />
     </div>
