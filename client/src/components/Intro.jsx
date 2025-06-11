@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import Features from './Features/Features'
 import img1 from '../images/img1.jpg';
 import img2 from '../images/img2.jpg';
 import img3 from '../images/img3.jpg';
@@ -33,7 +35,6 @@ function Intro() {
                 <div className="sticky top-0 z-50 bg-black">
                     <Header />
                 </div>
-
                 <div
                     ref={scrollRef}
                     className="flex flex-row overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-smooth"
@@ -53,5 +54,4 @@ function Intro() {
         </div>
     );
 }
-
-export default Intro;
+export default Intro
