@@ -1,7 +1,18 @@
-@import "tailwindcss";
 
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Giga:wght@100..900&family=Poppins&display=swap');
-/* Hide scrollbar for Chrome, Safari and Opera */
+
+@import "tailwindcss";
+
+
+/* Custom font styles */
+.font-poppins-custom {
+  font-family: 'Poppins', sans-serif;
+}
+
+.font-lexend-giga-custom {
+  font-family: 'Lexend Giga', sans-serif;
+}
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -10,4 +21,5 @@
 .scrollbar-hide {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;     /* Firefox */
+
 }
