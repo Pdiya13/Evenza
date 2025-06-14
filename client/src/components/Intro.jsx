@@ -6,12 +6,13 @@ import img1 from '../images/img1.jpg';
 import img2 from '../images/img2.jpg';
 import img3 from '../images/img3.jpg';
 import img4 from '../images/img4.jpg';
+import Login from './authentication/Login';
 
 function Intro() {
     const images = [img1, img2, img3, img4];
     const [currentIndex, setCurrentIndex] = useState(0);
     const [visible, setVisible] = useState(false);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     useEffect(() => {
         setVisible(true);
         const interval = setInterval(() => {
@@ -23,6 +24,7 @@ function Intro() {
         }, 4000);
         return () => clearInterval(interval);
     }, []);
+
 
     return (
         <div className="bg-black text-white min-h-screen flex flex-col overflow-hidden">
@@ -48,11 +50,13 @@ function Intro() {
                     <p className="mt-4 max-w-lg text-lg md:text-2xl text-white/90 italic tracking-wide leading-relaxed drop-shadow-md">
                         Explore our vision and discover more
                     </p>
-                  
+                    <button onClick={() => setIsModalOpen(!isModalOpen)}>
+                        Get Started
+                    </button>
 
                 </div>
 
-
+                {isModalOpen && <Login  isModalOpen = {isModalOpen} setIsModalOpen={setIsModalOpen}/>}
             </main>
         </div>
     );
