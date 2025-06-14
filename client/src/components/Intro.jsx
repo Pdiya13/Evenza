@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import Features from './Features/Features';
+import { Link } from 'react-router-dom';
 import img1 from '../images/img1.jpg';
 import img2 from '../images/img2.jpg';
 import img3 from '../images/img3.jpg';
 import img4 from '../images/img4.jpg';
-import Login from './authentication/Login';
+// import Login from './authentication/Login';
 
 function Intro() {
     const images = [img1, img2, img3, img4];
     const [currentIndex, setCurrentIndex] = useState(0);
     const [visible, setVisible] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     useEffect(() => {
         setVisible(true);
         const interval = setInterval(() => {
@@ -29,12 +29,10 @@ function Intro() {
     return (
         <div className="bg-black text-white min-h-screen flex flex-col overflow-hidden">
             <main className="w-screen h-screen relative">
-                {/* Header */}
                 <div className="sticky top-0 z-50 bg-black">
                     <Header />
                 </div>
 
-                {/* Background Image */}
                 <div
                     className="absolute inset-0 bg-center bg-cover"
                     style={{
@@ -44,8 +42,7 @@ function Intro() {
                         transition: 'opacity 1s ease-in-out, filter 1s ease-in-out',
                         zIndex: 0,
                     }}
-                /> 
-                {/* Overlay Content */}
+                />
                 <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
                     <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
                         Welcome
@@ -53,13 +50,13 @@ function Intro() {
                     <p className="mt-4 text-lg md:text-xl text-white/80">
                         Explore our vision and discover more
                     </p>
-                    <button onClick={()=>setIsModalOpen(!isModalOpen)}>
+                    <Link to="/login">
+                        <button>
                             get  started
-                    </button>
+                        </button>
+                    </Link>
                 </div>
-                {isModalOpen && <Login  isModalOpen = {isModalOpen} setIsModalOpen={setIsModalOpen}/>}
             </main>
-
             <Footer />
         </div>
     );
