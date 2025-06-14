@@ -18,7 +18,7 @@ function Features() {
   };
 
   return (
-    <div className="py-10 px-5 bg-black text-white relative">
+    <div className="py-10 px-5 bg-[#0D1117] text-white relative">
       <h2 className="text-3xl font-bold text-center mb-8">The simplest way to host all your events</h2>
 
       <button
@@ -30,58 +30,71 @@ function Features() {
       </button>
 
       <div
-  ref={scrollRef}
-  className="flex flex-nowrap space-x-6 overflow-x-auto scrollbar-hide px-4 scroll-smooth"
-  style={{ scrollBehavior: 'smooth' }}
->
+        ref={scrollRef}
+        className="flex flex-nowrap space-x-6 overflow-x-auto scrollbar-hide px-10 scroll-smooth"
+      >
+       
+        <Card
+          title="Hybrid events"
+          description="Merge the physical with the virtual"
+          className="bg-gradient-to-br from-[#f7c8e0] to-[#d9a9f7]"
+        />
+
+       
+        <Card
+          title="Virtual events"
+          description="Go beyond webinars and workshops"
+          className="bg-gradient-to-br from-[#5c3bc4] to-[#6fcfe2]"
+        />
+     
+        <Card
+          title="In-person events"
+          description="Keep it all together at the venue"
+          className="bg-gradient-to-br from-[#61035f] to-[#2d0139]" // Rich neon magenta/purple
+        />
+
 
         <Card
-          title="In-person events"
-          description="Keep it all together at the venue"
-          className="bg-gradient-to-br from-[#3b0a45] to-[#1d123a]"
-        />
-        <Card
-          title="Virtual events"
-          description="Go beyond webinars and workshops"
-          className="bg-gradient-to-br from-[#6f4ef2] to-[#9ae3ff]"
-        />
-        <Card
           title="Hybrid events"
           description="Merge the physical with the virtual"
           className="bg-gradient-to-br from-[#f7c8e0] to-[#d9a9f7]"
         />
-        <Card
-          title="In-person events"
-          description="Keep it all together at the venue"
-          className="bg-gradient-to-br from-[#3b0a45] to-[#1d123a]"
-        />
+
+       
         <Card
           title="Virtual events"
           description="Go beyond webinars and workshops"
-          className="bg-gradient-to-br from-[#6f4ef2] to-[#9ae3ff]"
+          className="bg-gradient-to-br from-[#5c3bc4] to-[#6fcfe2]"
         />
-        <Card
-          title="Hybrid events"
-          description="Merge the physical with the virtual"
-          className="bg-gradient-to-br from-[#f7c8e0] to-[#d9a9f7]"
-        />
-        <Card
-          title="In-person events"
-          description="Keep it all together at the venue"
-          className="bg-gradient-to-br from-[#3b0a45] to-[#1d123a]"
-        />
-        <Card
-          title="Virtual events"
-          description="Go beyond webinars and workshops"
-          className="bg-gradient-to-br from-[#6f4ef2] to-[#9ae3ff]"
-        />
-        <Card
-          title="Hybrid events"
-          description="Merge the physical with the virtual"
-          className="bg-gradient-to-br from-[#f7c8e0] to-[#d9a9f7]"
-        />
-      </div>
      
+        <Card
+          title="In-person events"
+          description="Keep it all together at the venue"
+          className="bg-gradient-to-br from-[#61035f] to-[#2d0139]" // Rich neon magenta/purple
+        />
+
+
+        <Card
+          title="Hybrid events"
+          description="Merge the physical with the virtual"
+          className="bg-gradient-to-br from-[#f7c8e0] to-[#d9a9f7]"
+        />
+
+       
+        <Card
+          title="Virtual events"
+          description="Go beyond webinars and workshops"
+          className="bg-gradient-to-br from-[#5c3bc4] to-[#6fcfe2]"
+        />
+     
+        <Card
+          title="In-person events"
+          description="Keep it all together at the venue"
+          className="bg-gradient-to-br from-[#61035f] to-[#2d0139]" // Rich neon magenta/purple
+        />
+
+
+      </div>
 
       <button
         onClick={() => scroll('right')}

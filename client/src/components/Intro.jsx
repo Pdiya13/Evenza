@@ -27,7 +27,7 @@ function Intro() {
 
 
     return (
-        <div className="bg-black text-white min-h-screen flex flex-col overflow-hidden">
+        <div className="bg-[#0D1117] text-white min-h-screen flex flex-col overflow-hidden text-[#C3D0E5]">
             <main className="w-screen h-screen relative">
                 <div className="sticky top-0 z-50 bg-black">
                     <Header />
@@ -44,7 +44,7 @@ function Intro() {
                     }}
                 />
                 <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
-                    <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
+                    <h1 className="text-4xl md:text-6xl font-bold  drop-shadow-lg">
                         Welcome
                     </h1>
                     <p className="mt-4 text-lg md:text-xl text-white/80">
