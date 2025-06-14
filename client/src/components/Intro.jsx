@@ -57,6 +57,7 @@ function Intro() {
                     </Link>
                 </div>
             </main>
+            <Features />
             <Footer />
         </div>
     );
