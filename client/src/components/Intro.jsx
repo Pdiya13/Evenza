@@ -27,11 +27,9 @@ function Intro() {
     return (
         <div className="bg-black text-white min-h-screen flex flex-col overflow-hidden">
             <main className="w-screen h-screen relative">
-    
                 <div className="sticky top-0 z-50 bg-black">
                     <Header />
                 </div>
-
                 <div
                     className="absolute inset-0 bg-center bg-cover"
                     style={{
@@ -41,24 +39,21 @@ function Intro() {
                         transition: 'opacity 1s ease-in-out, filter 1s ease-in-out',
                         zIndex: 0,
                     }}
-                /> 
-                {/* Overlay Content */}
-                <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
-                    <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
+                />
+                <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center max-w-3xl mx-auto">
+                    <div className="absolute inset-0 bg-opacity-40 rounded-lg -z-10" />
+                    <h1 className="font-lexend-giga-custom text-6xl md:text-8xl font-extrabold text-white mb-6">
                         Welcome
                     </h1>
-                    <p className="mt-4 text-lg md:text-xl text-white/80">
+                    <p className="mt-4 max-w-lg text-lg md:text-2xl text-white/90 italic tracking-wide leading-relaxed drop-shadow-md">
                         Explore our vision and discover more
                     </p>
-                    <button
-                        className="mt-6 px-6 py-3 bg-white text-black font-semibold rounded hover:bg-gray-300 transition"
-                    >
-                        Get Started
-                    </button>
-                </div>
-            </main>
+                  
 
-            <Footer />
+                </div>
+
+
+            </main>
         </div>
     );
 }
