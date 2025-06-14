@@ -53,9 +53,11 @@ function Intro() {
                     <p className="mt-4 text-lg md:text-xl text-white/80">
                         Explore our vision and discover more
                     </p>
-
-                {isModalOpen && <Login  isModalOpen = {isModalOpen} setIsModalOpen={setIsModalOpen}/>}
+                    <button onClick={()=>setIsModalOpen(!isModalOpen)}>
+                            get  started
+                    </button>
                 </div>
+                {isModalOpen && <Login  isModalOpen = {isModalOpen} setIsModalOpen={setIsModalOpen}/>}
             </main>
 
             <Footer />
