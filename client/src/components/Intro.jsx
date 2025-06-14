@@ -27,12 +27,11 @@ function Intro() {
     return (
         <div className="bg-black text-white min-h-screen flex flex-col overflow-hidden">
             <main className="w-screen h-screen relative">
-                {/* Header */}
+    
                 <div className="sticky top-0 z-50 bg-black">
                     <Header />
                 </div>
 
-                {/* Background Image */}
                 <div
                     className="absolute inset-0 bg-center bg-cover"
                     style={{
