@@ -59,6 +59,7 @@ function Intro() {
                 </div>
             </main>
 
+            <Footer />
         </div>
     );
 }
