@@ -42,8 +42,7 @@ function Intro() {
                         transition: 'opacity 1s ease-in-out, filter 1s ease-in-out',
                         zIndex: 0,
                     }}
-                />
-
+                /> 
                 {/* Overlay Content */}
                 <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
                     <h1 className="text-4xl md:text-6xl font-bold text-white drop-shadow-lg">
