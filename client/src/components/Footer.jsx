@@ -3,7 +3,7 @@ import { FaGithub, FaInstagram, FaTwitter, FaFacebook } from 'react-icons/fa';
 
 function Footer() {
   return (
-    <div className="bg-gray-900 text-white font-poppins-custom">
+    <div className="bg-gray-800 text-white font-poppins-custom">
       
       <nav className="flex flex-col md:flex-row justify-between items-center gap-10  py-10">
         
