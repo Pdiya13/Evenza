@@ -19,7 +19,7 @@ function Features() {
 
   return (
     <div className="py-10 px-5 bg-[#0D1117] text-white relative">
-      <h2 className="text-3xl font-bold text-center mb-8">The simplest way to host all your events</h2>
+      <h2 className="text-3xl font-bold text-center mb-8 text-[#9FB1D1]">The simplest way to host all your events</h2>
 
       <button
         onClick={() => scroll('left')}

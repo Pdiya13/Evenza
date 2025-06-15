@@ -58,7 +58,9 @@ function Intro() {
                     </Link>
                 </div>
             </main>
+            <div className="border-t border-dashed border-gray-400 my-6"></div>
             <Features />
+            <div className="border-t border-dashed border-gray-400 my-6"></div>
             <AnimatedImageGrid />
             <Footer />
         </div>
