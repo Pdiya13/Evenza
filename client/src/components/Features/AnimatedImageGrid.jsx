@@ -7,7 +7,8 @@ const imagesRow1 = [
   "https://images.pexels.com/photos/16935899/pexels-photo-16935899.jpeg",
   // "https://images.pexels.com/photos/1114425/pexels-photo-1114425.jpeg",
   // "https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg",
-  // "https://images.pexels.com/photos/11981162/pexels-photo-11981162.jpeg"
+  // "https://images.pexels.com/photos/11981162/pexels-photo-11981162.jpeg",
+  // "https://images.pexels.com/photos/12688989/pexels-photo-12688989.jpeg",
 ];
 
 const imagesRow2 = [
@@ -17,7 +18,8 @@ const imagesRow2 = [
   "https://images.pexels.com/photos/1543762/pexels-photo-1543762.jpeg",
   // "https://images.pexels.com/photos/18504863/pexels-photo-18504863.jpeg",
   // "https://images.pexels.com/photos/14515158/pexels-photo-14515158.jpeg",
-  // "https://images.pexels.com/photos/12584803/pexels-photo-12584803.jpeg"
+  // "https://images.pexels.com/photos/12584803/pexels-photo-12584803.jpeg",
+  // "https://images.pexels.com/photos/2099021/pexels-photo-2099021.jpeg",
 ];
 
 const imagesRow3 = [
@@ -27,7 +29,8 @@ const imagesRow3 = [
   "https://images.pexels.com/photos/31307957/pexels-photo-31307957.jpeg",
   // "https://images.pexels.com/photos/14457430/pexels-photo-14457430.jpeg",
   // "https://images.pexels.com/photos/31045373/pexels-photo-31045373.jpeg",
-  // "https://images.pexels.com/photos/27958454/pexels-photo-27958454.jpeg"
+  // "https://images.pexels.com/photos/27958454/pexels-photo-27958454.jpeg",
+  // "https://images.pexels.com/photos/32573161/pexels-photo-32573161.jpeg",
 ];
 
 const ImageScroller = () => {
