@@ -37,51 +37,43 @@ function Features() {
           ref={scrollRef}
           className="flex flex-nowrap space-x-8 overflow-x-auto scrollbar-hide px-10 scroll-smooth"
         >
-          <Card
-            title="Hybrid events"
-            description="Merge the physical with the virtual"
-            className="bg-gradient-to-br from-[#f7c8e0] to-[#d9a9f7]"
-          />
+
           <Card
             title="Virtual events"
             description="Go beyond webinars and workshops"
-            className="bg-gradient-to-br from-[#5c3bc4] to-[#6fcfe2]"
+            className="bg-gradient-to-br from-indigo-800 via-purple-900 to-indigo-900"
           />
-          <Card
-            title="In-person events"
-            description="Keep it all together at the venue"
-            className="bg-gradient-to-br from-[#61035f] to-[#2d0139]"
-          />
-          <Card
-            title="Hybrid events"
-            description="Merge the physical with the virtual"
-            className="bg-gradient-to-br from-[#f7c8e0] to-[#d9a9f7]"
-          />
+
           <Card
             title="Virtual events"
             description="Go beyond webinars and workshops"
-            className="bg-gradient-to-br from-[#5c3bc4] to-[#6fcfe2]"
+            className="bg-gradient-to-br from-emerald-800 via-emerald-900 to-emerald-950"
           />
+
           <Card
             title="In-person events"
             description="Keep it all together at the venue"
-            className="bg-gradient-to-br from-[#61035f] to-[#2d0139]"
+            className="bg-gradient-to-br from-rose-800 via-rose-900 to-rose-950"
           />
+
           <Card
-            title="Hybrid events"
-            description="Merge the physical with the virtual"
-            className="bg-gradient-to-br from-[#f7c8e0] to-[#d9a9f7]"
+            title="Networking"
+            description="Connect with vendors and clients"
+            className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950"
           />
+          {/* 
           <Card
-            title="Virtual events"
-            description="Go beyond webinars and workshops"
-            className="bg-gradient-to-br from-[#5c3bc4] to-[#6fcfe2]"
-          />
+            title="Workshops"
+            description="Engage your audience meaningfully"
+            className="bg-gradient-to-br from-cyan-800 via-cyan-900 to-cyan-950"
+          /> */}
+
           <Card
-            title="In-person events"
-            description="Keep it all together at the venue"
-            className="bg-gradient-to-br from-[#61035f] to-[#2d0139]"
+            title="Celebrations"
+            description="Make memories that last forever"
+            className="bg-gradient-to-br from-yellow-800 via-yellow-900 to-yellow-950"
           />
+
         </div>
 
         <button
