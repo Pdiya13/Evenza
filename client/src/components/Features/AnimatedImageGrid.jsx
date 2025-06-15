@@ -1,24 +1,33 @@
 import React from "react";
 
 const imagesRow1 = [
-    "https://images.pexels.com/photos/22086472/pexels-photo-22086472.jpeg",
+  "https://images.pexels.com/photos/22086472/pexels-photo-22086472.jpeg",
   "https://images.pexels.com/photos/50675/banquet-wedding-society-deco-50675.jpeg",
   "https://images.pexels.com/photos/30311728/pexels-photo-30311728.jpeg",
   "https://images.pexels.com/photos/16935899/pexels-photo-16935899.jpeg",
+  "https://images.pexels.com/photos/1114425/pexels-photo-1114425.jpeg",
+  "https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg",
+  "https://images.pexels.com/photos/11981162/pexels-photo-11981162.jpeg"
 ];
 
 const imagesRow2 = [
-    "https://images.pexels.com/photos/22086472/pexels-photo-22086472.jpeg",
-  "https://images.pexels.com/photos/50675/banquet-wedding-society-deco-50675.jpeg",
-  "https://images.pexels.com/photos/30311728/pexels-photo-30311728.jpeg",
-  "https://images.pexels.com/photos/16935899/pexels-photo-16935899.jpeg",
+  "https://images.pexels.com/photos/698907/pexels-photo-698907.jpeg",
+  "https://images.pexels.com/photos/7826296/pexels-photo-7826296.jpeg",
+  "https://images.pexels.com/photos/2788494/pexels-photo-2788494.jpeg",
+  "https://images.pexels.com/photos/1543762/pexels-photo-1543762.jpeg",
+  "https://images.pexels.com/photos/18504863/pexels-photo-18504863.jpeg",
+  "https://images.pexels.com/photos/14515158/pexels-photo-14515158.jpeg",
+  "https://images.pexels.com/photos/12584803/pexels-photo-12584803.jpeg"
 ];
 
 const imagesRow3 = [
-    "https://images.pexels.com/photos/22086472/pexels-photo-22086472.jpeg",
-  "https://images.pexels.com/photos/50675/banquet-wedding-society-deco-50675.jpeg",
-  "https://images.pexels.com/photos/30311728/pexels-photo-30311728.jpeg",
-  "https://images.pexels.com/photos/16935899/pexels-photo-16935899.jpeg",
+  "https://images.pexels.com/photos/18075197/pexels-photo-18075197.jpeg",
+  "https://images.pexels.com/photos/9965895/pexels-photo-9965895.jpeg",
+  "https://images.pexels.com/photos/169196/pexels-photo-169196.jpeg",
+  "https://images.pexels.com/photos/31307957/pexels-photo-31307957.jpeg",
+  "https://images.pexels.com/photos/14457430/pexels-photo-14457430.jpeg",
+  "https://images.pexels.com/photos/31045373/pexels-photo-31045373.jpeg",
+  "https://images.pexels.com/photos/27958454/pexels-photo-27958454.jpeg"
 ];
 
 const ImageScroller = () => {
