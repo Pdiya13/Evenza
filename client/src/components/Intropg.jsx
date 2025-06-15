@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
 import img1 from '../images/img1.jpg';
@@ -25,11 +24,12 @@ function Intropg() {
     }, []);
 
     return (
-        <main className="w-screen h-screen relative">
+        <main className="w-screen h-screen relative overflow-hidden">
             <div className="sticky top-0 z-50 bg-black">
                 <Header />
             </div>
 
+            {/* Background Image */}
             <div
                 className="absolute inset-0 bg-center bg-cover"
                 style={{
@@ -40,21 +40,27 @@ function Intropg() {
                     zIndex: 0,
                 }}
             />
-            <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 text-center">
-                <h1 className="text-4xl md:text-6xl font-bold  drop-shadow-lg">
-                    Welcome
-                </h1>
-                <p className="mt-4 text-lg md:text-xl text-white/80">
-                    Explore our vision and discover more
-                </p>
-                <Link to="/login">
-                    <button>
-                        get  started
-                    </button>
-                </Link>
+
+            {/* Overlay Content */}
+            <div className="relative z-10 flex items-center justify-center h-full">
+                <div className="backdrop-blur-md bg-black/40 p-8 h-[345px] flex flex-col justify-center items-center rounded-xl text-center max-w-xl w-full border border-white/10">
+                    <h1 className="text-[34px] font-bold text-[#F1F5FF] mb-6 font-lexend-giga-custom">
+                       Invite-Hire-Celebrate
+                    </h1>
+                    <p className="text-white/80 text-lg md:text-xl mb-6">
+                        Bring people together and craft unforgettable moments — effortlessly.
+                    </p>
+                    <Link to="/login">
+                        <button className="font-poppins-custom mt-2 px-6 py-3 text-[#F1F5FF] border border-[#F1F5FF] rounded-lg hover:bg-[#F1F5FF] hover:text-black transition duration-300">
+                            Get Started
+                        </button>
+                    </Link>
+                </div>
             </div>
+
+
         </main>
-    )
+    );
 }
 
-export default Intropg
+export default Intropg;
