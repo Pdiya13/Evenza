@@ -4,7 +4,7 @@ import Header from './Header'
 function Dashboard() {
   return (
     <div className='w-screen min-h-screen bg-white'>
-        <Header />
+        <Header title={["Reminders" , "User"]}/>
         <Navbar />
     </div>
   )

@@ -3,11 +3,11 @@ import Header from './Header';
 import img1 from '../images/img1.jpg';
 import img2 from '../images/img2.jpg';
 import img3 from '../images/img3.jpg';
-import img4 from '../images/img4.jpg';
+// import img4 from '../images/img4.jpg';
 import { Link } from 'react-router-dom';
 
 function Intropg() {
-    const images = [img1, img2, img3, img4];
+    const images = [img1, img2, img3];
     const [currentIndex, setCurrentIndex] = useState(0);
     const [visible, setVisible] = useState(false);
 
@@ -26,7 +26,7 @@ function Intropg() {
     return (
         <main className="w-screen h-screen relative overflow-hidden">
             <div className="sticky top-0 z-50 bg-black">
-                <Header />
+                <Header title={["Home" , "About" , "Services" , "Contact"]}/>
             </div>
 
             {/* Background Image */}
