@@ -1,6 +1,10 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Header from './Header';
+
+import CreateEvent from './home/CreateEvent';
+import ManageEvent from './home/ManageEvent';
+
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import {
   FaUsers,
@@ -135,6 +139,16 @@ function Dashboard() {
           </div>
         </div>
       </div>
+
+        {/*start div for testing create and manage event page  */}
+        <div className="w-full h-full flex flex-row">
+          <Navbar />
+            <div className="m-8 min-h-[83vh] w-full bg-[#C3D0E5] rounded-xl p-6 shadow-md">
+              <CreateEvent />
+            </div>
+        </div>
+        {/* end div */}
+
     </div>
   );
 }

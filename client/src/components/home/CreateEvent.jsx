@@ -24,7 +24,8 @@ function CreateEvent() {
 
   return (
     <div className="min-h-screen bg-[#C3D0E5] flex items-center justify-center px-4 text-white">
-      <form
+    {
+     <form
         onSubmit={handleSubmit}
         className="bg-gradient-to-br from-black to-gray-800 shadow-2xl rounded-xl p-10 w-full max-w-xl flex flex-col gap-6"
       >
@@ -84,7 +85,7 @@ function CreateEvent() {
         >
           Create Event
         </button>
-      </form>
+      </form> }
     </div>
   );
 }
