@@ -39,6 +39,7 @@ const ImageScroller = () => {
         <h1 className="text-[#9FB1D1] text-6xl text-center pb-10 font-bold ">Our Event Gallray</h1>
       <div className="grid grid-cols-3 gap-4 px-10">
         {/* Row 1 (scroll down) */}
+
         <div className="overflow-hidden h-[500px] rounded-lg">
           <div className="flex flex-col gap-4 animate-scroll-down">
             {[...imagesRow1, ...imagesRow1].map((img, idx) => (
@@ -52,7 +53,6 @@ const ImageScroller = () => {
           </div>
         </div>
 
-        {/* Row 2 (scroll up) */}
         <div className="overflow-hidden h-[500px] rounded-lg">
           <div className="flex flex-col gap-4 animate-scroll-up">
             {[...imagesRow2, ...imagesRow2].map((img, idx) => (
@@ -66,7 +66,6 @@ const ImageScroller = () => {
           </div>
         </div>
 
-        {/* Row 3 (scroll down) */}
         <div className="overflow-hidden h-[500px] rounded-lg">
           <div className="flex flex-col gap-4 animate-scroll-down">
             {[...imagesRow3, ...imagesRow3].map((img, idx) => (
@@ -81,7 +80,6 @@ const ImageScroller = () => {
         </div>
       </div>
 
-      {/* Tailwind custom styles */}
       <style>
         {`
           @keyframes scroll-up {
