@@ -29,7 +29,6 @@ function Intropg() {
                 <Header title={["Home" , "About" , "Services" , "Contact"]}/>
             </div>
 
-            {/* Background Image */}
             <div
                 className="absolute inset-0 bg-center bg-cover"
                 style={{
