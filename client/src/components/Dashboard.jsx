@@ -15,6 +15,7 @@ import {
   FaCheckCircle,
   FaTimesCircle,
 } from 'react-icons/fa';
+import Vendors from './home/Vendors';
 
 const pieData = [
   { name: 'Meetings', value: 60 },
@@ -139,6 +140,9 @@ function Dashboard() {
           </div>
         </div>
       </div>
+
+      {/* test manage event page */}
+      <ManageEvent />
     </div>
   );
 }
