@@ -25,28 +25,23 @@ function Navbar() {
                             Dashboard
                         </span>
                     </li>
-                    <li className="hover:bg-[#F4F4F4] px-2 pr-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
-                        <div className="min-w-[20px] text-xl"><FaPlusCircle /></div>
-                        <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
-                            Create Event
-                        </span>
-                    </li>
                      <li className="hover:bg-[#F4F4F4] px-2 pr-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
                         <div className="min-w-[20px] text-xl"><FaPeopleCarry /></div>
                         <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
                             Vendors
                         </span>
                     </li>
+                    <li className="hover:bg-[#F4F4F4] px-2 pr-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
+                        <div className="min-w-[20px] text-xl"><FaPlusCircle /></div>
+                        <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
+                            Create Event
+                        </span>
+                    </li>
+            
                     <li className="hover:bg-[#F4F4F4] px-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
                         <div className="min-w-[20px] text-xl"><FaClipboardList /></div>
                         <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
                             Manage Event
-                        </span>
-                    </li>
-                    <li className="hover:bg-[#F4F4F4] px-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
-                        <div className="min-w-[20px] text-xl"><FaChartBar /></div>
-                        <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
-                            Analytics
                         </span>
                     </li>
                     <li className="hover:bg-[#F4F4F4] px-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
