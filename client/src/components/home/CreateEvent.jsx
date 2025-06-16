@@ -23,12 +23,12 @@ function CreateEvent() {
   };
 
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center px-4 text-white">
+    <div className="min-h-screen bg-[#C3D0E5] flex items-center justify-center px-4 text-white">
       <form
         onSubmit={handleSubmit}
         className="bg-gradient-to-br from-black to-gray-800 shadow-2xl rounded-xl p-10 w-full max-w-xl flex flex-col gap-6"
       >
-        <h2 className="text-3xl font-semibold text-center text-white">Create New Event</h2>
+        <h2 className="text-4xl font-semibold text-center text-white">Create New Event</h2>
 
         <input
           type="text"
@@ -36,7 +36,7 @@ function CreateEvent() {
           placeholder="Event Name"
           value={formData.ename}
           onChange={handleChange}
-          className="input-style border border-gray-500 rounded-lg w-full h-10"
+          className="border border-gray-500 rounded-lg w-full h-10 bg-transparent text-white placeholder-white pl-2"
         />
 
         <input
@@ -45,7 +45,7 @@ function CreateEvent() {
           placeholder="Event Location"
           value={formData.location}
           onChange={handleChange}
-          className="input-style border border-gray-500 rounded-lg w-full h-10"
+          className="border border-gray-500 rounded-lg w-full h-10 bg-transparent text-white placeholder-white pl-2"
         />
 
         <input
@@ -54,19 +54,17 @@ function CreateEvent() {
           placeholder="Description"
           value={formData.description}
           onChange={handleChange}
-          className="input-style border border-gray-500 rounded-lg w-full h-10"
+          className="border border-gray-500 rounded-lg w-full h-10 bg-transparent text-white placeholder-white pl-2"
         />
 
-        <div>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            min={new Date().toISOString().split('T')[0]}
-            className="input-style border border-gray-500 rounded-lg w-full h-10 p-3"
-          />
-        </div>
+        <input
+          type="date"
+          name="date"
+          value={formData.date}
+          onChange={handleChange}
+          min={new Date().toISOString().split('T')[0]}
+          className="border border-gray-500 rounded-lg w-full h-10 bg-transparent text-white placeholder-white p-2"
+        />
 
         <select
           name="type"
@@ -82,7 +80,7 @@ function CreateEvent() {
 
         <button
           type="submit"
-          className=" bg-slate-700 text-white py-3 px-6 text-lg rounded-md hover:bg-blue-700 transition-all duration-300 shadow-md"
+          className="bg-slate-700 text-white py-3 px-6 text-lg rounded-md hover:bg-slate-800 transition-all duration-300 shadow-md"
         >
           Create Event
         </button>
@@ -92,3 +90,4 @@ function CreateEvent() {
 }
 
 export default CreateEvent;
+
