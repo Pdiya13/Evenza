@@ -7,7 +7,8 @@ const imagesRow1 = [
   "https://images.pexels.com/photos/16935899/pexels-photo-16935899.jpeg",
   // "https://images.pexels.com/photos/1114425/pexels-photo-1114425.jpeg",
   // "https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg",
-  // "https://images.pexels.com/photos/11981162/pexels-photo-11981162.jpeg"
+  // "https://images.pexels.com/photos/11981162/pexels-photo-11981162.jpeg",
+  // "https://images.pexels.com/photos/12688989/pexels-photo-12688989.jpeg",
 ];
 
 const imagesRow2 = [
@@ -17,7 +18,8 @@ const imagesRow2 = [
   "https://images.pexels.com/photos/1543762/pexels-photo-1543762.jpeg",
   // "https://images.pexels.com/photos/18504863/pexels-photo-18504863.jpeg",
   // "https://images.pexels.com/photos/14515158/pexels-photo-14515158.jpeg",
-  // "https://images.pexels.com/photos/12584803/pexels-photo-12584803.jpeg"
+  // "https://images.pexels.com/photos/12584803/pexels-photo-12584803.jpeg",
+  // "https://images.pexels.com/photos/2099021/pexels-photo-2099021.jpeg",
 ];
 
 const imagesRow3 = [
@@ -27,15 +29,17 @@ const imagesRow3 = [
   "https://images.pexels.com/photos/31307957/pexels-photo-31307957.jpeg",
   // "https://images.pexels.com/photos/14457430/pexels-photo-14457430.jpeg",
   // "https://images.pexels.com/photos/31045373/pexels-photo-31045373.jpeg",
-  // "https://images.pexels.com/photos/27958454/pexels-photo-27958454.jpeg"
+  // "https://images.pexels.com/photos/27958454/pexels-photo-27958454.jpeg",
+  // "https://images.pexels.com/photos/32573161/pexels-photo-32573161.jpeg",
 ];
 
 const ImageScroller = () => {
   return (
-    <div className=" bg-[#0D1117] mb-20">
-        <h1 className="text-[#9FB1D1] text-3xl text-center pb-0 font-bold font-lexend-giga-custom ">Our Event Gallray</h1>
-      <div className="grid grid-cols-3 gap-4 px-10 mt-14">
-     
+    <div className=" bg-[#0D1117] py-10 mb-20">
+        <h1 className="text-[#9FB1D1] text-6xl text-center pb-10 font-bold ">Our Event Gallray</h1>
+      <div className="grid grid-cols-3 gap-4 px-10">
+        {/* Row 1 (scroll down) */}
+
         <div className="overflow-hidden h-[500px] rounded-lg">
           <div className="flex flex-col gap-4 animate-scroll-down">
             {[...imagesRow1, ...imagesRow1].map((img, idx) => (
