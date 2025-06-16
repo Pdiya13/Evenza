@@ -1,5 +1,7 @@
 import React, { createElement } from 'react';
 import ManageEventCard from './ManageEventCard';
+import Header from "../Header";
+import Navbar from "../Navbar";
 
 function ManageEvent({ ename, location, date, type }) {
 
@@ -37,7 +39,14 @@ function ManageEvent({ ename, location, date, type }) {
     ];
 
   return (
-    <div>
+    
+
+
+ <div className="min-h-screen bg-gray-100 font-sans">
+      <Header title={['Reminders', 'User']} />
+      <div className="flex">
+        <Navbar />
+        <div>
         <div className="min-h-screen py-10 px-6">
       <h2 className="text-gray-800 text-4xl font-bold text-center mb-8">Upcoming Events</h2>
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center">
@@ -53,6 +62,8 @@ function ManageEvent({ ename, location, date, type }) {
       </div>
     </div>
 
+    </div>
+      </div>
     </div>
   );
 }
