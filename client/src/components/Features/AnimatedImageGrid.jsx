@@ -35,9 +35,9 @@ const imagesRow3 = [
 
 const ImageScroller = () => {
   return (
-    <div className=" bg-[#0D1117] py-10 mb-20">
-        <h1 className="text-[#9FB1D1] text-6xl text-center pb-10 font-bold ">Our Event Gallray</h1>
-      <div className="grid grid-cols-3 gap-4 px-10">
+    <div className=" bg-[#0D1117] mb-20">
+        <h1 className="text-[#9FB1D1] text-3xl text-center pb-0 font-bold font-lexend-giga-custom ">Our Event Gallray</h1>
+      <div className="grid grid-cols-3 gap-4 px-10 mt-14">
         {/* Row 1 (scroll down) */}
 
         <div className="overflow-hidden h-[500px] rounded-lg">
