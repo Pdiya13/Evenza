@@ -4,6 +4,8 @@ import Signup from './components/authentication/Signup';
 import Dashboard from './components/Dashboard';
 import Features from './components/Features/Features'
 import Footer from './components/Footer'
+import CreateEvent from './components/home/CreateEvent';
+import Vendors from './components/home/Vendors';
 import Mainweb from './components/Mainweb';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -16,6 +18,8 @@ function App() {
           <Route path='/login' element={<Login />}></Route>
           <Route path='/signup' element={<Signup />}></Route>
           <Route path='/dashboard' element={<Dashboard />}></Route>
+          <Route path='/create' element={<CreateEvent />}></Route>
+          <Route path='/vendors' element={<Vendors />}></Route>
           
         </Routes>
       </Router>
