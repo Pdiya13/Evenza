@@ -1,22 +1,149 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { FaEdit, FaSave, FaTrash, FaMapMarkerAlt, FaCalendarAlt, FaTag, FaRegCalendarCheck } from 'react-icons/fa';
 
-function ManageEventCard({ ename, location, date, type }) {
+function ManageEventCard({ event, setEvents }) {
+  const [isediting, setIsediting] = useState(false);
+  const [editevent, setEditevent] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditevent(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    setEvents(prev => prev.filter(ev => ev.id !== event.id));
+  };
+
+  const handleEdit = (e) => {
+    e.preventDefault();
+    setEditevent(event);
+    setIsediting(true);
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    setEvents(prev => prev.map(ev => ev.id === editevent.id ? editevent : ev));
+    setEditevent({});
+    setIsediting(false);
+  };
+
   return (
-     <div className="bg-gradient-to-br from-black to-gray-800 text-white p-6 rounded-2xl shadow-lg w-full max-w-sm">
-      <h3 className="text-2xl font-bold mb-2">{ename}</h3>
-      <p className="text-sm text-gray-300 mb-1"><span className="font-semibold">📍 Location:</span> {location}</p>
-      <p className="text-sm text-gray-300 mb-1"><span className="font-semibold">📅 Date:</span> {date}</p>
-      <p className="text-sm text-gray-300"><span className="font-semibold">🏷️ Type:</span> {type}</p>
+    <div
+      className="relative w-full max-w-sm p-6 rounded-3xl bg-white/10 backdrop-blur-md
+                 border border-white/20 shadow-xl transition-transform hover:scale-[1.03] hover:shadow-2xl
+                 text-white flex flex-col"
+      style={{ fontFamily: "'Poppins', sans-serif" }}
+    >
+      {isediting ? (
+        <>
+          <div className="mb-4">
+            <label className="flex items-center text-sm mb-1 font-semibold text-blue-300">
+              <FaRegCalendarCheck className="mr-2" /> Event Name
+            </label>
+            <input
+              name="ename"
+              value={editevent.ename}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-blue-200
+                         border border-transparent focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400 transition"
+              placeholder="Enter event name"
+              autoFocus
+            />
+          </div>
 
-      <Link 
-        to={"/login"} 
-        className="mt-4 inline-block bg-slate-700 text-white text-sm font-semibold py-2 px-4 rounded hover:bg-slate-800 transition"
-      >
-        View Details
-      </Link>
+          <div className="mb-4">
+            <label className="flex items-center text-sm mb-1 font-semibold text-green-300">
+              <FaMapMarkerAlt className="mr-2" /> Location
+            </label>
+            <input
+              name="location"
+              value={editevent.location}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-green-200
+                         border border-transparent focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400 transition"
+              placeholder="Enter location"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label className="flex items-center text-sm mb-1 font-semibold text-purple-300">
+              <FaCalendarAlt className="mr-2" /> Date
+            </label>
+            <input
+              name="date"
+              value={editevent.date}
+              onChange={handleChange}
+              type="date"
+              className="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-purple-200
+                         border border-transparent focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400 transition"
+            />
+          </div>
+
+          <div className="mb-6">
+            <label className="flex items-center text-sm mb-1 font-semibold text-pink-300">
+              <FaTag className="mr-2" /> Type
+            </label>
+            <input
+              name="type"
+              value={editevent.type}
+              onChange={handleChange}
+              className="w-full px-4 py-2 rounded-xl bg-white/20 text-white placeholder-pink-200
+                         border border-transparent focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400 transition"
+              placeholder="Event type"
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <h3 className="text-3xl font-extrabold mb-4 tracking-wide drop-shadow-lg">{event.ename}</h3>
+
+          <p className="flex items-center text-sm mb-2 text-blue-300">
+            <FaMapMarkerAlt className="mr-2" /> {event.location}
+          </p>
+
+          <p className="flex items-center text-sm mb-2 text-purple-300">
+            <FaCalendarAlt className="mr-2" /> {event.date}
+          </p>
+
+          <p className="flex items-center text-sm text-pink-300">
+            <FaTag className="mr-2" /> {event.type}
+          </p>
+        </>
+      )}
+
+      <div className="mt-auto flex gap-4 justify-end">
+        {isediting ? (
+          <button
+            onClick={handleSave}
+            className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-5 rounded-full shadow-md
+                       transition duration-300 transform hover:-translate-y-0.5 active:scale-95"
+            aria-label="Save Event"
+          >
+            <FaSave /> Save
+          </button>
+        ) : (
+          <button
+            onClick={handleEdit}
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-full shadow-md
+                       transition duration-300 transform hover:-translate-y-0.5 active:scale-95"
+            aria-label="Edit Event"
+          >
+            <FaEdit /> Edit
+          </button>
+        )}
+
+        <button
+          onClick={handleDelete}
+          className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-5 rounded-full shadow-md
+                     transition duration-300 transform hover:-translate-y-0.5 active:scale-95"
+          aria-label="Delete Event"
+        >
+          <FaTrash /> Delete
+        </button>
+      </div>
     </div>
-  )
+  );
 }
 
-export default ManageEventCard
+export default ManageEventCard;

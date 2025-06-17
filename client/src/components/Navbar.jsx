@@ -31,17 +31,10 @@ function Navbar() {
                             Vendors
                         </span>
                     </li>
-                    <li className="hover:bg-[#F4F4F4] px-2 pr-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
-                        <div className="min-w-[20px] text-xl"><FaPlusCircle /></div>
-                        <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
-                            Create Event
-                        </span>
-                    </li>
-            
                     <li className="hover:bg-[#F4F4F4] px-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
-                        <div className="min-w-[20px] text-xl"><FaClipboardList /></div>
+                        <div className="min-w-[20px] text-xl"><FaCalendar /></div>
                         <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
-                            Manage Event
+                            Event Management
                         </span>
                     </li>
                     <li className="hover:bg-[#F4F4F4] px-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
@@ -53,7 +46,6 @@ function Navbar() {
                 </ul>
             </div>
         </div>
-
     );
 }
 

@@ -1,52 +1,105 @@
+import React, { useState } from "react";
 import Header from "../Header";
 import Navbar from "../Navbar";
+import { HiExternalLink } from "react-icons/hi";
+
+const neonColor = "#3b82f6"; // Tailwind blue-500 hex, same color for border and shadow
+
 const VendorCard = ({ name, description, email, logo }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className="bg-white text-gray-800 rounded-xl shadow-lg overflow-hidden w-full max-w-sm hover:shadow-xl transition-shadow duration-300">
-      <div className="p-6 flex flex-col items-center">
-        {logo && (
-          <img
-            src={logo}
-            alt={`${name} logo`}
-            className="h-20 w-20 object-cover rounded-full border border-gray-200 mb-4"
-          />
-        )}
-        <h2 className="text-lg font-semibold mb-1 text-center">{name}</h2>
-        <p className="text-sm text-gray-600 text-center mb-3">{description}</p>
-        <p className="text-xs text-gray-500 text-center mb-5">{email}</p>
-        <button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 rounded-md font-medium transition">
-          View Details
-        </button>
-      </div>
+     <div
+      className={`relative group overflow-hidden flex flex-col items-center p-6 rounded-xl bg-[#0d1117] border border-[#30363d] transition-transform duration-300 transform ${
+        isHovered ? "scale-105" : ""
+      } shadow-md`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        cursor: "pointer",
+        boxShadow: isHovered
+          ? `0 0px 8px 1px ${neonColor}`
+          : "0 2px 8px rgba(0,0,0,0.6)",
+      }}
+    >
+    <div className="absolute inset-0 rounded-xl z-0 border-1 border-transparent group-hover:border-blue-300 transition duration-300 blur-sm"></div>
+
+      {logo ? (
+        <img
+          src={logo}
+          alt={`${name} logo`}
+          className="relative z-10 w-20 h-20 rounded-full shadow-lg"
+          style={{ border: `3px solid ${neonColor}` }}
+        />
+      ) : (
+        <div
+          className="relative z-10 w-20 h-20 rounded-full bg-gray-700 text-white flex items-center justify-center text-lg font-semibold"
+          style={{ border: `3px solid ${neonColor}` }}
+        >
+          No Logo
+        </div>
+      )}
+
+      <h3 className="relative z-10 mt-4 text-xl font-bold text-white tracking-wide">
+        {name}
+      </h3>
+
+      <p className="relative z-10 text-sm text-gray-400 mt-2 text-center">
+        {description}
+      </p>
+
+      <p className="relative z-10 text-xs text-gray-500 mt-1 mb-4">{email}</p>
+
+      <button className="relative z-10 mt-auto py-2 px-6 rounded-md text-sm font-semibold text-white bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 transition duration-300 flex items-center gap-2">
+        View Details <HiExternalLink size={18} />
+      </button>
     </div>
   );
 };
 
-
 const vendorList = [
   {
     name: "Vendor A",
-    description: "Providing high-quality electronics.",
+    description:
+      "Providing high-quality electronics with a focus on innovation and sustainability.",
     email: "contact@vendora.com",
-    logo: "https://via.placeholder.com/80"
+    logo: "https://via.placeholder.com/80",
   },
   {
     name: "Vendor B",
-    description: "Specialist in organic foods.",
+    description:
+      "Specialists in organic foods, delivering farm fresh quality produce to your doorstep.",
     email: "info@vendorb.com",
-    logo: "https://via.placeholder.com/80"
+    logo: "https://via.placeholder.com/80",
   },
-  // Add more vendors as needed
+  {
+    name: "Vendor C",
+    description:
+      "Premium handmade crafts sourced from local artisans around the world.",
+    email: "hello@vendorc.com",
+    logo: "https://via.placeholder.com/80",
+  },
+  {
+    name: "Vendor D",
+    description:
+      "Leading software solutions for modern businesses looking to scale.",
+    email: "sales@vendord.com",
+    logo: "https://via.placeholder.com/80",
+  },
 ];
+
 function Vendors() {
   return (
-    <div className="min-h-screen bg-gray-100 font-sans">
-      <Header title={['Reminders', 'User']} />
-      <div className="flex">
+    <div className="min-h-screen bg-[#161B22] font-sans selection:bg-gray-600 selection:text-gray-200">
+      <Header title={["Reminders", "User"]} />
+      <div className="flex min-h-[calc(100vh-64px)]">
         <Navbar />
-        <main className="flex-grow p-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Our Vendors</h1>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <main className="flex-grow p-12 max-w-7xl mx-auto">
+          <h1 className="text-4xl font-extrabold text-gray-200 mb-12 border-b border-gray-700 pb-3 select-none tracking-wide">
+            Our Vendors
+          </h1>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-10">
             {vendorList.map((vendor, index) => (
               <VendorCard key={index} {...vendor} />
             ))}
