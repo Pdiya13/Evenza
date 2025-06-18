@@ -1,52 +1,56 @@
 import React from 'react';
 import {
-    FaTachometerAlt,
-    FaPlusCircle,
-    FaClipboardList,
-    FaChartBar,
-    FaSignOutAlt,
-    FaCalendar,
-    FaSellcast,
-    FaUser,
-    FaPeopleArrows,
-    FaPeopleCarry,
+  FaTachometerAlt,
+  FaPeopleCarry,
+  FaCalendar,
+  FaUser,
+  FaSignOutAlt,
 } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 function Navbar() {
-    return (
-        <div className="flex items-center h-[100vh]">
+  const navigate = useNavigate();
 
-            <div className="group w-18 hover:w-52 transition-[width] duration-300 h-full bg-[#0D1117] mt-8 rounded-lg px-4 py-10 overflow-hidden">
+  return (
+    <div className="flex flex-col items-center justify-start min-h-screen bg-[#0D1117] p-6 w-24 hover:w-64 transition-width duration-300 group relative overflow-y-auto">
 
-                <ul className="text-white flex flex-col justify-center gap-8 text-base font-normal h-full">
-                    <li className="hover:bg-[#F4F4F4] px-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
-                        <div className="min-w-[20px] text-xl"><FaTachometerAlt /></div>
-                        <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
-                            Dashboard
-                        </span>
-                    </li>
-                     <li className="hover:bg-[#F4F4F4] px-2 pr-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
-                        <div className="min-w-[20px] text-xl"><FaPeopleCarry /></div>
-                        <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
-                            Vendors
-                        </span>
-                    </li>
-                    <li className="hover:bg-[#F4F4F4] px-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
-                        <div className="min-w-[20px] text-xl"><FaCalendar /></div>
-                        <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
-                            Event Management
-                        </span>
-                    </li>
-                    <li className="hover:bg-[#F4F4F4] px-2 py-3 rounded-md hover:text-[#0D1117] flex items-center gap-3">
-                        <div className="min-w-[20px] text-xl"><FaSignOutAlt /></div>
-                        <span className="opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-opacity duration-300 whitespace-nowrap">
-                            Logout
-                        </span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    );
+      {/* Title - collapsed by default, expands on hover */}
+      <div
+        className="font-bold text-2xl font-lexend-giga-custom text-[#C3D0E5] mb-10 select-none
+                   max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300"
+        style={{ pointerEvents: 'none' }}
+      >
+        EVENZA
+      </div>
+
+      <div className="w-full mt-20">
+        <ul className="text-white flex flex-col justify-start gap-10 text-base font-normal">
+          {/* Each nav item */}
+          {[
+            { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/dashboard' },
+            { icon: <FaPeopleCarry />, label: 'Vendors', path: '/vendors' },
+            { icon: <FaCalendar />, label: 'Event Management', path: '/manage' },
+            { icon: <FaUser />, label: 'User', path: '/user' },
+            { icon: <FaSignOutAlt />, label: 'Logout', path: '/logout' },
+          ].map(({ icon, label, path }) => (
+            <li
+              key={label}
+              className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
+              onClick={() => {navigate(path)}}
+            >
+              <div className="min-w-[20px] text-xl">{icon}</div>
+              <span
+                className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300"
+                style={{ display: 'inline-block' }}
+              >
+                {label}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
 }
 
 export default Navbar;

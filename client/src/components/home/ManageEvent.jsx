@@ -51,41 +51,40 @@ function ManageEvent() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0D1117] font-sans text-white">
-      <Header title={['Reminders', 'User']} />
-      <div className="flex">
-        <Navbar />
-        <div className='flex-grow flex flex-col bg-[#161B22] rounded-xl m-8 shadow-lg p-8'>
 
-          <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
-            <input
-              type="text"
-              placeholder="Search events..."
-              className="w-full sm:w-1/2 px-4 py-2 rounded-lg border border-gray-700 bg-[#0D1117] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4 sm:mb-0"
+    <div className="w-full min-h-screen bg-[#161B22] font-sans text-white">
+
+      <div className='flex-grow flex flex-col bg-[#161B22] rounded-xl p-2 shadow-lg p-8'>
+
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+          <input
+            type="text"
+            placeholder="Search events..."
+            className="w-full sm:w-1/2 px-4 py-2 rounded-lg border border-gray-700 bg-[#0D1117] text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4 sm:mb-0"
+          />
+          <button
+            onClick={() => navigate('/create')}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 ml-0 sm:ml-4 transition"
+          >
+            Create Event
+          </button>
+        </div>
+
+        <h2 className="text-white text-4xl font-bold text-center mb-8 tracking-wide">Upcoming Events</h2>
+
+        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center">
+          {events.map((event) => (
+            <ManageEventCard
+              key={event.id}
+              event={event}
+              setEvents={setEvents}
+              events={events}
             />
-            <button
-              onClick={() => navigate('/create')}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 ml-0 sm:ml-4 transition"
-            >
-              Create Event
-            </button>
-          </div>
-
-          <h2 className="text-white text-4xl font-bold text-center mb-8 tracking-wide">Upcoming Events</h2>
-
-          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center">
-            {events.map((event) => (
-              <ManageEventCard
-                key={event.id}
-                event={event}
-                setEvents={setEvents}
-                events={events}
-              />
-            ))}
-          </div>
+          ))}
         </div>
       </div>
     </div>
+// </div>
   );
 }
 

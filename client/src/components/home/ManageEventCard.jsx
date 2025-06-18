@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaEdit, FaSave, FaTrash, FaMapMarkerAlt, FaCalendarAlt, FaTag, FaRegCalendarCheck } from 'react-icons/fa';
+import { FaEdit, FaSave, FaTrash, FaMapMarkerAlt, FaClipboardList, FaCalendarAlt, FaTag, FaRegCalendarCheck } from 'react-icons/fa';
 
 function ManageEventCard({ event, setEvents }) {
   const [isediting, setIsediting] = useState(false);
@@ -112,12 +112,12 @@ function ManageEventCard({ event, setEvents }) {
         </>
       )}
 
-      <div className="mt-auto flex gap-4 justify-end">
+      <div className="mt-auto pt-6 flex flex-wrap gap-4">
         {isediting ? (
           <button
             onClick={handleSave}
-            className="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-5 rounded-full shadow-md
-                       transition duration-300 transform hover:-translate-y-0.5 active:scale-95"
+            className="flex items-center gap-2 bg-green-400/20 hover:bg-green-400/30 text-green-200 font-semibold py-2 px-5 rounded-full shadow-sm
+               transition duration-300 transform hover:-translate-y-0.5 active:scale-95 border border-green-300/30"
             aria-label="Save Event"
           >
             <FaSave /> Save
@@ -125,8 +125,8 @@ function ManageEventCard({ event, setEvents }) {
         ) : (
           <button
             onClick={handleEdit}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-full shadow-md
-                       transition duration-300 transform hover:-translate-y-0.5 active:scale-95"
+            className="flex items-center gap-2 bg-yellow-400/20 hover:bg-yellow-400/30 text-yellow-200 font-semibold py-2 px-5 rounded-full shadow-sm
+               transition duration-300 transform hover:-translate-y-0.5 active:scale-95 border border-yellow-300/30"
             aria-label="Edit Event"
           >
             <FaEdit /> Edit
@@ -135,13 +135,24 @@ function ManageEventCard({ event, setEvents }) {
 
         <button
           onClick={handleDelete}
-          className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-5 rounded-full shadow-md
-                     transition duration-300 transform hover:-translate-y-0.5 active:scale-95"
+          className="flex items-center gap-2 bg-red-400/20 hover:bg-red-400/30 text-red-200 font-semibold py-2 px-5 rounded-full shadow-sm
+             transition duration-300 transform hover:-translate-y-0.5 active:scale-95 border border-red-300/30"
           aria-label="Delete Event"
         >
           <FaTrash /> Delete
         </button>
+
+        <button
+          onClick={handleEdit}
+          className="flex items-center gap-2 bg-blue-400/20 hover:bg-blue-400/30 text-blue-200 font-semibold py-2 px-5 rounded-full shadow-sm
+             transition duration-300 transform hover:-translate-y-0.5 active:scale-95 border border-blue-300/30"
+          aria-label="Plan Event"
+        >
+          <FaClipboardList /> Plan
+        </button>
+
       </div>
+
     </div>
   );
 }

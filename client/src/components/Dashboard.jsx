@@ -24,131 +24,130 @@ const COLORS = ['#14B8A6', '#FB6F6F', '#3B82F6']; // Teal, Coral, Blue
 
 function Dashboard() {
   return (
-    <div className="w-screen min-h-screen bg-[#0D1117] font-sans text-white">
-      <Header title={['Reminders', 'User']} />
-      <div className="w-full h-full flex flex-row">
-        <Navbar />
-        <main className="m-8 min-h-[83vh] w-full bg-[#161B22] rounded-xl p-8 shadow-xl">
-          {/* Top summary cards */}
-          <div className="grid grid-cols-3 gap-8 mb-8">
-            <SummaryCard
-              icon={<FaPeopleArrows className="text-teal-400" />}
-              label="Meetings"
-              value="124k"
-              bg="rgba(20, 184, 166, 0.1)"
-              textColor="text-teal-400"
-              borderColor="border-teal-600"
+    <div className="min-h-screen bg-[#161B22]  font-sans text-white w-full">
+      <main className="min-h-[83vh] w-full  rounded-xl pr-8 pl-8 pb-8 pt-2 shadow-xl">
+        {/* Top summary cards */}
+       <h1 className="text-4xl font-extrabold text-gray-200 mb-12 border-b border-gray-700 pb-3 select-none tracking-wide">
+          Dashboard
+        </h1>
+        <div className="grid grid-cols-3 gap-8 mb-8">
+          <SummaryCard
+            icon={<FaPeopleArrows className="text-teal-400" />}
+            label="Meetings"
+            value="124k"
+            bg="rgba(20, 184, 166, 0.1)"
+            textColor="text-teal-400"
+            borderColor="border-teal-600"
+          />
+          <SummaryCard
+            icon={<FaCheckCircle className="text-green-400" />}
+            label="Attended"
+            value="25k"
+            bg="rgba(34, 197, 94, 0.1)"
+            textColor="text-green-400"
+            borderColor="border-green-600"
+          />
+          <SummaryCard
+            icon={<FaTimesCircle className="text-red-400" />}
+            label="Rejected"
+            value="10k"
+            bg="rgba(251, 111, 111, 0.1)"
+            textColor="text-red-400"
+            borderColor="border-red-600"
+          />
+        </div>
+
+        {/* Upcoming Events */}
+        <div className="grid grid-cols-3 gap-8 mb-8">
+          <div className="col-span-2 grid grid-cols-2 gap-6">
+            <EventCard
+              icon={<FaUsers className="text-white" />}
+              title="Creator Meetup"
+              dateTime="10 Aug, 2020 : 10:15AM - 12:30PM"
+              members="142 Members"
+              gradient="linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)" // Blue gradient
             />
-            <SummaryCard
-              icon={<FaCheckCircle className="text-green-400" />}
-              label="Attended"
-              value="25k"
-              bg="rgba(34, 197, 94, 0.1)"
-              textColor="text-green-400"
-              borderColor="border-green-600"
+            <EventCard
+              icon={<FaLightbulb className="text-white" />}
+              title="Design Thinking"
+              dateTime="12 Aug, 2020 : 8:30AM - 15:30PM"
+              members="245 Members"
+              gradient="linear-gradient(135deg, #FBBF24 0%, #FCD34D 100%)" // Yellow gradient
             />
-            <SummaryCard
-              icon={<FaTimesCircle className="text-red-400" />}
-              label="Rejected"
-              value="10k"
-              bg="rgba(251, 111, 111, 0.1)"
+          </div>
+
+          <Calendar />
+        </div>
+
+        {/* Meetings list and Pie chart */}
+        <div className="grid grid-cols-3 gap-8">
+          <div className="col-span-2 grid grid-cols-3 gap-6">
+            <MeetingCard
+              day={18}
+              month="Aug"
+              title="Design Meeting"
+              time="10:15AM - 12:30PM"
+              location="Lorem"
+              bg="rgba(59, 130, 246, 0.1)"
+              textColor="text-blue-400"
+              borderColor="border-blue-600"
+            />
+            <MeetingCard
+              day={22}
+              month="Aug"
+              title="Workshop Meeting"
+              time="9:00AM - 15:30PM"
+              location="Lorem"
+              bg="rgba(251, 191, 36, 0.1)"
+              textColor="text-yellow-400"
+              borderColor="border-yellow-600"
+            />
+            <MeetingCard
+              day={28}
+              month="Aug"
+              title="Weekly Meeting"
+              time="10:30AM - 17:00PM"
+              location="Lorem"
+              bg="rgba(239, 68, 68, 0.1)"
               textColor="text-red-400"
               borderColor="border-red-600"
             />
           </div>
 
-          {/* Upcoming Events */}
-          <div className="grid grid-cols-3 gap-8 mb-8">
-            <div className="col-span-2 grid grid-cols-2 gap-6">
-              <EventCard
-                icon={<FaUsers className="text-white" />}
-                title="Creator Meetup"
-                dateTime="10 Aug, 2020 : 10:15AM - 12:30PM"
-                members="142 Members"
-                gradient="linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)" // Blue gradient
-              />
-              <EventCard
-                icon={<FaLightbulb className="text-white" />}
-                title="Design Thinking"
-                dateTime="12 Aug, 2020 : 8:30AM - 15:30PM"
-                members="245 Members"
-                gradient="linear-gradient(135deg, #FBBF24 0%, #FCD34D 100%)" // Yellow gradient
-              />
-            </div>
-
-            <Calendar />
+          <div
+            className="rounded-xl shadow-xl p-6 border border-gray-700 bg-[#0D1117] flex flex-col justify-center"
+          >
+            <h4 className="font-bold text-lg mb-4 tracking-wide text-white text-center">
+              Meeting Stats
+            </h4>
+            <ResponsiveContainer width="100%" height={180}>
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  dataKey="value"
+                  outerRadius={70}
+                  fill="#8884d8"
+                  label
+                  stroke="none"
+                >
+                  {pieData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#22272e',
+                    borderRadius: '8px',
+                    border: 'none',
+                    color: '#fff',
+                  }}
+                  itemStyle={{ color: '#fff' }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-
-          {/* Meetings list and Pie chart */}
-          <div className="grid grid-cols-3 gap-8">
-            <div className="col-span-2 grid grid-cols-3 gap-6">
-              <MeetingCard
-                day={18}
-                month="Aug"
-                title="Design Meeting"
-                time="10:15AM - 12:30PM"
-                location="Lorem"
-                bg="rgba(59, 130, 246, 0.1)"
-                textColor="text-blue-400"
-                borderColor="border-blue-600"
-              />
-              <MeetingCard
-                day={22}
-                month="Aug"
-                title="Workshop Meeting"
-                time="9:00AM - 15:30PM"
-                location="Lorem"
-                bg="rgba(251, 191, 36, 0.1)"
-                textColor="text-yellow-400"
-                borderColor="border-yellow-600"
-              />
-              <MeetingCard
-                day={28}
-                month="Aug"
-                title="Weekly Meeting"
-                time="10:30AM - 17:00PM"
-                location="Lorem"
-                bg="rgba(239, 68, 68, 0.1)"
-                textColor="text-red-400"
-                borderColor="border-red-600"
-              />
-            </div>
-
-            <div
-              className="rounded-xl shadow-xl p-6 border border-gray-700 bg-[#0D1117] flex flex-col justify-center"
-            >
-              <h4 className="font-bold text-lg mb-4 tracking-wide text-white text-center">
-                Meeting Stats
-              </h4>
-              <ResponsiveContainer width="100%" height={180}>
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    dataKey="value"
-                    outerRadius={70}
-                    fill="#8884d8"
-                    label
-                    stroke="none"
-                  >
-                    {pieData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#22272e',
-                      borderRadius: '8px',
-                      border: 'none',
-                      color: '#fff',
-                    }}
-                    itemStyle={{ color: '#fff' }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }
@@ -203,10 +202,9 @@ function Calendar() {
           <div
             key={i}
             className={`w-9 h-9 flex items-center justify-center rounded-full cursor-pointer transition 
-              ${
-                i + 1 === 8
-                  ? 'ring-2 ring-blue-500 text-blue-400 font-semibold bg-blue-900/40'
-                  : 'hover:bg-blue-800 hover:text-white text-gray-400'
+              ${i + 1 === 8
+                ? 'ring-2 ring-blue-500 text-blue-400 font-semibold bg-blue-900/40'
+                : 'hover:bg-blue-800 hover:text-white text-gray-400'
               }`}
           >
             {i + 1}

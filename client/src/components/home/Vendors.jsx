@@ -9,10 +9,9 @@ const VendorCard = ({ name, description, email, logo }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-     <div
-      className={`relative group overflow-hidden flex flex-col items-center p-6 rounded-xl bg-[#0d1117] border border-[#30363d] transition-transform duration-300 transform ${
-        isHovered ? "scale-105" : ""
-      } shadow-md`}
+    <div
+      className={`relative group overflow-hidden flex flex-col items-center p-6 rounded-xl bg-[#0d1117] border border-[#30363d] transition-transform duration-300 transform ${isHovered ? "scale-105" : ""
+        } shadow-md`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       style={{
@@ -22,7 +21,7 @@ const VendorCard = ({ name, description, email, logo }) => {
           : "0 2px 8px rgba(0,0,0,0.6)",
       }}
     >
-    <div className="absolute inset-0 rounded-xl z-0 border-1 border-transparent group-hover:border-blue-300 transition duration-300 blur-sm"></div>
+      <div className="absolute inset-0 rounded-xl z-0 border-1 border-transparent group-hover:border-blue-300 transition duration-300 blur-sm"></div>
 
       {logo ? (
         <img
@@ -90,23 +89,21 @@ const vendorList = [
 
 function Vendors() {
   return (
-    <div className="min-h-screen bg-[#161B22] font-sans selection:bg-gray-600 selection:text-gray-200">
-      <Header title={["Reminders", "User"]} />
-      <div className="flex min-h-[calc(100vh-64px)]">
-        <Navbar />
-        <main className="flex-grow p-12 max-w-7xl mx-auto">
-          <h1 className="text-4xl font-extrabold text-gray-200 mb-12 border-b border-gray-700 pb-3 select-none tracking-wide">
-            Our Vendors
-          </h1>
+    <div className="w-full min-h-screen bg-[#161B22] font-sans text-white selection:bg-gray-600 selection:text-gray-200">
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-10">
-            {vendorList.map((vendor, index) => (
-              <VendorCard key={index} {...vendor} />
-            ))}
-          </div>
-        </main>
-      </div>
+      <main className="flex-grow pr-12 pl-12 pb-12 pt-4 max-w-7xl mx-auto">
+        <h1 className="text-4xl font-extrabold text-gray-200 mb-12 border-b border-gray-700 pb-3 select-none tracking-wide">
+          Our Vendors
+        </h1>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-10">
+          {vendorList.map((vendor, index) => (
+            <VendorCard key={index} {...vendor} />
+          ))}
+        </div>
+      </main>
     </div>
+
   );
 }
 
