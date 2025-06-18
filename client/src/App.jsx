@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout'; // <- Your layout component
 import Login from './components/authentication/Login';
 import Signup from './components/authentication/Signup';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/home/Dashboard';
 import CreateEvent from './components/home/CreateEvent';
 import ManageEvent from './components/home/ManageEvent';
 import Vendors from './components/home/Vendors';
@@ -13,6 +13,8 @@ import BudgetManagement from './components/events/BudgetManagement';
 import GuestManagement from './components/events/GuestManagement';
 import SelectVendor from './components/events/SelectVendor';
 import EventNavbar from './components/events/EventNavbar';
+import EventLayout from './components/EventLayout';
+import SmartChecklist from './components/events/SmartChecklist';
 
 function App() {
   return (
@@ -30,10 +32,12 @@ function App() {
           <Route path='/vendors' element={<Vendors />} />
           {/* Add more routes here */}
         </Route>
-        <Route path='/budget' element={<BudgetManagement/>}></Route>
-        <Route path='/guest' element={<GuestManagement/>}></Route>
-        <Route path='/select' element={<SelectVendor/>}></Route>
-        <Route path='/nav' element={<EventNavbar/>}></Route>
+        <Route element={<EventLayout />}>
+          <Route path='/budget' element={<BudgetManagement />}></Route>
+          <Route path='/guests' element={<GuestManagement />}></Route>
+          <Route path='/select-vendor' element={<SelectVendor />}></Route>
+          <Route path='/checklist' element={<SmartChecklist />}></Route>
+        </Route>
       </Routes>
     </Router>
   );

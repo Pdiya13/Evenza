@@ -1,8 +1,8 @@
 import React from 'react';
-import Navbar from './Navbar';
-import Header from './Header';
+import Navbar from '../Navbar';
+import Header from '../Header';
 
-import ManageEvent from './home/ManageEvent';
+import ManageEvent from './ManageEvent';
 
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import {
@@ -14,10 +14,10 @@ import {
   FaCheckCircle,
   FaTimesCircle,
 } from 'react-icons/fa';
-import BudgetManagement from './events/BudgetManagement';
-import GuestManagement from './events/GuestManagement';
-import SelectVendor from './events/SelectVendor';
-import SmartChecklist from './events/SmartChecklist';
+import BudgetManagement from '../events/BudgetManagement';
+import GuestManagement from '../events/GuestManagement';
+import SelectVendor from '../events/SelectVendor';
+import SmartChecklist from '../events/SmartChecklist';
 
 const pieData = [
   { name: 'Meetings', value: 60 },
@@ -152,10 +152,6 @@ function Dashboard() {
           </div>
         </div>
       </main>
-      <SmartChecklist></SmartChecklist>
-      <GuestManagement></GuestManagement>
-      <SelectVendor></SelectVendor>
-      <BudgetManagement></BudgetManagement>
     </div>
   );
 }

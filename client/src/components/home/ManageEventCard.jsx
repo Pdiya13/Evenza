@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { FaEdit, FaSave, FaTrash, FaMapMarkerAlt, FaClipboardList, FaCalendarAlt, FaTag, FaRegCalendarCheck } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 function ManageEventCard({ event, setEvents }) {
   const [isediting, setIsediting] = useState(false);
   const [editevent, setEditevent] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -143,14 +145,13 @@ function ManageEventCard({ event, setEvents }) {
         </button>
 
         <button
-          onClick={handleEdit}
+          onClick={()=>navigate('/select-vendor')}
           className="flex items-center gap-2 bg-blue-400/20 hover:bg-blue-400/30 text-blue-200 font-semibold py-2 px-5 rounded-full shadow-sm
              transition duration-300 transform hover:-translate-y-0.5 active:scale-95 border border-blue-300/30"
           aria-label="Plan Event"
         >
           <FaClipboardList /> Plan
         </button>
-
       </div>
 
     </div>
