@@ -19,12 +19,14 @@ export default function BudgetManagement() {
       <h1 className="text-4xl font-bold mb-8">Budget Management</h1>
 
       {/* Total Budget with hover */}
-      <div
-        className="mb-8 p-6 bg-[#0d1117] rounded-lg shadow-lg transform transition-all duration-300 hover:scale-[1.03] hover:shadow-blue-500/50 cursor-pointer"
-      >
-        <h2 className="text-2xl font-semibold mb-4">Total Budget</h2>
-        <p className="text-3xl font-extrabold text-blue-300">${budget.toLocaleString()}</p>
-      </div>
+      {/* Total Budget with full-sided hover glow */}
+<div
+  className="mb-8 p-6 bg-[#0d1117] rounded-lg shadow-lg transform transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_4px_rgba(59,130,246,0.6)] cursor-pointer"
+>
+  <h2 className="text-2xl font-semibold mb-4">Total Budget</h2>
+  <p className="text-3xl font-extrabold text-blue-300">${budget.toLocaleString()}</p>
+</div>
+
 
       {/* Cost Breakdown List */}
       <div className="mb-8">
