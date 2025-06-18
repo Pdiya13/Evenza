@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactSpeedometer from 'react-d3-speedometer';
 
 const budget = 5000;
 
@@ -15,60 +16,79 @@ const remaining = budget - totalSpent;
 
 export default function BudgetManagement() {
   return (
-    <div className="min-h-screen bg-[#161B22] text-white p-8 max-w-4xl mx-auto font-sans">
-      <h1 className="text-4xl font-bold mb-8">Budget Management</h1>
+    <div className="min-h-screen bg-[#161B22] text-white px-6 py-8 max-w-6xl mx-auto font-sans text-base">
+      
+      {/* Header */}
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-3xl font-bold">Budget Management</h1>
+        <button className="px-5 py-2 text-sm rounded border border-blue-500 text-blue-400 hover:text-white hover:bg-blue-500 transition-all duration-300 shadow-md hover:shadow-blue-500/40">
+          Download Report
+        </button>
+      </div>
 
-      {/* Total Budget with hover */}
-      {/* Total Budget with full-sided hover glow */}
-<div
-  className="mb-8 p-6 bg-[#0d1117] rounded-lg shadow-lg transform transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_0_20px_4px_rgba(59,130,246,0.6)] cursor-pointer"
->
-  <h2 className="text-2xl font-semibold mb-4">Total Budget</h2>
-  <p className="text-3xl font-extrabold text-blue-300">${budget.toLocaleString()}</p>
-</div>
+      {/* Summary and Speedometer */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        {/* Budget Summary */}
+        <div className="space-y-4">
+          {/* Total Budget */}
+          <div className="p-4 bg-[#0d1117] rounded-lg shadow-md hover:shadow-blue-500/30 transition">
+            <h2 className="text-lg font-semibold mb-1">Total Budget</h2>
+            <p className="text-2xl font-bold text-blue-300">${budget.toLocaleString()}</p>
+          </div>
 
+          {/* Total Spent */}
+          <div className="p-4 bg-[#0d1117] rounded-lg shadow-md">
+            <h2 className="text-lg font-semibold mb-1">Total Spent</h2>
+            <p className="text-xl font-bold">${totalSpent.toLocaleString()}</p>
+          </div>
+
+          {/* Remaining */}
+          <div
+            className={`p-4 rounded-lg shadow-md transition ${
+              remaining < 0
+                ? 'bg-red-700 text-red-100'
+                : 'bg-green-700 text-green-100'
+            }`}
+          >
+            <h2 className="text-lg font-semibold mb-1">Remaining</h2>
+            <p className="text-xl font-bold">${remaining.toLocaleString()}</p>
+          </div>
+        </div>
+
+        {/* Speedometer */}
+        <div className="p-4 bg-[#0d1117] rounded-lg shadow-md text-center">
+          <h2 className="text-lg font-semibold mb-4">Budget Utilization</h2>
+          <ReactSpeedometer
+            maxValue={budget}
+            value={totalSpent}
+            needleColor="white"
+            startColor="green"
+            endColor="red"
+            segments={10}
+            currentValueText={`Spent: $${totalSpent.toLocaleString()}`}
+            textColor="white"
+            height={200}
+            ringWidth={30}
+            needleTransition="easeElastic"
+            needleTransitionDuration={3000}
+          />
+        </div>
+      </div>
 
       {/* Cost Breakdown List */}
-      <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4">Cost Breakdown</h2>
+      <div>
+        <h2 className="text-xl font-semibold mb-4">Cost Breakdown</h2>
         <ul className="divide-y divide-gray-700 rounded-lg overflow-hidden bg-[#0d1117] shadow-lg">
           {costItems.map(({ id, category, cost }) => (
             <li
               key={id}
-              className="flex justify-between items-center p-4 hover:bg-[#21262d] transition-colors cursor-default"
+              className="flex justify-between items-center px-4 py-3 hover:bg-[#21262d] transition-colors"
             >
-              <span className="text-lg">{category}</span>
-              <span className="font-semibold text-lg">${cost.toLocaleString()}</span>
+              <span className="text-base">{category}</span>
+              <span className="font-medium text-base">${cost.toLocaleString()}</span>
             </li>
           ))}
         </ul>
-      </div>
-
-      {/* Total Spent */}
-      <div className="p-6 bg-[#0d1117] rounded-lg shadow-lg flex justify-between text-xl font-semibold">
-        <span>Total Spent:</span>
-        <span>${totalSpent.toLocaleString()}</span>
-      </div>
-
-      {/* Remaining Budget with hover */}
-      <div
-        className={`mt-4 p-6 rounded-lg shadow-lg flex justify-between text-xl font-semibold transform transition-all duration-300 cursor-pointer hover:scale-[1.03] ${
-          remaining < 0
-            ? 'bg-red-700 text-red-100 hover:shadow-red-500/50'
-            : 'bg-green-700 text-green-100 hover:shadow-green-500/50'
-        }`}
-      >
-        <span>Remaining Budget:</span>
-        <span>${remaining.toLocaleString()}</span>
-      </div>
-
-      {/* Button */}
-      <div className="mt-8 text-center">
-        <button
-          className="px-6 py-3 rounded-lg border border-blue-500 text-blue-400 hover:text-white hover:bg-blue-500 transition-all duration-300 shadow-md hover:shadow-blue-500/40"
-        >
-          Download Report
-        </button>
       </div>
     </div>
   );

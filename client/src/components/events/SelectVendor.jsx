@@ -65,7 +65,7 @@ function SelectVendor() {
                   padding: 16,
                   textAlign: "center",
                   boxShadow: isHovered
-                    ? `0 0 10px 2px ${neonColor}`
+                    ? `1px 1px 2px 1px ${neonColor}`
                     : "0 2px 8px rgba(0,0,0,0.3)",
                   backgroundColor: "#0d1117",
                   color: "#eee",

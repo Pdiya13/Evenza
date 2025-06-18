@@ -89,7 +89,7 @@ const vendorList = [
 
 function Vendors() {
   return (
-    <div className="w-full min-h-screen bg-[#161B22] font-sans text-white selection:bg-gray-600 selection:text-gray-200">
+    <div className="w-full font-poppins-custom min-h-screen bg-[#161B22] text-white selection:bg-gray-600 selection:text-gray-200">
 
       <main className="flex-grow pr-12 pl-12 pb-12 pt-4 max-w-7xl mx-auto">
         <h1 className="text-4xl font-extrabold text-gray-200 mb-12 border-b border-gray-700 pb-3 select-none tracking-wide">

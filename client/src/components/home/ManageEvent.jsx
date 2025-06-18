@@ -52,7 +52,7 @@ function ManageEvent() {
 
   return (
 
-    <div className="w-full min-h-screen bg-[#161B22] font-sans text-white">
+    <div className="w-full min-h-screen bg-[#161B22] font-poppins-custom text-white">
 
       <div className='flex-grow flex flex-col bg-[#161B22] rounded-xl p-2 shadow-lg p-8'>
 

@@ -24,7 +24,7 @@ function CreateEvent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#C3D0E5] flex items-center justify-center px-4 text-white">
+    <div className="font-poppins-custom h-screen bg-[#C3D0E5] flex items-center justify-center px-4 text-white">
     {
      <form
         onSubmit={handleSubmit}

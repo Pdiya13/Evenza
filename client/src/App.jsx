@@ -9,7 +9,10 @@ import CreateEvent from './components/home/CreateEvent';
 import ManageEvent from './components/home/ManageEvent';
 import Vendors from './components/home/Vendors';
 import Mainweb from './components/Mainweb';
-
+import BudgetManagement from './components/events/BudgetManagement';
+import GuestManagement from './components/events/GuestManagement';
+import SelectVendor from './components/events/SelectVendor';
+import EventNavbar from './components/events/EventNavbar';
 
 function App() {
   return (
@@ -27,6 +30,10 @@ function App() {
           <Route path='/vendors' element={<Vendors />} />
           {/* Add more routes here */}
         </Route>
+        <Route path='/budget' element={<BudgetManagement/>}></Route>
+        <Route path='/guest' element={<GuestManagement/>}></Route>
+        <Route path='/select' element={<SelectVendor/>}></Route>
+        <Route path='/nav' element={<EventNavbar/>}></Route>
       </Routes>
     </Router>
   );
