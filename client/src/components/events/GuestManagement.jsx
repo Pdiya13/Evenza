@@ -39,7 +39,7 @@ export default function GuestManagement() {
           </button>
         </div>
       ) : (
-        <div className="bg-[#0D1117] p-8 rounded-lg">
+        <div className="bg-[#0D1117] p-8 rounded-lg border border-gray-700">
           <div className="flex items-center justify-between mb-6 ">
             <div className="flex items-center gap-4">
               <img

@@ -56,7 +56,7 @@ export default function BudgetManagement() {
         </div>
 
         {/* Speedometer */}
-        <div className="p-4 bg-[#0d1117] rounded-lg shadow-md text-center">
+        <div className="p-4 bg-[#0d1117] rounded-lg shadow-md text-center flex flex-col justify-center items-center border border-gray-700">
           <h2 className="text-lg font-semibold mb-4">Budget Utilization</h2>
           <ReactSpeedometer
             maxValue={budget}
