@@ -1,10 +1,8 @@
 import React from 'react';
 import Navbar from '../Navbar';
 import Header from '../Header';
-
 import ManageEvent from './ManageEvent';
-
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer , Legend } from 'recharts';
 import {
   FaUsers,
   FaLightbulb,
@@ -28,10 +26,10 @@ const COLORS = ['#14B8A6', '#FB6F6F', '#3B82F6']; // Teal, Coral, Blue
 
 function Dashboard() {
   return (
-    <div className="min-h-screen bg-[#161B22]  font-poppins-custom text-white w-full">
-      <main className="min-h-[83vh] w-full  rounded-xl pr-8 pl-8 pb-8 pt-2 shadow-xl">
-        
-       <h1 className="text-4xl font-extrabold text-gray-200 mb-12 border-b border-gray-700 pb-3 select-none tracking-wide">
+    <div className="min-h-screen bg-[#161B22]  font-poppins-custom text-white">
+      <main className="min-h-[83vh] rounded-xl pr-8 pl-8 pb-8 pt-2 shadow-xl">
+
+        <h1 className="text-4xl font-extrabold text-gray-200 mb-12 border-b border-gray-700 pb-3 select-none tracking-wide">
           Dashboard
         </h1>
         <div className="grid grid-cols-3 gap-8 mb-8">
@@ -130,7 +128,6 @@ function Dashboard() {
                   data={pieData}
                   dataKey="value"
                   outerRadius={70}
-                  fill="#8884d8"
                   label
                   stroke="none"
                 >

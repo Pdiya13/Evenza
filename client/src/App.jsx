@@ -30,7 +30,6 @@ function App() {
           <Route path='/create' element={<CreateEvent />} />
           <Route path='/manage' element={<ManageEvent />} />
           <Route path='/vendors' element={<Vendors />} />
-          {/* Add more routes here */}
         </Route>
         <Route element={<EventLayout />}>
           <Route path='/budget' element={<BudgetManagement />}></Route>

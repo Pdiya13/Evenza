@@ -4,9 +4,11 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 function Features() {
   const scrollRef = useRef(null);
-
+  console.log(scrollRef);
+  
   const scroll = (direction) => {
     const { current } = scrollRef;
+    console.log(scrollRef);
     if (current) {
       const scrollAmount = 320;
       if (direction === 'left') {
@@ -19,7 +21,7 @@ function Features() {
 
   return (
     <div className="py-10 px-5 bg-[#0D1117] text-white relative flex flex-col items-center gap-6">
-      {/* Center and add spacing between heading and scroll container */}
+
       <h2 className="text-3xl font-bold text-center text-[#9FB1D1] font-lexend-giga-custom">
         The Simplest Way To Host All Your Events
       </h2>

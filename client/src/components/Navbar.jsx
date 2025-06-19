@@ -13,8 +13,6 @@ function Navbar() {
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-[#0D1117] p-6 w-24 hover:w-64 transition-width duration-300 group relative overflow-y-auto">
-
-      {/* Title - collapsed by default, expands on hover */}
       <div
         className="font-bold text-2xl font-lexend-giga-custom text-[#C3D0E5] mb-10 select-none
                    max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300"
@@ -25,7 +23,6 @@ function Navbar() {
 
       <div className="w-full mt-20">
         <ul className="text-white flex flex-col justify-start gap-10 text-base font-normal">
-          {/* Each nav item */}
           {[
             { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/dashboard' },
             { icon: <FaPeopleCarry />, label: 'Vendors', path: '/vendors' },

@@ -41,7 +41,7 @@ function Intropg() {
             />
 
             {/* Overlay Content */}
-            <div className="relative z-10 flex items-center justify-center h-full">
+            <div className="z-10 flex items-center justify-center h-full">
                 <div className="backdrop-blur-md bg-black/40 p-8 h-[345px] flex flex-col justify-center items-center rounded-xl text-center max-w-xl w-full border border-white/10">
                     <h1 className="text-[34px] font-bold text-[#F1F5FF] mb-6 font-lexend-giga-custom">
                        Invite-Hire-Celebrate

@@ -75,7 +75,6 @@ export default function BudgetManagement() {
         </div>
       </div>
 
-      {/* Cost Breakdown List */}
       <div>
         <h2 className="text-xl font-semibold mb-4">Cost Breakdown</h2>
         <ul className="divide-y divide-gray-700 rounded-lg overflow-hidden bg-[#0d1117] shadow-lg">

@@ -4,9 +4,9 @@ import Navbar from './Navbar';
 
 const Layout = () => {
   return (
-    <div className="flex min-h-screen bg-[#161B22] font-poppins-custom">
+    <div className="flex flex-row min-h-screen bg-[#161B22] font-poppins-custom">
       <Navbar />
-      <div className="flex-1 overflow-y-auto p-6 font-poppins-custom">
+      <div className="w-full p-6 font-poppins-custom overflow-x-auto">
         <Outlet />
       </div>
     </div>
