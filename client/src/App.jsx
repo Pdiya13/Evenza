@@ -22,7 +22,6 @@ function App() {
     <Router>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
-        {/* Public Routes */}
         <Route path='/' element={<Mainweb />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />

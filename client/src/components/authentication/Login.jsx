@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 import axios from 'axios';
 export default function Signup() {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
     });
+    const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = formData;
@@ -22,12 +23,11 @@ export default function Signup() {
 
             localStorage.setItem('token', res.data.token);
             console.log("Login successful");
+            navigate('/dashboard');
         } catch (err) {
             console.error('Login error:', err.response?.data?.message || err.message);
         }
     };
-
-
 
     return (
         <div className="min-h-screen flex items-center justify-center   bg-gradient-to-br from-black via-gray-800 via-black to-gray-900">
