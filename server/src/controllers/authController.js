@@ -1,6 +1,11 @@
+
 const bcrypt = require("bcrypt");
 const zod = require("zod");
 const jwt = require("jwt");
+
+const { hashPassword } = require('../helper/authHelper');
+const {userModel} = require('../models/user');
+
 const loginSchema = zod.object({
   email: zod.string().email({ message: "Invalid email" }),
   password: zod
@@ -41,4 +46,35 @@ const loginController = async (req, res) => {
   });
 };
 
-module.exports = { loginController };
+
+const signupController = async(req, res) => {
+    try{
+        const {name , email, password , role} = req.body;
+
+        const hashedPassword = await hashPassword(password);
+
+        userModel.create({
+            name : name,
+            email : email,
+            password : hashedPassword,
+            role : role,
+        });
+
+        res.status(200).send({
+            status : true,
+            message : "User Registered Sucessfully "
+        })
+    }
+    catch(error)
+    {
+        console.log(error);
+        res.status(500).send({
+            success : false,
+            message : "Error in signin",
+            error
+        })
+    }
+}
+
+module.exports = {signupController , loginController};
+
