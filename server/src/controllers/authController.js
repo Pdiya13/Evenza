@@ -1,16 +1,13 @@
-
 const bcrypt = require("bcrypt");
 const zod = require("zod");
 const jwt = require("jwt");
 
-const { hashPassword, comparePassword } = require('../helper/authHelper');
-const {userModel} = require('../models/user');
+const { hashPassword, comparePassword } = require("../helper/authHelper");
+const { userModel } = require("../models/user");
 
 const loginSchema = zod.object({
-  email: zod.string().email({ message: "Invalid email" }),
-  password: zod
-    .string()
-    .min(6, { message: "Password must be at least 6 chars" }),
+  email: z.string().min(15).max(30).email(),
+  password: z.string().min(4).max(30),
 });
 
 const loginController = async (req, res) => {
@@ -18,15 +15,19 @@ const loginController = async (req, res) => {
 
   const valid = loginSchema.safeParse({ email, password });
   if (!valid.success) {
-    return res.status(400).json({
+    return res.status(401).json({
       status: false,
-      message: "Invalid Credentials",
+      message: "Invalid Format",
     });
   }
 
-  const user = userModel.find({email:email});
+  const user = userModel.find({ email: email });
+  if(!user)
+  {
+     return res.status(401).json({ message: "User not Found" });
+  }
 
-  const match = comparePassword(password , user.password);
+  const match = comparePassword(password, user.password);
   if (!match) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
@@ -43,55 +44,50 @@ const loginController = async (req, res) => {
   });
 };
 
+const signupController = async (req, res) => {
+  try {
+    const body = z.object({
+      email: z.string().min(15).max(30).email(),
+      password: z.string().min(4).max(30),
+      name: z.string().min(4).max(30),
+      role: z.string(),
+    });
 
-const signupController = async(req, res) => {
-    try{
-        const body = z.object({
-            email : z.string().min(4).max(20).email(),
-            password : z.string().min(4).max(30),
-            name : z.string().min(4).max(30),
-            role : z.string(),
-        });
+    const parsedBody = body.safeParse(req.body);
 
-        const parsedBody = body.safeParse(req.body);
-
-        if(!parsedBody.success)
-        {
-            res.json({
-                status : false,
-                message : "Incorrect format",
-                error : parsedDataWithSuccess.error,
-            })
-            return;
-        }
-
-        const {name , email, password , role} = req.body;
-
-        const hashedPassword = await hashPassword(password);
-
-        const user =  userModel.create({
-            name : name,
-            email : email,
-            password : hashedPassword,
-            role : role,
-        });
-        await user.save();
-
-        res.status(200).send({
-            status : true,
-            message : "User Registered Sucessfully "
-        })
+    if (!parsedBody.success) {
+      res.json({
+        status: false,
+        message: "Incorrect format",
+        error: parsedBody.error,
+      });
+      return;
     }
-    catch(error)
-    {
-        console.log(error);
-        res.status(500).send({
-            success : false,
-            message : "Error in signin",
-            error
-        })
-    }
-}
 
-module.exports = {signupController , loginController};
+    const { name, email, password, role } = req.body;
 
+    const hashedPassword = await hashPassword(password);
+
+    const user = userModel.create({
+      name: name,
+      email: email,
+      password: hashedPassword,
+      role: role,
+    });
+    await user.save();
+
+    res.status(200).send({
+      status: true,
+      message: "User Registered Sucessfully ",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in signin",
+      error,
+    });
+  }
+};
+
+module.exports = { signupController, loginController };
