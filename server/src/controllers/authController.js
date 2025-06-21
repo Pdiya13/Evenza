@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const zod = require("zod");
 const jwt = require("jsonwebtoken");
 
-const { hashPassword, comparePassword } = require("../helper/authHelper");
+const { hashPassword } = require("../helper/authHelper");
 const { userModel } = require("../models/user");
 
 const loginSchema = zod.object({
@@ -11,37 +11,46 @@ const loginSchema = zod.object({
 });
 
 const loginController = async (req, res) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const valid = loginSchema.safeParse({ email, password });
-  if (!valid.success) {
-    return res.status(401).json({
+    const valid = loginSchema.safeParse({ email, password });
+    if (!valid.success) {
+      return res.status(400).json({
+        status: false,
+        message: "Invalid format",
+      });
+    }
+
+    const user = await userModel.findOne({ email: email });
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    return res.status(200).send({
+      status: true,
+      message: "Login successful",
+      token,
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    return res.status(500).json({
       status: false,
-      message: "Invalid Format",
+      message: "Internal Server Error",
+      error: error.message,
     });
   }
-
-  const user = userModel.find({ email: email });
-  if(!user)
-  {
-     return res.status(401).json({ message: "User not Found" });
-  }
-
-  const match = comparePassword(password, user.password);
-  if (!match) {
-    return res.status(401).json({ message: "Invalid credentials" });
-  }
-
-  const token = jwt.create(
-    { id: user._id, role: user.role },
-    process.env.JWT_SECRET
-  );
-
-  return res.status(200).send({
-    status: true,
-    message: "Login successful",
-    token,
-  });
 };
 
 const signupController = async (req, res) => {
@@ -68,12 +77,13 @@ const signupController = async (req, res) => {
 
     const hashedPassword = await hashPassword(password);
 
-    const user = userModel.create({
-      name: name,
-      email: email,
+    const user = new userModel({
+      name,
+      email,
       password: hashedPassword,
-      role: role,
+      role,
     });
+
     await user.save();
 
     res.status(200).send({

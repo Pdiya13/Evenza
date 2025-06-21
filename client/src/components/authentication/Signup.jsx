@@ -24,17 +24,19 @@ export default function Signup() {
   };
 
   const handleSubmit = async (e) => {
+    console.log("handle submit");
     e.preventDefault();
-
+    console.log("handle submit");
     const { name, email, password, role } = formData;
-
+    
     try {
-      const res = await axios.post('/api/auth/signup', {
+      const res = await axios.post('http://localhost:8080/api/auth/signup', {
         name,
         email,
         password,
         role,
       });
+      console.log(res.data);
 
       if (res.data.status) {
         toast.success(res.data.message);
