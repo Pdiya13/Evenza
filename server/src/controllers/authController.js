@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const zod = require("zod");
-const jwt = require("jwt");
+const jwt = require("jsonwebtoken");
 
 const { hashPassword, comparePassword } = require("../helper/authHelper");
 const { userModel } = require("../models/user");
