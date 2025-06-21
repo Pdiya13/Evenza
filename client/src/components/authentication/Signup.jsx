@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
-import {toast , Toaster} from 'toastify'
+import {toast , Toaster} from 'react-hot-toast'
 export default function Signup() {
   const [formData, setFormData] = useState({
     name: '',

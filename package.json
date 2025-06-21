@@ -1,0 +1,11 @@
+{
+  "name" : "Evenza",
+  "scripts" : {
+    "start" : "concurrently \"npm run client\" \"npm run server\"",
+    "server" : "cd server  && npm start",
+    "client" : "cd client && npm run dev"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
