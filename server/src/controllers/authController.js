@@ -24,10 +24,7 @@ const loginController = async (req, res) => {
     });
   }
 
-  const user = req.user;
-  if (!user) {
-    return res.status(401).json({ message: "User not found" });
-  }
+  const user = userModel.find({email:email});
 
   const match = comparePassword(password , user.password);
   if (!match) {
@@ -39,7 +36,7 @@ const loginController = async (req, res) => {
     process.env.JWT_SECRET
   );
 
-  return res.json({
+  return res.status(200).send({
     status: true,
     message: "Login successful",
     token,
@@ -53,12 +50,13 @@ const signupController = async(req, res) => {
 
         const hashedPassword = await hashPassword(password);
 
-        userModel.create({
+        const user =  userModel.create({
             name : name,
             email : email,
             password : hashedPassword,
             role : role,
         });
+        await user.save();
 
         res.status(200).send({
             status : true,
