@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const zod = require("zod");
 const jwt = require("jwt");
 
-const { hashPassword } = require('../helper/authHelper');
+const { hashPassword, comparePassword } = require('../helper/authHelper');
 const {userModel} = require('../models/user');
 
 const loginSchema = zod.object({
@@ -29,7 +29,7 @@ const loginController = async (req, res) => {
     return res.status(401).json({ message: "User not found" });
   }
 
-  const match = await bcrypt.compare(password, user.password);
+  const match = comparePassword(password , user.password);
   if (!match) {
     return res.status(401).json({ message: "Invalid credentials" });
   }
