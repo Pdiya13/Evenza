@@ -49,6 +49,25 @@ const loginController = async (req, res) => {
 
 const signupController = async(req, res) => {
     try{
+        const body = z.object({
+            email : z.string().min(4).max(20).email(),
+            password : z.string().min(4).max(30),
+            name : z.string().min(4).max(30),
+            role : z.string(),
+        });
+
+        const parsedBody = body.safeParse(req.body);
+
+        if(!parsedBody.success)
+        {
+            res.json({
+                status : false,
+                message : "Incorrect format",
+                error : parsedDataWithSuccess.error,
+            })
+            return;
+        }
+
         const {name , email, password , role} = req.body;
 
         const hashedPassword = await hashPassword(password);
