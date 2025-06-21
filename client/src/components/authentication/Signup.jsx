@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import {useNavigate} from 'react-router-dom';
+import {toast , Toaster} from 'toastify'
 export default function Signup() {
   const [formData, setFormData] = useState({
     name: '',
@@ -9,6 +10,8 @@ export default function Signup() {
     password: '',
     role: 'user',
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,31 +26,29 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const {name , email ,password ,role} = formData;
+    const { name, email, password, role } = formData;
 
-    try{
-        const resposne = await axios.post('/api/auth/signup' ,{
-          name,
-          email,
-          password,
-          role,
-        });
+    try {
+      const res = await axios.post('/api/auth/signup', {
+        name,
+        email,
+        password,
+        role,
+      });
 
-        if(resposne.data.status)
-        {
-            toast.success(res.data.message);
-            navigate('/login');
-        }else{
-           toast.error(res.data.message);
-        }
-      }
-      catch(error)
-      {
-        console.error(error);
-        toast.error('Something went wrong!');
+      if (res.data.status) {
+        toast.success(res.data.message);
+        navigate('/login');
+      } else {
+        toast.error(res.data.message);
       }
     }
-  };
+    catch (error) {
+      console.error(error);
+      toast.error('Something went wrong!');
+    }
+  }
+
 
   return (
     <div className="min-h-screen flex items-center justify-center   bg-gradient-to-br from-black via-gray-800 via-black to-gray-900">
@@ -119,12 +120,13 @@ export default function Signup() {
           Register
         </button>
 
-         <p className="mt-6 text-center text-gray-400">
-            Already have an account?{' '}
-            <Link to="/login" className="text-blue-500 hover:underline font-semibold">
+        <p className="mt-6 text-center text-gray-400">
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-500 hover:underline font-semibold">
             Login
-            </Link>
+          </Link>
         </p>
       </form>
     </div>
   );
+}
