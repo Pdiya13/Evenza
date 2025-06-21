@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -19,10 +20,33 @@ export default function Signup() {
     // console.log(formData)
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Signup Data:', formData);
-    // Submit form logic here
+
+    const {name , email ,password ,role} = formData;
+
+    try{
+        const resposne = await axios.post('/api/auth/signup' ,{
+          name,
+          email,
+          password,
+          role,
+        });
+
+        if(resposne.data.status)
+        {
+            toast.success(res.data.message);
+            navigate('/login');
+        }else{
+           toast.error(res.data.message);
+        }
+      }
+      catch(error)
+      {
+        console.error(error);
+        toast.error('Something went wrong!');
+      }
+    }
   };
 
   return (
@@ -104,4 +128,3 @@ export default function Signup() {
       </form>
     </div>
   );
-}
