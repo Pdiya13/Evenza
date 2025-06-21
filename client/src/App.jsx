@@ -15,10 +15,12 @@ import SelectVendor from './components/events/SelectVendor';
 import EventNavbar from './components/events/EventNavbar';
 import EventLayout from './components/EventLayout';
 import SmartChecklist from './components/events/SmartChecklist';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <Router>
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         {/* Public Routes */}
         <Route path='/' element={<Mainweb />} />
