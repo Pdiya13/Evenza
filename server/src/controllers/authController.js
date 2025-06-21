@@ -6,8 +6,8 @@ const { hashPassword, comparePassword } = require("../helper/authHelper");
 const { userModel } = require("../models/user");
 
 const loginSchema = zod.object({
-  email: z.string().min(15).max(30).email(),
-  password: z.string().min(4).max(30),
+  email: zod.string().min(15).max(30).email(),
+  password: zod.string().min(4).max(30),
 });
 
 const loginController = async (req, res) => {
@@ -46,11 +46,11 @@ const loginController = async (req, res) => {
 
 const signupController = async (req, res) => {
   try {
-    const body = z.object({
-      email: z.string().min(15).max(30).email(),
-      password: z.string().min(4).max(30),
-      name: z.string().min(4).max(30),
-      role: z.string(),
+    const body = zod.object({
+      email: zod.string().min(15).max(30).email(),
+      password: zod.string().min(4).max(30),
+      name: zod.string().min(4).max(30),
+      role: zod.string(),
     });
 
     const parsedBody = body.safeParse(req.body);
