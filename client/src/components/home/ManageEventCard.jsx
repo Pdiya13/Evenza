@@ -33,6 +33,7 @@ function ManageEventCard({ event, setEvents }) {
         setEvents(prev => prev.filter(ev => ev._id !== event._id));
         setEditevent({});
         setIsediting(false);
+        toast.success("Event Deleted SuccessFully" , {duration : 2000});
       }
       else {
         toast.error("Failed to Delete event");
@@ -65,7 +66,8 @@ function ManageEventCard({ event, setEvents }) {
       if (res.data.status) {
         setEvents(prevEvents => prevEvents.map(ev => ev._id === event._id ? res.data.event : ev));
         setEditevent({});
-        setIsediting(false);
+        setIsediting(false); 
+        toast.success("Event Updated SuccessFully" , {duration : 2000});
       }
       else {
         toast.error("Failed to update event");
