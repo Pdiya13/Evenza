@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link , useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {toast} from 'react-hot-toast'
 export default function Signup() {
     const [formData, setFormData] = useState({
         email: '',
@@ -25,6 +26,7 @@ export default function Signup() {
             console.log("Login successful");
             navigate('/dashboard');
         } catch (err) {
+            toast.error('Invalid User');
             console.error('Login error:', err.response?.data?.message || err.message);
         }
     };

@@ -24,12 +24,12 @@ const loginController = async (req, res) => {
 
     const user = await userModel.findOne({ email: email });
     if (!user) {
-      return res.status(401).json({ message: "User not found" });
+      return res.json({status:false , message: "User not found" });
     }
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({status:false ,  message: "Invalid credentials" });
     }
 
     const token = jwt.sign(

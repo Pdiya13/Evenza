@@ -3,52 +3,41 @@ import ManageEventCard from './ManageEventCard';
 import Header from "../Header";
 import Navbar from "../Navbar";
 import { useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 function ManageEvent() {
-  const sampleEvents = [
-    {
-      id: 1,
-      ename: "AI Conference 2025",
-      location: "Bangalore",
-      date: "2025-08-10",
-      type: "Tech Meetup",
-    },
-    {
-      id: 2,
-      ename: "React Developer Summit",
-      location: "Mumbai",
-      date: "2025-09-15",
-      type: "Web Conference",
-    },
-    {
-      id: 3,
-      ename: "Startup Pitch Night",
-      location: "Delhi",
-      date: "2025-07-22",
-      type: "Startup Event",
-    },
-    {
-      id: 4,
-      ename: "Hackathon 3.0",
-      location: "Hyderabad",
-      date: "2025-10-05",
-      type: "Coding Competition",
-    },
-    {
-      id: 5,
-      ename: "Cybersecurity Bootcamp",
-      location: "Pune",
-      date: "2025-11-12",
-      type: "Workshop",
-    },
-  ];
 
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    setEvents(sampleEvents);
+    async function fetchdata(){
+    try {
+      const token = localStorage.getItem('token');
+      console.log('H')
+      const res = await axios.get('http://localhost:8080/api/event/all-events', {
+        headers: {
+          Authorization: token
+        }
+      });
+      // console.log('H')
+      console.log(res.data);
+      if (res.data.status == true) {
+        setEvents(res.data.events);
+      }
+      else
+        console.log("No events");
+    }
+    catch (err) {
+      toast.error(err);
+    }
+  }
+  fetchdata();
   }, []);
+
+  useEffect(() => {
+
+  }, [events])
 
   return (
 
@@ -71,7 +60,7 @@ function ManageEvent() {
         <h2 className="text-white text-4xl font-bold text-center mb-8 tracking-wide">Upcoming Events</h2>
 
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center">
-          {events.map((event) => (
+          {events && events.map((event) => (
             <ManageEventCard
               key={event.id}
               event={event}
@@ -82,7 +71,7 @@ function ManageEvent() {
         </div>
       </div>
     </div>
-// </div>
+    // </div>
   );
 }
 
