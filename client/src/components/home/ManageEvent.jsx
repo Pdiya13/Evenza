@@ -3,6 +3,8 @@ import ManageEventCard from './ManageEventCard';
 import Header from "../Header";
 import Navbar from "../Navbar";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 function ManageEvent() {
   const sampleEvents = [
@@ -49,6 +51,27 @@ function ManageEvent() {
   useEffect(() => {
     setEvents(sampleEvents);
   }, []);
+
+  useEffect(async () => {
+    try{
+    const token = localStorage.getItem('token');
+    const res = axios.get('http://localhost:8080/api/event/all-events', {
+      headers : {
+        Authorization : token,
+      }
+    });
+
+    if(res.data.status)
+    {
+      setEvents(res.data);
+    }
+  }
+  catch(error)
+  {
+    toast.error("error");
+    console.log(error);
+  }
+  },[events]);
 
   return (
 
