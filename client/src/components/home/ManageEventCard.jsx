@@ -27,6 +27,7 @@ function ManageEventCard({ event, setEvents }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
+<<<<<<< Updated upstream
     try{
       console.log('hi hello');
     const res =await axios.post(`http://localhost:8080/api/event/all-events/${event._id}`, 
@@ -52,6 +53,11 @@ function ManageEventCard({ event, setEvents }) {
     console.log(error);
     toast.error("Something went wrong");
   }
+=======
+    
+    setEditevent({});
+    setIsediting(false);
+>>>>>>> Stashed changes
   };
 
   return (

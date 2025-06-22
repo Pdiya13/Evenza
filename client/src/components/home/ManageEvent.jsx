@@ -27,7 +27,11 @@ function ManageEvent() {
         setEvents(res.data.events);
       }
       else
+<<<<<<< Updated upstream
         toast.error("You Have No Events", {duration : 1000});
+=======
+        toast.error('No events');
+>>>>>>> Stashed changes
     }
     catch (err) {
       toast.error(err);
@@ -36,6 +40,7 @@ function ManageEvent() {
   fetchdata();
   }, []);
 
+<<<<<<< Updated upstream
   // useEffect(async () => {
   //     try{
   //     const token = localStorage.getItem('token');
@@ -61,6 +66,8 @@ function ManageEvent() {
 
  
 
+=======
+>>>>>>> Stashed changes
   return (
 
     <div className="w-full min-h-screen bg-[#161B22] font-poppins-custom text-white">
@@ -84,7 +91,7 @@ function ManageEvent() {
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center">
           {events && events.map((event) => (
             <ManageEventCard
-              key={event.id}
+              key={event._id}
               event={event}
               setEvents={setEvents}
               events={events}
