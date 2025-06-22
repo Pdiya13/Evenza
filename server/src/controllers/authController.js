@@ -99,5 +99,4 @@ const signupController = async (req, res) => {
     });
   }
 };
-
-module.exports = { signupController, loginController };
+module.exports = { signupController, loginController};

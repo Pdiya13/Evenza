@@ -11,6 +11,12 @@ import { useNavigate } from 'react-router-dom';
 function Navbar() {
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    console.log('Logging out...');
+    navigate('/login');
+  };
+
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-[#0D1117] p-6 w-24 hover:w-64 transition-width duration-300 group relative overflow-y-auto">
       <div
@@ -23,27 +29,62 @@ function Navbar() {
 
       <div className="w-full mt-20">
         <ul className="text-white flex flex-col justify-start gap-10 text-base font-normal">
-          {[
-            { icon: <FaTachometerAlt />, label: 'Dashboard', path: '/dashboard' },
-            { icon: <FaPeopleCarry />, label: 'Vendors', path: '/vendors' },
-            { icon: <FaCalendar />, label: 'Event Management', path: '/manage' },
-            { icon: <FaUser />, label: 'User', path: '/user' },
-            { icon: <FaSignOutAlt />, label: 'Logout', path: '/logout' },
-          ].map(({ icon, label, path }) => (
-            <li
-              key={label}
-              className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
-              onClick={() => {navigate(path)}}
-            >
-              <div className="min-w-[20px] text-xl">{icon}</div>
-              <span
-                className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300"
-                style={{ display: 'inline-block' }}
-              >
-                {label}
-              </span>
-            </li>
-          ))}
+
+          {/* Dashboard */}
+          <li
+            className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
+            onClick={() => navigate('/dashboard')}
+          >
+            <div className="min-w-[20px] text-xl"><FaTachometerAlt /></div>
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300" style={{ display: 'inline-block' }}>
+              Dashboard
+            </span>
+          </li>
+
+          {/* Vendors */}
+          <li
+            className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
+            onClick={() => navigate('/vendors')}
+          >
+            <div className="min-w-[20px] text-xl"><FaPeopleCarry /></div>
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300" style={{ display: 'inline-block' }}>
+              Vendors
+            </span>
+          </li>
+
+          {/* Event Management */}
+          <li
+            className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
+            onClick={() => navigate('/manage')}
+          >
+            <div className="min-w-[20px] text-xl"><FaCalendar /></div>
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300" style={{ display: 'inline-block' }}>
+              Event Management
+            </span>
+          </li>
+
+          {/* User */}
+          <li
+            className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
+            onClick={() => navigate('/user')}
+          >
+            <div className="min-w-[20px] text-xl"><FaUser /></div>
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300" style={{ display: 'inline-block' }}>
+              User
+            </span>
+          </li>
+
+          {/* Logout - Custom onClick */}
+          <li
+            className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
+            onClick={handleLogout}
+          >
+            <div className="min-w-[20px] text-xl"><FaSignOutAlt /></div>
+            <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300" style={{ display: 'inline-block' }}>
+              Logout
+            </span>
+          </li>
+
         </ul>
       </div>
     </div>
