@@ -1,4 +1,5 @@
 const eventModel = require("../models/event");
+const mongoose = require('mongoose');
 
 const getEventsController = async (req, res) => {
   try {
@@ -22,36 +23,56 @@ const getEventsController = async (req, res) => {
     console.log(err);
   }
 };
-const updateEventController = (req, res) => {};
+const updateEventController = async(req, res) => {
+    try{
+        console.log(req.user);
+        const {ename , location , date , type} = req.body;
+        const userId = req.user.id;
+        const eventId = req.params.id;
+        
+        const event = await eventModel.findById(new mongoose.Types.ObjectId(eventId));
+        event.ename = ename || event.ename;
+        event.location = location || event.location;
+        event.date = date || event.date;
+        event.type = type || event.type;
+
+        await event.save();
+        return res.status(200).json({status: "true", message: "Event updated successfully", event });
+    }catch (error) {
+        console.error("Error updating event:", error);
+        return res.status(500).json({status: "false", message: "Server error" });
+    }
+    
+};
 const createEventController = async (req, res) => {
   const { ename, location, description, date, type } = req.body;
   try {
-    const userId = req.user.id;
-    console.log(userId.type);
-    const event = new eventModel({
-      ename,
-      location,
-      description,
-      date,
-      type,
-      userId
-    });
-    const savedEvent = await event.save();
-    return res.json({
-      status: true,
-      message: "Event created successfully",
-      event: savedEvent,
-    });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({
-        status: false,
-        message: "Failed to create event",
-        error: error.message,
-      });
-  }
+        const userId = req.user.id;
+        console.log(userId.type);
+        const event = new eventModel({
+        ename,
+        location,
+        description,
+        date,
+        type,
+        userId
+        });
+        const savedEvent = await event.save();
+        return res.json({
+        status: true,
+        message: "Event created successfully",
+        event: savedEvent,
+        });
+    } catch (error) {
+        console.error(error);
+        return res
+        .status(500)
+        .json({
+            status: false,
+            message: "Failed to create event",
+            error: error.message,
+        });
+    }
 };
 module.exports = {
   getEventsController,

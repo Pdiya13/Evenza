@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 import { FaEdit, FaSave, FaTrash, FaMapMarkerAlt, FaClipboardList, FaCalendarAlt, FaTag, FaRegCalendarCheck } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function ManageEventCard({ event, setEvents }) {
   const [isediting, setIsediting] = useState(false);
@@ -23,11 +25,33 @@ function ManageEventCard({ event, setEvents }) {
     setIsediting(true);
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    setEvents(prev => prev.map(ev => ev.id === editevent.id ? editevent : ev));
-    setEditevent({});
-    setIsediting(false);
+    try{
+      console.log('hi hello');
+    const res =await axios.post(`http://localhost:8080/api/event/all-events/${event._id}`, 
+      editevent,
+      {
+        headers : {
+          Authorization : localStorage.getItem('token'),
+        }
+      }
+    );
+    console.log(res);
+    if(res.data.status)
+    {
+       setEvents(prevEvents => prevEvents.map(ev => ev._id === event._id ? res.data.event : ev));
+        setEditevent({});
+      setIsediting(false);
+    }
+    else {
+      toast.error("Failed to update event");
+    }
+  }catch(error)
+  {
+    console.log(error);
+    toast.error("Something went wrong");
+  }
   };
 
   return (
