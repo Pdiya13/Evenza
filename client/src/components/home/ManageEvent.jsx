@@ -27,7 +27,7 @@ function ManageEvent() {
         setEvents(res.data.events);
       }
       else
-        console.log("No events");
+        toast.error("You Have No Events");
     }
     catch (err) {
       toast.error(err);
@@ -37,24 +37,26 @@ function ManageEvent() {
   }, []);
 
   useEffect(async () => {
-    try{
-    const token = localStorage.getItem('token');
-    const res = axios.get('http://localhost:8080/api/event/all-events', {
-      headers : {
-        Authorization : token,
-      }
-    });
+      try{
+      const token = localStorage.getItem('token');
+      const res = axios.get('http://localhost:8080/api/event/all-events', {
+        headers : {
+          Authorization : token,
+        }
+      });
 
-    if(res.data.status)
-    {
-      setEvents(res.data);
+      if(res.data.status == true)
+      {
+        setEvents(res.data.events);
+      }
+      else
+          toast.error("You Have No Events");
     }
-  }
-  catch(error)
-  {
-    toast.error("error");
-    console.log(error);
-  }
+    catch(error)
+    {
+      toast.error("error");
+      console.log(error);
+    }
   },[events]);
 
  
