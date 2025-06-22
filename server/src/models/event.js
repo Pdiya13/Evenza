@@ -23,8 +23,7 @@ const eventSchema = new mongoose.Schema({
   },
   userId:{
     type:mongoose.Schema.Types.ObjectId,
-    ref:'userModel',
-    // required:true
+    ref:'userModel'
   }
 }, { timestamps: true });
 

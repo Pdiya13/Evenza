@@ -14,9 +14,33 @@ function ManageEventCard({ event, setEvents }) {
     setEditevent(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleDelete = (e) => {
+  const handleDelete = async(e) => {
     e.preventDefault();
-    setEvents(prev => prev.filter(ev => ev.id !== event.id));
+    try {
+      console.log('hi hello');
+      const token = localStorage.getItem('token');
+      console.log(token);
+
+      const res = await axios.post(`http://localhost:8080/api/event/all-events/delete/${event._id}`,{},
+        {
+          headers: {
+            Authorization:token,
+          }
+        }
+      );
+      console.log(res);
+      if (res.data.status) {
+        setEvents(prev => prev.filter(ev => ev._id !== event._id));
+        setEditevent({});
+        setIsediting(false);
+      }
+      else {
+        toast.error("Failed to Delete event");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+    }
   };
 
   const handleEdit = (e) => {
@@ -27,37 +51,29 @@ function ManageEventCard({ event, setEvents }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-<<<<<<< Updated upstream
-    try{
+    try {
       console.log('hi hello');
-    const res =await axios.post(`http://localhost:8080/api/event/all-events/${event._id}`, 
-      editevent,
-      {
-        headers : {
-          Authorization : localStorage.getItem('token'),
+      const res = await axios.post(`http://localhost:8080/api/event/all-events/${event._id}`,
+        editevent,
+        {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          }
         }
-      }
-    );
-    console.log(res);
-    if(res.data.status)
-    {
-       setEvents(prevEvents => prevEvents.map(ev => ev._id === event._id ? res.data.event : ev));
+      );
+      console.log(res);
+      if (res.data.status) {
+        setEvents(prevEvents => prevEvents.map(ev => ev._id === event._id ? res.data.event : ev));
         setEditevent({});
-      setIsediting(false);
+        setIsediting(false);
+      }
+      else {
+        toast.error("Failed to update event");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
     }
-    else {
-      toast.error("Failed to update event");
-    }
-  }catch(error)
-  {
-    console.log(error);
-    toast.error("Something went wrong");
-  }
-=======
-    
-    setEditevent({});
-    setIsediting(false);
->>>>>>> Stashed changes
   };
 
   return (
@@ -175,7 +191,7 @@ function ManageEventCard({ event, setEvents }) {
         </button>
 
         <button
-          onClick={()=>navigate('/select-vendor')}
+          onClick={() => navigate('/select-vendor')}
           className="flex items-center gap-2 bg-blue-400/20 hover:bg-blue-400/30 text-blue-200 font-semibold py-2 px-5 rounded-full shadow-sm
              transition duration-300 transform hover:-translate-y-0.5 active:scale-95 border border-blue-300/30"
           aria-label="Plan Event"

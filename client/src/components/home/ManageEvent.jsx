@@ -27,11 +27,7 @@ function ManageEvent() {
         setEvents(res.data.events);
       }
       else
-<<<<<<< Updated upstream
         toast.error("You Have No Events", {duration : 1000});
-=======
-        toast.error('No events');
->>>>>>> Stashed changes
     }
     catch (err) {
       toast.error(err);
@@ -40,34 +36,6 @@ function ManageEvent() {
   fetchdata();
   }, []);
 
-<<<<<<< Updated upstream
-  // useEffect(async () => {
-  //     try{
-  //     const token = localStorage.getItem('token');
-  //     const res = axios.get('http://localhost:8080/api/event/all-events', {
-  //       headers : {
-  //         Authorization : token,
-  //       }
-  //     });
-
-  //     if(res.data.status == true)
-  //     {
-  //       setEvents(res.data);
-  //     }
-  //     else
-  //         toast.error("You Have No Events");
-  //   }
-  //   catch(error)
-  //   {
-  //     toast.error("error");
-  //     console.log(error);
-  //   }
-  // },[events]);
-
- 
-
-=======
->>>>>>> Stashed changes
   return (
 
     <div className="w-full min-h-screen bg-[#161B22] font-poppins-custom text-white">
