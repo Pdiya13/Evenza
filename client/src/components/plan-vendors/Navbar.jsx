@@ -25,11 +25,11 @@ function EventNavbar() {
 
       <div className="w-full mt-20">
         <ul className="text-white flex flex-col justify-start gap-10 text-base font-normal">
+          {/* Each nav item */}
           {[
-            { icon: <FaStore />, label: 'Select Vendor', path: '/select-vendor' },
-            { icon: <FaClipboardList />, label: 'Smart Checklist', path: '/checklist' },
-            { icon: <FaDollarSign />, label: 'Budget Management', path: '/budget' },
-            { icon: <FaUsers />, label: 'Guest Management', path: '/guests' },
+
+            { icon: <FaClipboardList />, label: 'Smart Checklist', path: '/vendor-checklist' },
+            { icon: <FaDollarSign />, label: 'Budget Management', path: '/vendor-budget' },
             { icon: <FaArrowLeft />, label: 'Back', path : '/dashboard' },
           ].map(({ icon, label, path, action }) => (
             <li

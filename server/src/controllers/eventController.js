@@ -9,7 +9,7 @@ const getEventsController = async (req, res) => {
     console.log(userId);
     const events = await eventModel.find({
       userId,
-    });
+    }).sort({date:1});
     console.log(events);
     if (events.length == 0) {
       return res.json({

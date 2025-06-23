@@ -15,6 +15,9 @@ import SelectVendor from './components/events/SelectVendor';
 import EventNavbar from './components/events/EventNavbar';
 import EventLayout from './components/EventLayout';
 import SmartChecklist from './components/events/SmartChecklist';
+import SmartChecklist1 from './components/plan-vendors/SmartChecklist';
+import BudgetManagement1 from './components/plan-vendors/BudgetManagement';
+import PlanLayout from './components/plan-vendors/PlanLayout'
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -37,6 +40,10 @@ function App() {
           <Route path='/guests' element={<GuestManagement />}></Route>
           <Route path='/select-vendor' element={<SelectVendor />}></Route>
           <Route path='/checklist' element={<SmartChecklist />}></Route>
+        </Route>
+        <Route element={<PlanLayout />}>
+          <Route path = '/vendor-checklist' element={<SmartChecklist1></SmartChecklist1>}></Route>
+          <Route path = '/vendor-budget' element={<BudgetManagement1></BudgetManagement1>}></Route>
         </Route>
       </Routes>
     </Router>
