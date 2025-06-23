@@ -1,5 +1,6 @@
 import React from 'react';
-import { FaMapMarkerAlt, FaCalendarAlt, FaTag, FaClipboardList } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaCalendarAlt, FaTag, FaClipboardList, FaUser,
+  FaPhoneAlt, } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 function EventlistCard({ event }) {
@@ -13,6 +14,14 @@ function EventlistCard({ event }) {
       style={{ fontFamily: "'Poppins', sans-serif" }}
     >
       <h3 className="text-3xl font-extrabold mb-4 tracking-wide drop-shadow-lg">{event.ename}</h3>
+
+       <p className="flex items-center text-sm mb-2 text-gray-300">
+        <FaUser className="mr-2 text-blue-400" /> {event.userName || 'Users name'}
+      </p>
+
+      <p className="flex items-center text-sm mb-2 text-gray-300">
+        <FaPhoneAlt className="mr-2 text-green-400" /> {event.mobile || 'Users number'}
+      </p>
 
       <p className="flex items-center text-sm mb-2 text-blue-300">
         <FaMapMarkerAlt className="mr-2" /> {event.location}
