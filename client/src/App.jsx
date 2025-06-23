@@ -19,6 +19,9 @@ import SmartChecklist1 from './components/plan-vendors/SmartChecklist';
 import BudgetManagement1 from './components/plan-vendors/BudgetManagement';
 import PlanLayout from './components/plan-vendors/PlanLayout'
 import { Toaster } from 'react-hot-toast';
+import VendorLayout from './components/Home_vendor/VendorLayout';
+import Payments from './components/Home_vendor/Payments';
+import Ratings from './components/Home_vendor/Ratings';
 
 function App() {
   return (
@@ -44,6 +47,10 @@ function App() {
         <Route element={<PlanLayout />}>
           <Route path = '/vendor-checklist' element={<SmartChecklist1></SmartChecklist1>}></Route>
           <Route path = '/vendor-budget' element={<BudgetManagement1></BudgetManagement1>}></Route>
+        </Route>
+        <Route element={<VendorLayout />}>
+          <Route path = '/payments' element={<Payments/>}></Route>
+          <Route path = '/ratings' element={<Ratings/>}></Route>
         </Route>
       </Routes>
     </Router>
