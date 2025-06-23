@@ -22,6 +22,8 @@ import { Toaster } from 'react-hot-toast';
 import VendorLayout from './components/Home_vendor/VendorLayout';
 import Payments from './components/Home_vendor/Payments';
 import Ratings from './components/Home_vendor/Ratings';
+import VendorDashboard from './components/Home_vendor/VendorDashboard';
+import EventList from './components/Home_vendor/EventList';
 
 function App() {
   return (
@@ -49,9 +51,12 @@ function App() {
           <Route path = '/vendor-budget' element={<BudgetManagement1></BudgetManagement1>}></Route>
         </Route>
         <Route element={<VendorLayout />}>
+          <Route path = '/vendor-dashboard' element={<VendorDashboard />}></Route>
+          <Route path = '/eventslist' element={<EventList/>}></Route>
           <Route path = '/payments' element={<Payments/>}></Route>
           <Route path = '/ratings' element={<Ratings/>}></Route>
         </Route>
+        
       </Routes>
     </Router>
   );
