@@ -34,7 +34,7 @@ const mockRatings = [
 
 function Ratings() {
   return (
-    <div className="min-h-screen bg-[#0D1117] p-8 font-poppins-custom text-white">
+    <div className="min-h-screen  p-8 font-poppins-custom text-white">
       <h1 className="text-3xl font-bold mb-8 border-b border-gray-700 pb-3">Vendor Ratings</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
