@@ -30,7 +30,7 @@ function EventNavbar() {
 
             { icon: <FaClipboardList />, label: 'Smart Checklist', path: '/vendor-checklist' },
             { icon: <FaDollarSign />, label: 'Budget Management', path: '/vendor-budget' },
-            { icon: <FaArrowLeft />, label: 'Back', path : '/dashboard' },
+            { icon: <FaArrowLeft />, label: 'Back', path : 'vendor-dashboard' },
           ].map(({ icon, label, path, action }) => (
             <li
               key={label}
