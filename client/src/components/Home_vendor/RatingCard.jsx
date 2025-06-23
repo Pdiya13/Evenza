@@ -1,7 +1,12 @@
 import React from 'react';
-import { FaStar } from 'react-icons/fa';
 
 function RatingCard({ userName, comment, rating, eventName, date }) {
+  const getRatingColor = () => {
+    if (rating >= 4) return 'bg-green-500';
+    if (rating >= 2.5) return 'bg-yellow-400';
+    return 'bg-red-500';
+  };
+
   return (
     <div
       className="relative w-full max-w-sm p-6 rounded-3xl bg-white/10 backdrop-blur-md
@@ -18,16 +23,15 @@ function RatingCard({ userName, comment, rating, eventName, date }) {
         Event: <span className="text-white">{eventName}</span>
       </p>
 
-      <div className="flex items-center mb-4">
-        {[...Array(5)].map((_, i) => (
-          <FaStar
-            key={i}
-            className={`text-lg mr-1 ${
-              i < Math.floor(rating) ? 'text-yellow-400' : 'text-gray-600'
-            }`}
-          />
-        ))}
-        <span className="ml-2 text-sm text-gray-300">{rating.toFixed(1)} / 5</span>
+      {/* Rating Bar */}
+      <div className="mb-4">
+        <div className="w-full h-3 bg-gray-600 rounded-full overflow-hidden">
+          <div
+            className={`h-3 ${getRatingColor()} rounded-full transition-all duration-300`}
+            style={{ width: `${(rating / 5) * 100}%` }}
+          ></div>
+        </div>
+        <p className="mt-1 text-sm text-gray-300">{rating.toFixed(1)} / 5</p>
       </div>
 
       <p className="text-gray-300 text-sm">{comment}</p>
