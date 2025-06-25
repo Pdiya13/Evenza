@@ -56,7 +56,6 @@ function App() {
           <Route path = '/payments' element={<Payments/>}></Route>
           <Route path = '/ratings' element={<Ratings/>}></Route>
         </Route>
-        
       </Routes>
     </Router>
   );
