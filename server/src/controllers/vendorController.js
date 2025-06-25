@@ -19,7 +19,7 @@ const selectVendorController = async (req, res) => {
 
 const queryController = async (req, res) => {
   try {
-    const {eventId} = req.params;
+    const {eventId} = req.body.eventId;
     const userId = req.user.id;
     const { vendorId, budget, eventDate } = req.body;
     if (!vendorId || !eventId || !budget || !eventDate) {
