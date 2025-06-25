@@ -1,6 +1,6 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/authMiddleware');
-const { createEventController } = require('../controllers/eventController');
+const { selectVendorController } = require('../controllers/vendorController');
 
 const router = express.Router();
 
