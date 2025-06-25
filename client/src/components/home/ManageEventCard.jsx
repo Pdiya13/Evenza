@@ -147,21 +147,17 @@ function ManageEventCard({ event, setEvents }) {
       ) : (
         <>
           <h3 className="text-3xl font-extrabold mb-4 tracking-wide drop-shadow-lg">{event.ename}</h3>
-
           <p className="flex items-center text-sm mb-2 text-blue-300">
             <FaMapMarkerAlt className="mr-2" /> {event.location}
           </p>
-
           <p className="flex items-center text-sm mb-2 text-purple-300">
             <FaCalendarAlt className="mr-2" /> {event.date}
           </p>
-
           <p className="flex items-center text-sm text-pink-300">
             <FaTag className="mr-2" /> {event.type}
           </p>
         </>
       )}
-
       <div className="mt-auto pt-6 flex flex-wrap gap-4">
         {isediting ? (
           <button
@@ -191,9 +187,8 @@ function ManageEventCard({ event, setEvents }) {
         >
           <FaTrash /> Delete
         </button>
-
         <button
-          onClick={() => navigate('/select-vendor')}
+          onClick={() => navigate(`'/manage/${event._id}'`)}
           className="flex items-center gap-2 bg-blue-400/20 hover:bg-blue-400/30 text-blue-200 font-semibold py-2 px-5 rounded-full shadow-sm
              transition duration-300 transform hover:-translate-y-0.5 active:scale-95 border border-blue-300/30"
           aria-label="Plan Event"
@@ -201,7 +196,6 @@ function ManageEventCard({ event, setEvents }) {
           <FaClipboardList /> Plan
         </button>
       </div>
-
     </div>
   );
 }

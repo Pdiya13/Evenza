@@ -15,13 +15,11 @@ function ManageEvent() {
     async function fetchdata(){
     try {
       const token = localStorage.getItem('token');
-      console.log('H')
       const res = await axios.get('http://localhost:8080/api/event/all-events', {
         headers: {
           Authorization: token
         }
       });
-      // console.log('H')
       console.log(res.data);
       if (res.data.status == true) {
         setEvents(res.data.events);

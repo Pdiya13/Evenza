@@ -1,138 +1,111 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { HiExternalLink } from "react-icons/hi";
-// import Header and EventNavbar if you want to use them in this page
-// import Header from "../Header";
-// import EventNavbar from "./EventNavbar";
-
-const neonColor = "#3b82f6";
-
-const vendors = [
-  {
-    id: 1,
-    name: "Vendor A",
-    description: "Trusted electronics supplier.",
-    imageUrl: "https://via.placeholder.com/200x150?text=Vendor+A",
-  },
-  {
-    id: 2,
-    name: "Vendor B",
-    description: "High-quality furniture vendor.",
-    imageUrl: "https://via.placeholder.com/200x150?text=Vendor+B",
-  },
-  {
-    id: 3,
-    name: "Vendor C",
-    description: "Top-rated clothing supplier.",
-    imageUrl: "https://via.placeholder.com/200x150?text=Vendor+C",
-  },
-];
+import axios from "axios";
 
 function SelectVendor() {
-  const [hoveredId, setHoveredId] = useState(null);
+  const [vendors, setVendors] = useState([]);
+  const [selectedVendorId, setSelectedVendorId] = useState(null);
+  const [budget, setBudget] = useState("");
+  const [eventDate, setEventDate] = useState("");
 
-  const handleSelect = (id) => {
-    alert(`Selected Vendor ID: ${id}`);
+  useEffect(() => {
+    async function fetchdata() {
+      try {
+        const res = await axios.get("http://localhost:5173/api/user/select-vendor", {
+          headers: {
+            Authorization: localStorage.getItem("token")
+          }
+        });
+        setVendors(res.data.availableVendors);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchdata();
+  }, []);
+
+  const handleSubmit = async () => {
+    try {
+      const res = await axios.post(
+        `http://localhost:5173/api/user/select-vendor`,
+        {
+          vendorId: selectedVendorId,
+          budget,
+          eventDate
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json"
+          }
+        }
+      );
+      alert("Vendor selected successfully!");
+      console.log(res.data);
+      setSelectedVendorId(null);
+      setBudget("");
+      setEventDate("");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to select vendor");
+    }
   };
-
   return (
     <div className="w-full min-h-screen bg-[#161B22] font-sans text-white selection:bg-gray-600 selection:text-gray-200">
-      <main className="flex-grow pr-12 pl-12 pb-12 pt-4 max-w-7xl mx-auto">
-        <h1
-          className="text-4xl font-extrabold text-gray-200 mb-12 border-b border-gray-700 pb-3 select-none tracking-wide"
-          style={{ userSelect: "none" }}
-        >
+      <main className="flex-grow px-12 py-4 max-w-7xl mx-auto">
+        <h1 className="text-4xl font-extrabold text-gray-200 mb-12 border-b border-gray-700 pb-3">
           Select Vendors
         </h1>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-            gap: 20,
-          }}
-        >
-          {vendors.map((vendor) => {
-            const isHovered = hoveredId === vendor.id;
-
-            return (
-              <div
-                key={vendor.id}
-                onMouseEnter={() => setHoveredId(vendor.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                style={{
-                  border: `1px solid ${isHovered ? neonColor : "#30363d"}`,
-                  borderRadius: 16,
-                  padding: 16,
-                  textAlign: "center",
-                  boxShadow: isHovered
-                    ? `1px 1px 2px 1px ${neonColor}`
-                    : "0 2px 8px rgba(0,0,0,0.3)",
-                  backgroundColor: "#0d1117",
-                  color: "#eee",
-                  cursor: "pointer",
-                  transform: isHovered ? "scale(1.05)" : "scale(1)",
-                  transition: "all 0.3s ease",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
+        <div className="grid gap-5 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+          {vendors.map((vendor) => (
+            <div
+              key={vendor._id}
+              className="flex flex-col items-center text-center p-4 rounded-xl bg-[#0d1117] border border-[#30363d] shadow-md"
+            >
+              <img
+                src={vendor.imageUrl?.replace(/\?.*$/, "")}
+                alt={vendor.name}
+                className="w-20 h-20 object-cover rounded-full mb-3 border-4 border-[#3b82f6]"
+              />
+              <h3 className="text-xl font-bold mb-2">{vendor.name}</h3>
+              <p className="text-gray-400 mb-1 font-semibold">
+                Category: <span className="text-[#3b82f6]">{vendor.category}</span>
+              </p>
+              <p className="text-gray-400 mb-3 font-semibold">
+                Price Range: <span className="text-[#3b82f6]">{vendor.price}</span>
+              </p>
+              <p className="text-gray-400 mb-6">{vendor.description}</p>
+              <button
+                onClick={() => setSelectedVendorId(vendor._id)}
+                className="px-4 py-2 rounded-lg border border-white/20 bg-white/10 text-white font-semibold flex items-center gap-2 hover:bg-white/20"
               >
-                <img
-                  src={vendor.imageUrl.replace(/\?.*$/, "")} // removes placeholder text overlay
-                  style={{
-                    width: 80,
-                    height: 80,
-                    objectFit: "cover",
-                    borderRadius: "50%",
-                    marginBottom: 12,
-                    border: `3px solid ${neonColor}`,
-                    boxShadow: isHovered ? `0 0 8px ${neonColor}` : "none",
-                    transition: "box-shadow 0.3s ease",
-                  }}
-                />
-                <h3
-                  style={{
-                    margin: "8px 0",
-                    fontWeight: "700",
-                    fontSize: "1.25rem",
-                  }}
-                >
-                  {vendor.name}
-                </h3>
-                <p style={{ color: "#bbb", marginBottom: 16 }}>
-                  {vendor.description}
-                </p>
-                <button
-                  onClick={() => handleSelect(vendor.id)}
-                  style={{
-                    padding: "8px 16px",
-                    backgroundColor: "rgba(255 255 255 / 0.1)",
-                    color: "#fff",
-                    border: "1px solid rgba(255 255 255 / 0.2)",
-                    borderRadius: 8,
-                    cursor: "pointer",
-                    backdropFilter: "blur(6px)",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                    fontWeight: "600",
-                    fontSize: "0.9rem",
-                    transition: "background-color 0.3s ease",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor =
-                      "rgba(255 255 255 / 0.2)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor =
-                      "rgba(255 255 255 / 0.1)")
-                  }
-                >
-                  Select <HiExternalLink size={18} />
-                </button>
-              </div>
-            );
-          })}
+                Select <HiExternalLink size={18} />
+              </button>
+              {selectedVendorId === vendor._id && (
+                <div className="mt-4 w-full flex flex-col gap-2">
+                  <input
+                    type="number"
+                    placeholder="Enter Budget"
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
+                    className="px-3 py-2 rounded bg-[#1c1f26] border border-gray-600 text-white"
+                  />
+                  <input
+                    type="date"
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
+                    className="px-3 py-2 rounded bg-[#1c1f26] border border-gray-600 text-white"
+                  />
+                  <button
+                    onClick={handleSubmit}
+                    className="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  >
+                    Confirm Selection
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </main>
     </div>
