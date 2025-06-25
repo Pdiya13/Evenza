@@ -1,15 +1,8 @@
 const mongoose = require('mongoose');
-
 const vendorSchema = new mongoose.Schema({
-  eventId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'eventModel',
-    required: true,
-  },
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'userModel',
-    required: true,
+  name :{
+    type:String ,
+    required:true
   },
   category: {
     type: String,
@@ -25,13 +18,9 @@ const vendorSchema = new mongoose.Schema({
     enum: ['available', 'Unavailable'],
     default: 'available',
   },
-  smartChecklist: {
-    type: [String], 
-    default: [],
-  },
-  budget: {
-    type: Number,
-    required: true,
+  experience : {
+    type:Number,
+    required:true,
   }
 }, { timestamps: true });
 
