@@ -23,6 +23,7 @@ import Payments from './components/Home_vendor/Payments';
 import Ratings from './components/Home_vendor/Ratings';
 import VendorDashboard from './components/Home_vendor/VendorDashboard';
 import EventList from './components/Home_vendor/EventList';
+import { Navigate } from 'react-router-dom';
 function App() {
   return (
     <Router>
