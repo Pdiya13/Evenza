@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import Header from "../Header";
-import Navbar from "../Navbar";
+import React, { useEffect, useState } from "react";
 import { HiExternalLink } from "react-icons/hi";
+import axios from "axios";
 
-const neonColor = "#3b82f6"; // Tailwind blue-500 hex, same color for border and shadow
+const neonColor = "#3b82f6";
 
 const VendorCard = ({ name, description, email, logo }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -56,41 +55,28 @@ const VendorCard = ({ name, description, email, logo }) => {
   );
 };
 
-const vendorList = [
-  {
-    name: "Vendor A",
-    description:
-      "Providing high-quality electronics with a focus on innovation and sustainability.",
-    email: "contact@vendora.com",
-    logo: "https://via.placeholder.com/80",
-  },
-  {
-    name: "Vendor B",
-    description:
-      "Specialists in organic foods, delivering farm fresh quality produce to your doorstep.",
-    email: "info@vendorb.com",
-    logo: "https://via.placeholder.com/80",
-  },
-  {
-    name: "Vendor C",
-    description:
-      "Premium handmade crafts sourced from local artisans around the world.",
-    email: "hello@vendorc.com",
-    logo: "https://via.placeholder.com/80",
-  },
-  {
-    name: "Vendor D",
-    description:
-      "Leading software solutions for modern businesses looking to scale.",
-    email: "sales@vendord.com",
-    logo: "https://via.placeholder.com/80",
-  },
-];
-
 function Vendors() {
+  const [vendorList, setVendorList] = useState([]);
+
+  useEffect(() => {
+    async function fetchVendors() {
+      try {
+        const res = await axios.get("http://localhost:8080/api/user/select-vendor", {
+          headers: {
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+        setVendorList(res.data.availableVendors);
+      } catch (error) {
+        console.error("Failed to fetch vendors:", error);
+      }
+    }
+
+    fetchVendors();
+  }, []);
+
   return (
     <div className="w-full font-poppins-custom min-h-screen bg-[#161B22] text-white selection:bg-gray-600 selection:text-gray-200">
-
       <main className="flex-grow pr-12 pl-12 pb-12 pt-4 max-w-7xl mx-auto">
         <h1 className="text-4xl font-extrabold text-gray-200 mb-12 border-b border-gray-700 pb-3 select-none tracking-wide">
           Our Vendors
@@ -103,7 +89,6 @@ function Vendors() {
         </div>
       </main>
     </div>
-
   );
 }
 
