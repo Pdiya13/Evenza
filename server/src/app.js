@@ -15,6 +15,6 @@ app.use(express.json());
 
 app.use('/api/auth' , authRoutes);
 app.use('/api/event' , eventRoutes);
-app.use('/api/vendor' , vendorRoutes);
+app.use('/api/user' , vendorRoutes);
 
 module.exports = app;  
