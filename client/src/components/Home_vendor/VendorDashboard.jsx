@@ -51,8 +51,6 @@ function VendorDashboard() {
             borderColor="border-red-600"
           />
         </div>
-
-        {/* Upcoming Events */}
         <div className="grid grid-cols-3 gap-8 mb-8">
           <div className="col-span-2 grid grid-cols-2 gap-6">
             <EventCard
@@ -74,7 +72,6 @@ function VendorDashboard() {
           <Calendar />
         </div>
 
-        {/* Meetings list and Pie chart */}
         <div className="grid grid-cols-3 gap-8">
           <div className="col-span-2 grid grid-cols-3 gap-6">
             <MeetingCard

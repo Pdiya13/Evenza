@@ -3,7 +3,6 @@ import Header from './Header';
 import img1 from '../images/img1.jpg';
 import img2 from '../images/img2.jpg';
 import img3 from '../images/img3.jpg';
-// import img4 from '../images/img4.jpg';
 import { Link } from 'react-router-dom';
 
 function Intropg() {
@@ -28,7 +27,6 @@ function Intropg() {
             <div className="sticky top-0 z-50 bg-black">
                 <Header title={["Home" , "About" , "Services" , "Contact"]}/>
             </div>
-
             <div
                 className="absolute inset-0 bg-center bg-cover"
                 style={{
@@ -39,8 +37,6 @@ function Intropg() {
                     zIndex: 0,
                 }}
             />
-
-            {/* Overlay Content */}
             <div className="z-10 flex items-center justify-center h-full">
                 <div className="backdrop-blur-md bg-black/40 p-8 h-[345px] flex flex-col justify-center items-center rounded-xl text-center max-w-xl w-full border border-white/10">
                     <h1 className="text-[34px] font-bold text-[#F1F5FF] mb-6 font-lexend-giga-custom">
@@ -56,8 +52,6 @@ function Intropg() {
                     </Link>
                 </div>
             </div>
-
-
         </main>
     );
 }

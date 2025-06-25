@@ -33,7 +33,6 @@ function App() {
         <Route path='/' element={<Mainweb />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
-
         <Route element={<Layout />}>
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/create' element={<CreateEvent />} />
@@ -46,7 +45,7 @@ function App() {
           <Route path='/select-vendor' element={<SelectVendor />}></Route>
           <Route path='/checklist' element={<SmartChecklist />}></Route>
         </Route>
-        <Route element={<PlanLayout />}>
+        <Route element={<VendorLayout />}>
           <Route path = '/vendor-checklist' element={<SmartChecklist1></SmartChecklist1>}></Route>
           <Route path = '/vendor-budget' element={<BudgetManagement1></BudgetManagement1>}></Route>
         </Route>
