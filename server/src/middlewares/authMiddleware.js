@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken');
 const isLoggedIn = (req , res, next)=>{
     try{
-        const token = req.headers.authorization;
-        console.log(token);
-        // console.log("HIIIII");
+        const token = req.headers.authorization || req.headers.Authorization;
+        console.log('Token received in middleware:', token);
+
+        console.log("HIIIII");
          if (!token) {
             return res.status(401).send({ status: false, message: "Token is missing" });
         }
