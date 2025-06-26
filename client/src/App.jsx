@@ -41,11 +41,11 @@ function App() {
           <Route path='/manage' element={<ManageEvent />} />
           <Route path='/vendors' element={<Vendors />} />
         </Route>
+
         <Route
-          path="/event/:eventId/vendor/:vendorId/query"
+          path="/event/:eventId/vendor/query"
           element={<QueryVendor />}
         />
-
 
         <Route path='/manage/:id' element={<EventLayout />}>
           <Route index element={<Navigate to="select-vendor" replace />} />

@@ -54,10 +54,6 @@ const handleSubmit = async (e) => {
 
   return (
     <div>
-        <h1 className="text-4xl font-extrabold mb-12 border-b border-gray-700 pb-3">
-           Event ID: {eventId}  and   vendor ID: {vendorId}
-        </h1>
-    
     <div className="min-h-screen bg-[#161B22] flex items-center justify-center px-4">
          
       <form
