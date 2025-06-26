@@ -19,9 +19,9 @@ const selectVendorController = async (req, res) => {
 
 const queryController = async (req, res) => {
   try {
-    const {eventId} = req.body.eventId;
     const userId = req.user.id;
-    const { vendorId, budget, eventDate } = req.body;
+    const { eventId,vendorId, budget, eventDate } = req.body;
+   
     if (!vendorId || !eventId || !budget || !eventDate) {
       return res.status(400).json({ success: false, message: 'All fields are required' });
     }
@@ -35,11 +35,11 @@ const queryController = async (req, res) => {
     await newVendorEvent.save();
     return res.status(201).json({
       success: true,
-      message: 'Vendor event created successfully',
+      message: 'query sent successfully',
       data: newVendorEvent,
     });
   } catch (err) {
-    console.error('Error creating vendor event:', err);
+    console.error('Error creating vendor query:', err);
     return res.status(500).json({
       success: false,
       message: 'Server error while creating vendor event',

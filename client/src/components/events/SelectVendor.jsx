@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { HiExternalLink } from "react-icons/hi";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
 function SelectVendor() {
-  const { id: eventId } = useParams(); // Extract eventId from URL
+  const { id: eventId } = useParams(); // Event ID from URL
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // For redirection
 
   useEffect(() => {
     async function fetchVendors() {
       try {
         const res = await axios.get("http://localhost:8080/api/user/select-vendor", {
           headers: {
-            Authorization: localStorage.getItem("token"), // If isLoggedIn middleware is still used
+            Authorization: localStorage.getItem("token"),
           }
         });
         setVendors(res.data.availableVendors);
@@ -54,10 +54,10 @@ function SelectVendor() {
                 <p className="text-gray-400 mb-3">{vendor.description}</p>
 
                 <button
-                  className="px-4 py-2 rounded-lg border border-white/20 bg-white/10 text-white font-semibold flex items-center gap-2 hover:bg-white/20"
-                  disabled
+                  className="px-4 py-2 rounded-lg border border-white/20 bg-white/10 text-white font-semibold flex items-center gap-2 hover:bg-blue-600 transition"
+                  onClick={() => navigate(`/event/${eventId}/vendor/${vendor._id}/query`)}
                 >
-                  View Details <HiExternalLink size={18} />
+                  Query Vendor
                 </button>
               </div>
             ))}

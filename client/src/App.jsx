@@ -24,6 +24,7 @@ import Ratings from './components/Home_vendor/Ratings';
 import VendorDashboard from './components/Home_vendor/VendorDashboard';
 import EventList from './components/Home_vendor/EventList';
 import { Navigate } from 'react-router-dom';
+import QueryVendor from './components/events/queryVendor';
 function App() {
   return (
     <Router>
@@ -35,10 +36,16 @@ function App() {
 
         <Route element={<Layout />}>
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/query' element={<QueryVendor />} />
           <Route path='/create' element={<CreateEvent />} />
           <Route path='/manage' element={<ManageEvent />} />
           <Route path='/vendors' element={<Vendors />} />
         </Route>
+        <Route
+          path="/event/:eventId/vendor/:vendorId/query"
+          element={<QueryVendor />}
+        />
+
 
         <Route path='/manage/:id' element={<EventLayout />}>
           <Route index element={<Navigate to="select-vendor" replace />} />
