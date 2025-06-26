@@ -24,7 +24,8 @@ import Ratings from './components/Home_vendor/Ratings';
 import VendorDashboard from './components/Home_vendor/VendorDashboard';
 import EventList from './components/Home_vendor/EventList';
 import { Navigate } from 'react-router-dom';
-import QueryVendor from './components/events/queryVendor';
+import QueryVendor from './components/events/QueryVendor';
+
 function App() {
   return (
     <Router>
@@ -43,7 +44,7 @@ function App() {
         </Route>
 
         <Route
-          path="/event/:eventId/vendor/query"
+          path="/event/:eventId/vendor/:vendorId/query"
           element={<QueryVendor />}
         />
 

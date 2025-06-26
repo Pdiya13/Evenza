@@ -55,7 +55,7 @@ function SelectVendor() {
 
                 <button
                   className="px-4 py-2 rounded-lg border border-white/20 bg-white/10 text-white font-semibold flex items-center gap-2 hover:bg-blue-600 transition"
-                  onClick={() => navigate(`/event/${eventId}/vendor/query`)}
+                  onClick={() => navigate(`/event/${eventId}/vendor/${vendor._id}/query`)}
                 >
                   Query Vendor
                 </button>
