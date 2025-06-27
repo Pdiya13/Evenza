@@ -38,13 +38,14 @@ function Payments() {
 
         const decoded = jwtDecode(token);
         const vendorId = decoded.id;
-
+        console.log(vendorId);
+        console.log("HII");
         const response = await axios.get(`http://localhost:8080/api/vendor/${vendorId}/payments`, {
           headers: {
             Authorization: token,
           }
         });
-
+        console.log(response);
         setQueries(response.data);
       } catch (error) {
         console.error('Error fetching queries:', error);
@@ -58,7 +59,7 @@ function Payments() {
     try {
       await axios.post(`http://localhost:8080/api/vendor/payments/${id}`, { status: action });
       setQueries((prev) => prev.filter((q) => q._id !== id));
-      toast.success(`Query ${action === 'accepted' ? 'Accepted' : 'Rejected'}`);
+      toast.success(`Query ${action === 'Accepted' ? 'Accepted' : 'Rejected'}`);
     } catch (error) {
       console.log(error);
       toast.error('Failed to update query status.');
@@ -130,10 +131,10 @@ function Payments() {
             <tbody className="divide-y divide-gray-800 text-gray-200">
               {queries.map((query) => (
                 <tr key={query._id} className="hover:bg-white/5 transition duration-200">
-                  <td className="px-6 py-4 whitespace-nowrap">{query.userName}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{query.eventName}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{query.vendorName}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{query.eventDate}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{query.userId.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{query.eventId.ename}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{query.vendorId.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{query.eventId.date}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-amber-200">
                     ₹{query.budget.toLocaleString()}
                   </td>
@@ -144,13 +145,13 @@ function Payments() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-center space-x-2">
                     <button
-                      onClick={() => handleAction(query._id, 'accepted')}
+                      onClick={() => handleAction(query._id, 'Accepted')}
                       className="px-3 py-1 text-xs rounded bg-green-600 hover:bg-green-700"
                     >
                       Accept
                     </button>
                     <button
-                      onClick={() => handleAction(query._id, 'rejected')}
+                      onClick={() => handleAction(query._id, 'Rejected')}
                       className="px-3 py-1 text-xs rounded bg-red-600 hover:bg-red-700"
                     >
                       Reject
