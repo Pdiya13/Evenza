@@ -1,10 +1,10 @@
 const express = require('express');
-const { signupController , loginController} = require('../controllers/authController');
-const {getEventsController , updateEventController} = require('../controllers/eventController');
+const { userSignupController , vendorSignupController , vendorLoginController, userLoginController} = require('../controllers/authController');
 const router = express.Router();
 
-router.post("/login", loginController);
-router.post("/signup", signupController);
-
+router.post("/user/login",  userLoginController);
+router.post('/vendor/login' , vendorLoginController)
+router.post("/user/signup", userSignupController);
+router.post("/vendor/signup" , vendorSignupController);
 
 module.exports = router;

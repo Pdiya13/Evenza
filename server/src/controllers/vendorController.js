@@ -1,8 +1,8 @@
 const vendor_eventModel = require("../models/vendor_event");
 
-const queryController = async (req, res) => {
+const queryVController = async (req, res) => {
   try {
-    const {vendorId } = req.body;
+    const vendorId  = req.params.vendorId;
 
     if (!vendorId) {
       return res.status(400).json({ message: "vendorId are required" });
@@ -12,7 +12,7 @@ const queryController = async (req, res) => {
       status: "pending",
       vendorId,
     });
-
+    console.log(pendingQueries)
     res.status(200).json(pendingQueries);
   } catch (error) {
     console.error("Error fetching vendor queries:", error);
@@ -20,4 +20,4 @@ const queryController = async (req, res) => {
   }
 };
 
-module.exports = { queryController };
+module.exports = { queryVController };

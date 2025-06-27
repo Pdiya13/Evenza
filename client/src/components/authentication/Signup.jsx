@@ -1,42 +1,54 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
-import {toast , Toaster} from 'react-hot-toast'
+import { toast } from 'react-hot-toast';
+
 export default function Signup() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-    role: 'user',
+    role: 'user',  // Default to 'user'
+    category: '',  // vendor fields
+    price: '',
+    experience: '',
   });
 
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // console.log(e.target)
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    // console.log(formData)
   };
 
   const handleSubmit = async (e) => {
-    console.log("handle submit");
     e.preventDefault();
-    console.log("handle submit");
-    const { name, email, password, role } = formData;
-    
     try {
-      const res = await axios.post('http://localhost:8080/api/auth/signup', {
-        name,
-        email,
-        password,
-        role,
-      });
-      console.log(res.data);
+      // Prepare the payload based on the selected role
+      let res;
+      if (formData.role === 'user') {
+        // User-specific signup
+        res = await axios.post('http://localhost:8080/api/auth/user/signup', {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+        });
+      } else if (formData.role === 'vendor') {
+        // Vendor-specific signup
+        res = await axios.post('http://localhost:8080/api/auth/vendor/signup', {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+          category: formData.category,
+          price: Number(formData.price),
+          experience: Number(formData.experience),
+        });
+      }
 
       if (res.data.status) {
         toast.success(res.data.message);
@@ -44,19 +56,17 @@ export default function Signup() {
       } else {
         toast.error(res.data.message);
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
       toast.error('Something went wrong!');
     }
-  }
-
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center   bg-gradient-to-br from-black via-gray-800 via-black to-gray-900">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-gray-800 via-black to-gray-900">
       <form
         onSubmit={handleSubmit}
-        className="bg-gradient-to-br from-gray-800  to-black text-white px-8 py-10 rounded-xl shadow-xl w-full max-w-md"
+        className="bg-gradient-to-br from-gray-800 to-black text-white px-8 py-10 rounded-xl shadow-xl w-full max-w-md"
       >
         <h2 className="text-3xl font-semibold mb-6 text-center tracking-wide">SIGN UP</h2>
 
@@ -114,6 +124,40 @@ export default function Signup() {
             Vendor
           </label>
         </div>
+
+        {formData.role === 'vendor' && (
+          <>
+            <input
+              type="text"
+              name="category"
+              placeholder="Category"
+              value={formData.category}
+              onChange={handleChange}
+              className="w-full mb-4 px-4 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required={formData.role === 'vendor'}
+            />
+            <input
+              type="number"
+              name="price"
+              placeholder="Price"
+              value={formData.price}
+              onChange={handleChange}
+              className="w-full mb-4 px-4 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required={formData.role === 'vendor'}
+              min={0}
+            />
+            <input
+              type="number"
+              name="experience"
+              placeholder="Experience (years)"
+              value={formData.experience}
+              onChange={handleChange}
+              className="w-full mb-6 px-4 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required={formData.role === 'vendor'}
+              min={0}
+            />
+          </>
+        )}
 
         <button
           type="submit"

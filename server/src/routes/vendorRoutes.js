@@ -1,10 +1,10 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/authMiddleware');
-const { selectVendorController, queryController } = require('../controllers/userController');
+const { selectVendorController, queryVController } = require('../controllers/vendorController');
 
 const router = express.Router();
 
-router.get('/payments', queryController);
+router.get('/:vendorId/payments', queryVController);
 // router.post('/payments/:id', queryController);
 
 module.exports = router;
