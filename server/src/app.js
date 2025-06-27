@@ -5,6 +5,8 @@ const authRoutes = require('./routes/authRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const userRoutes = require('./routes/userRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
+const checkListRoutes = require('./routes/checkListRoute');
+
 const connectDB = require('./config/db');
 connectDB();
 dotenv.config();
@@ -18,4 +20,6 @@ app.use('/api/auth' , authRoutes);
 app.use('/api/event' , eventRoutes);
 app.use('/api/user' , userRoutes);
 app.use('/api/vendor' , vendorRoutes);
+app.use('/api/checklist',checkListRoutes);
+
 module.exports = app;  

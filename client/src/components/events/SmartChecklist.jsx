@@ -38,7 +38,7 @@ function SmartChecklist() {
     const fetchAcceptedVendors = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:8080/api/vendor/accepted-vendors', {
+        const res = await axios.get('http://localhost:8080/api/checklist/accepted-vendors', {
           params: { eventId },
           headers: { authorization: token },
         });
@@ -60,7 +60,7 @@ function SmartChecklist() {
         const token = localStorage.getItem('token');
         const tasksMap = {};
         for (const vendor of acceptedVendors) {
-          const res = await axios.get('http://localhost:8080/api/vendor/tasks', {
+          const res = await axios.get('http://localhost:8080/api/checklist/tasks', {
             params: { eventId, vendorId: vendor._id },
             headers: { authorization: token },
           });
@@ -152,7 +152,7 @@ function SmartChecklist() {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.post(
-            'http://localhost:8080/api/vendor/task',
+            'http://localhost:8080/api/checklist/task',
             { eventId, vendorId, label }, // label is correct
             { headers: { authorization: token } }
         );
@@ -170,7 +170,7 @@ function SmartChecklist() {
     try {
       const token = localStorage.getItem('token');
       const res = await axios.post(
-        `http://localhost:8080/api/vendor/task/${taskId}/toggle`,
+        `http://localhost:8080/api/checklist/task/${taskId}/toggle`,
         {},
         { headers: { authorization: token } }
       );
@@ -189,7 +189,7 @@ function SmartChecklist() {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        `http://localhost:8080/api/vendor/task/${taskId}/update`,
+        `http://localhost:8080/api/checklist/task/${taskId}/update`,
         { label },
         { headers: { authorization: token } }
       );
@@ -207,7 +207,7 @@ function SmartChecklist() {
   const deleteVendorTask = async (taskId, vendorId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8080/api/vendor/task/${taskId}`, {
+      await axios.delete(`http://localhost:8080/api/checklist/task/${taskId}`, {
         headers: { authorization: token },
       });
       setVendorTasks((prev) => ({
