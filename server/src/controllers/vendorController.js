@@ -96,7 +96,7 @@ const newVendorTask = async (req, res) => {
   const userId = req.user.id;
 
   try {
-    // ✅ Check vendor_event exists and is Accepted
+    // Check vendor_event exists and is Accepted
     console.log("Request Data:", { userId, eventId, vendorId, label });
     const ve = await vendor_eventModel.findOne({ eventId, vendorId, userId, status: "Accepted" });
     if (!ve) {
@@ -104,7 +104,7 @@ const newVendorTask = async (req, res) => {
       return res.status(400).json({ status: false, message: "Vendor not accepted or not linked to user/event" });
     }
 
-    // ✅ Save task (in checklistModel or VendorTask model)
+    // Save task
     const task = await VendorTask.create({
       eventId,
       vendorId,
