@@ -25,6 +25,11 @@ const vendor_eventSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["Pending", "Accepted", "Rejected"],
+      default:"Pending",
+    },
   },
   { timestamps: true }
 );
