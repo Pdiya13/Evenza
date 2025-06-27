@@ -4,7 +4,7 @@ const { selectVendorController, queryController } = require('../controllers/user
 
 const router = express.Router();
 
-router.get('/payments', queryController);
-// router.post('/payments/:id', queryController);
+router.get('/select-vendor', isLoggedIn, selectVendorController);
+router.post('/query-vendor', isLoggedIn, queryController);
 
 module.exports = router;

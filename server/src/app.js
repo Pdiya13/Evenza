@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const eventRoutes = require('./routes/eventRoutes');
+const userRoutes = require('./routes/userRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
 const connectDB = require('./config/db');
 connectDB();
@@ -15,6 +16,6 @@ app.use(express.json());
 
 app.use('/api/auth' , authRoutes);
 app.use('/api/event' , eventRoutes);
-app.use('/api/user' , vendorRoutes);
-
+app.use('/api/user' , userRoutes);
+app.use('/api/vendor' , vendorRoutes);
 module.exports = app;  

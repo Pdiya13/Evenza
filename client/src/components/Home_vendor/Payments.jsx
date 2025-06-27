@@ -28,19 +28,23 @@ const mockPayments = [
 
 function Payments() {
   const [queries, setQueries] = useState([]);
+  // useEffect(() => {
+  //   const fetchQueries = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:8080/api/vendor/payments', {
+  //         headers: {
+  //           Authorization: localStorage.getItem('token'),
+  //         }
+  //       });
+  //       setQueries(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching queries:', error);
+  //       toast.error('Failed to load vendor queries.');
+  //     }
+  //   };
+  //   fetchQueries();
+  // }, []);
 
-  useEffect(() => {
-    const fetchQueries = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/api/vendor/payments');
-        setQueries(response.data);
-      } catch (error) {
-        console.error('Error fetching queries:', error);
-        toast.error('Failed to load vendor queries.');
-      }
-    };
-    fetchQueries();
-  }, []);
 
   const handleAction = async (id, action) => {
     try {
@@ -79,11 +83,10 @@ function Payments() {
                   <td className="px-6 py-4 whitespace-nowrap">{payment.date}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                        payment.status === 'Success'
-                          ? 'bg-green-400/10 text-green-300 border border-green-400/30'
-                          : 'bg-red-400/10 text-red-300 border border-red-400/30'
-                      }`}
+                      className={`px-3 py-1 rounded-full text-xs font-semibold ${payment.status === 'Success'
+                        ? 'bg-green-400/10 text-green-300 border border-green-400/30'
+                        : 'bg-red-400/10 text-red-300 border border-red-400/30'
+                        }`}
                     >
                       {payment.status}
                     </span>

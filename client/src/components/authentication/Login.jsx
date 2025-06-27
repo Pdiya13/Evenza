@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link , useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {toast} from 'react-hot-toast'
+import { toast } from 'react-hot-toast'
+import { jwtDecode } from 'jwt-decode';
 export default function Signup() {
     const [formData, setFormData] = useState({
         email: '',
@@ -10,8 +11,7 @@ export default function Signup() {
     const navigate = useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { email, password } = formData;
-
+        const {email , password} = formData;
         try {
             const res = await axios.post('http://localhost:8080/api/auth/login', {
                 email,
@@ -24,7 +24,19 @@ export default function Signup() {
 
             localStorage.setItem('token', res.data.token);
             console.log("Login successful");
-            navigate('/dashboard');
+
+            // Decode token and get role
+            const decoded = jwtDecode(res.data.token);
+            const role = decoded.role;
+
+            if (role === 'user') {
+                navigate('/dashboard');
+            } else if (role === 'vendor') {
+                navigate('/vendor-dashboard');  // or whatever vendor dashboard route is
+            } else {
+                navigate('/login'); // fallback
+            }
+
         } catch (err) {
             toast.error('Invalid User');
             console.error('Login error:', err.response?.data?.message || err.message);
