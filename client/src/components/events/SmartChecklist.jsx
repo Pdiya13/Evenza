@@ -11,29 +11,117 @@ function SmartChecklist() {
   const [vendorTasks, setVendorTasks] = useState({});
   const [vendorInput, setVendorInput] = useState({});
 
-  // 🔹 Fetch event-level checklist tasks
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:8080/api/event/checklist', {
-          params: { eventId },
-          headers: { authorization: token },
-        });
-        const checklist = res.data.checklist.map((task) => ({
-          ...task,
-          isEditing: false,
-        }));
-        setTasks(checklist);
-      } catch (err) {
-        console.error('Error fetching checklist items:', err);
-      }
-    };
+    const [personalTasks, setPersonalTasks] = useState([]);
+    const [newPersonalTask, setNewPersonalTask] = useState('');
 
-    if (eventId) fetchTasks();
-  }, [eventId]);
 
-  // 🔹 Fetch accepted vendors
+useEffect(() => {
+  const fetchPersonalTasks = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.get('http://localhost:8080/api/checklist/personal/tasks', {
+        headers: { authorization: token },
+      });
+      setPersonalTasks(res.data.tasks.map(task => ({ ...task, isEditing: false })));
+    } catch (err) {
+      console.error('Error fetching personal tasks:', err);
+    }
+  };
+  fetchPersonalTasks();
+}, []);
+
+const togglePersonalTask = async (id) => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axios.post(
+      `http://localhost:8080/api/checklist/task/${id}/toggle`,
+      {},
+      { headers: { authorization: token } }
+    );
+    setPersonalTasks((prev) =>
+      prev.map((task) => (task._id === id ? { ...task, checked: res.data.checked } : task))
+    );
+  } catch (err) {
+    console.error('Error toggling personal task:', err);
+  }
+};
+
+const addPersonalTask = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await axios.post(
+      'http://localhost:8080/api/checklist/personal/task',
+      { label: newPersonalTask },
+      { headers: { authorization: token } }
+    );
+
+    if (res.data.status) {
+      setPersonalTasks([...personalTasks, { ...res.data.task, isEditing: false }]);
+      setNewPersonalTask('');
+    } else {
+      console.error('Server responded with error:', res.data.message);
+    }
+  } catch (err) {
+    console.error('Error adding personal task:', err.response?.data || err.message);
+  }
+};
+
+
+const deletePersonalTask = async (id) => {
+  try {
+    const token = localStorage.getItem('token');
+    await axios.delete(`http://localhost:8080/api/checklist/task/${id}`, {
+      headers: { authorization: token },
+    });
+    setPersonalTasks((prev) => prev.filter((task) => task._id !== id));
+  } catch (err) {
+    console.error('Error deleting personal task:', err);
+  }
+};
+
+const updatePersonalTask = async (id, label) => {
+  try {
+    const token = localStorage.getItem('token');
+    await axios.post(
+      `http://localhost:8080/api/checklist/task/${id}/update`,
+      { label },
+      { headers: { authorization: token } }
+    );
+    setPersonalTasks((prev) =>
+      prev.map((task) =>
+        task._id === id ? { ...task, isEditing: false } : task
+      )
+    );
+  } catch (err) {
+    console.error('Error updating task:', err);
+  }
+};
+
+
+
+//  
+//   useEffect(() => {
+//     const fetchTasks = async () => {
+//       try {
+//         const token = localStorage.getItem('token');
+//         const res = await axios.get('http://localhost:8080/api/event/checklist', {
+//           params: { eventId },
+//           headers: { authorization: token },
+//         });
+//         const checklist = res.data.checklist.map((task) => ({
+//           ...task,
+//           isEditing: false,
+//         }));
+//         setTasks(checklist);
+//       } catch (err) {
+//         console.error('Error fetching checklist items:', err);
+//       }
+//     };
+
+//     if (eventId) fetchTasks();
+//   }, [eventId]);
+
+
   useEffect(() => {
     const fetchAcceptedVendors = async () => {
       try {
@@ -53,7 +141,7 @@ function SmartChecklist() {
     if (eventId) fetchAcceptedVendors();
   }, [eventId]);
 
-  // 🔹 Fetch vendor-specific tasks
+
   useEffect(() => {
     const fetchVendorTasks = async () => {
       try {
@@ -75,49 +163,49 @@ function SmartChecklist() {
     if (acceptedVendors.length > 0) fetchVendorTasks();
   }, [acceptedVendors, eventId]);
 
-  // ✅ Event Checklist: Toggle, Add, Edit, Delete
-  const toggleChecked = async (id) => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.post(
-        `http://localhost:8080/api/event/checklist/${id}/toggle`,
-        {},
-        { headers: { authorization: token } }
-      );
-      setTasks((prev) =>
-        prev.map((task) => (task._id === id ? { ...task, checked: res.data.checked } : task))
-      );
-    } catch (err) {
-      console.error('Error toggling item:', err);
-    }
-  };
+// 
+//   const toggleChecked = async (id) => {
+//     try {
+//       const token = localStorage.getItem('token');
+//       const res = await axios.post(
+//         `http://localhost:8080/api/event/checklist/${id}/toggle`,
+//         {},
+//         { headers: { authorization: token } }
+//       );
+//       setTasks((prev) =>
+//         prev.map((task) => (task._id === id ? { ...task, checked: res.data.checked } : task))
+//       );
+//     } catch (err) {
+//       console.error('Error toggling item:', err);
+//     }
+//   };
 
-  const addTask = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.post(
-        `http://localhost:8080/api/event/checklist`,
-        { label: newTask, eventId },
-        { headers: { authorization: token } }
-      );
-      setTasks([...tasks, { ...res.data.checklistItem, isEditing: false }]);
-      setNewTask('');
-    } catch (err) {
-      console.error('Error adding task:', err);
-    }
-  };
+//   const addTask = async () => {
+//     try {
+//       const token = localStorage.getItem('token');
+//       const res = await axios.post(
+//         `http://localhost:8080/api/event/checklist`,
+//         { label: newTask, eventId },
+//         { headers: { authorization: token } }
+//       );
+//       setTasks([...tasks, { ...res.data.checklistItem, isEditing: false }]);
+//       setNewTask('');
+//     } catch (err) {
+//       console.error('Error adding task:', err);
+//     }
+//   };
 
-  const handleDelete = async (id) => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:8080/api/event/checklist/${id}`, {
-        headers: { authorization: token },
-      });
-      setTasks((prev) => prev.filter((task) => task._id !== id));
-    } catch (err) {
-      console.error('Error deleting task:', err);
-    }
-  };
+//   const handleDelete = async (id) => {
+//     try {
+//       const token = localStorage.getItem('token');
+//       await axios.delete(`http://localhost:8080/api/event/checklist/${id}`, {
+//         headers: { authorization: token },
+//       });
+//       setTasks((prev) => prev.filter((task) => task._id !== id));
+//     } catch (err) {
+//       console.error('Error deleting task:', err);
+//     }
+//   };
 
   const enableEditing = (id) => {
     setTasks((prev) =>
@@ -147,7 +235,7 @@ function SmartChecklist() {
     }
   };
 
-  // ✅ Vendor Tasks Functions
+
   const handleAddVendorTask = async (vendorId, label) => {
     try {
       const token = localStorage.getItem('token');
@@ -227,52 +315,86 @@ function SmartChecklist() {
         or edit items.
       </p>
 
-      {/* ✅ Global Tasks */}
-      <ul className="space-y-4">
-        {tasks.map((task) => (
-          <li key={task._id} className="flex items-center justify-between bg-[#161B22] border border-gray-700 p-4 rounded-lg shadow-sm">
-            <div className="flex items-center gap-3 w-full">
-              <input
-                type="checkbox"
-                className="form-checkbox h-5 w-5 text-blue-500 rounded accent-blue-600"
-                checked={task.checked || false}
-                onChange={() => toggleChecked(task._id)}
-              />
-              <input
-                type="text"
-                value={task.label}
-                disabled={!task.isEditing}
-                onChange={(e) => handleLabelChange(task._id, e.target.value)}
-                className={`bg-transparent border-none outline-none text-white text-sm w-full ${!task.isEditing ? 'opacity-70 cursor-not-allowed' : ''}`}
-              />
-            </div>
-            <div className="flex items-center gap-3 text-gray-400 text-xs font-medium ml-4">
-              {task.isEditing ? (
-                <button onClick={() => handleSave(task._id, task.label)} className="text-blue-300 hover:underline">Save</button>
-              ) : (
-                <button onClick={() => enableEditing(task._id)} className="text-green-300 hover:underline">Update</button>
-              )}
-              <button onClick={() => handleDelete(task._id)} className="text-red-300 hover:underline">Delete</button>
-            </div>
-          </li>
-        ))}
-      </ul>
+     
+      <div className="mt-10">
+  <h3 className="text-xl text-white font-bold mb-4">Personal Checklist</h3>
+  <ul className="space-y-3">
+    {personalTasks.map((task) => (
+      <li key={task._id} className="flex items-center justify-between bg-[#161B22] border border-gray-700 p-3 rounded-md">
+        <div className="flex items-center gap-3 w-full">
+          <input
+            type="checkbox"
+            className="form-checkbox h-5 w-5 text-blue-400"
+            checked={task.checked}
+            onChange={() => togglePersonalTask(task._id)}
+          />
+          <input
+            type="text"
+            value={task.label}
+            disabled={!task.isEditing}
+            onChange={(e) =>
+              setPersonalTasks((prev) =>
+                prev.map((t) =>
+                  t._id === task._id ? { ...t, label: e.target.value } : t
+                )
+              )
+            }
+            className={`bg-transparent border-none text-white w-full ${
+              !task.isEditing ? 'opacity-70 cursor-not-allowed' : ''
+            }`}
+          />
+        </div>
+        <div className="flex gap-2 text-xs">
+          {task.isEditing ? (
+            <button
+              className="text-blue-300"
+              onClick={() => updatePersonalTask(task._id, task.label)}
+            >
+              Save
+            </button>
+          ) : (
+            <button
+              className="text-green-300"
+              onClick={() =>
+                setPersonalTasks((prev) =>
+                  prev.map((t) =>
+                    t._id === task._id ? { ...t, isEditing: true } : t
+                  )
+                )
+              }
+            >
+              Edit
+            </button>
+          )}
+          <button
+            className="text-red-300"
+            onClick={() => deletePersonalTask(task._id)}
+          >
+            Delete
+          </button>
+        </div>
+      </li>
+    ))}
+  </ul>
 
-      <div className="mt-6">
-        <input
-          type="text"
-          placeholder="Add new task..."
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          className="w-full bg-[#161B22] border border-gray-600 text-md text-white rounded-md px-4 py-2"
-        />
-        <button onClick={addTask} className="mt-3 flex items-center gap-2 bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 py-2 px-5 rounded-full">
-          <FaPlus />
-          Add Task
-        </button>
-      </div>
+  <div className="mt-4 flex flex-col sm:flex-row items-center gap-3">
+    <input
+      type="text"
+      placeholder="Add new personal task..."
+      value={newPersonalTask}
+      onChange={(e) => setNewPersonalTask(e.target.value)}
+      className="w-full sm:w-auto flex-1 bg-[#0D1117] border border-gray-600 text-white p-2 rounded"
+    />
+    <button
+      onClick={addPersonalTask}
+      className="flex items-center gap-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 px-4 py-2 rounded"
+    >
+      <FaPlus />
+      Add Task
+    </button>
+  </div>
+</div>
 
-      {/* ✅ Vendor Tasks */}
       <div className="mt-10">
         <h3 className="text-xl text-white font-bold mb-4">Assign Tasks to Accepted Vendors</h3>
         {acceptedVendors.length === 0 ? (

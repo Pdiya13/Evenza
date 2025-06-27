@@ -1,6 +1,8 @@
 const vendor_eventModel = require("../models/vendor_event");
 const vendorModel = require("../models/vendor");
 const VendorTask = require("../models/checklist");
+const Checklist = require('../models/checklist');
+
 const mongoose = require('mongoose');
 
 const getAcceptedVendorsController = async (req, res) => {
@@ -36,21 +38,18 @@ const getAcceptedVendorsController = async (req, res) => {
 };
 
 
-// Add a new vendor task
+
 const newVendorTask = async (req, res) => {
   const { eventId, vendorId, label } = req.body;
   const userId = req.user.id;
 
   try {
-    // Check vendor_event exists and is Accepted
     console.log("Request Data:", { userId, eventId, vendorId, label });
     const ve = await vendor_eventModel.findOne({ eventId, vendorId, userId, status: "Accepted" });
     if (!ve) {
        console.log("VE not found with params:", { userId, eventId, vendorId });
       return res.status(400).json({ status: false, message: "Vendor not accepted or not linked to user/event" });
     }
-
-    // Save task
     const task = await VendorTask.create({
       eventId,
       vendorId,
@@ -65,7 +64,6 @@ const newVendorTask = async (req, res) => {
   }
 };
 
-// Get all tasks for a vendor and event
 const getAllTaskVendorAndEvent = async (req, res) => {
   const { eventId, vendorId } = req.query;
   try {
@@ -76,7 +74,7 @@ const getAllTaskVendorAndEvent = async (req, res) => {
   }
 };
 
-// Toggle vendor task completion
+
 const toggleVendorTaskCompletion = async (req, res) => {
   try {
     const task = await VendorTask.findById(req.params.id);
@@ -89,7 +87,7 @@ const toggleVendorTaskCompletion = async (req, res) => {
   }
 };
 
-// Update vendor task label
+
 const updateVendorTask =  async (req, res) => {
   const { label } = req.body;
   try {
@@ -104,7 +102,7 @@ const updateVendorTask =  async (req, res) => {
   }
 };
 
-// Delete vendor task
+
 const deleteVendorTask = async (req, res) => {
   try {
     await VendorTask.findByIdAndDelete(req.params.id);
@@ -115,4 +113,39 @@ const deleteVendorTask = async (req, res) => {
 };
 
 
-module.exports = {getAcceptedVendorsController ,newVendorTask,getAllTaskVendorAndEvent,toggleVendorTaskCompletion,updateVendorTask,deleteVendorTask};
+const createPersonalTask = async (req, res) => {
+  try {
+    const { label } = req.body;
+    const userId = req.user._id;
+
+    const newTask = await Checklist.create({
+      label,
+      userId,
+      isPersonal: true,
+    });
+
+    res.json({ status: true, task: newTask });
+  } catch (err) {
+    console.error('Failed to add personal task:', err);
+    res.status(500).json({ status: false, message: 'Failed to add task' });
+  }
+};
+
+
+const getPersonalTask = async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const tasks = await Checklist.find({ userId, isPersonal: true });
+    res.status(200).json({ status: true, tasks });
+  } catch (err) {
+    res.status(500).json({ status: false, error: err.message });
+  }
+};
+
+
+
+module.exports = {getAcceptedVendorsController ,newVendorTask,
+    getAllTaskVendorAndEvent,toggleVendorTaskCompletion,updateVendorTask,
+    deleteVendorTask,createPersonalTask,getPersonalTask
+};
