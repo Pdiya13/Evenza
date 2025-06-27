@@ -67,11 +67,15 @@ function App() {
             <Route path="/eventslist" element={<EventList />} />
             <Route path="/payments" element={<Payments />} />
             <Route path="/ratings" element={<Ratings />} />
-            <Route path="/vendor-checklist" element={<SmartChecklist1 />} />
-            <Route path="/vendor-budget" element={<BudgetManagement1 />} />
           </Route>
         </Route>
 
+         <Route element={<PrivateRoute allowedRoles={['vendor']} />}>
+          <Route element={<PlanLayout />}>
+            <Route path="/vendor-checklist" element={<SmartChecklist1 />} />
+            <Route path="/vendor-budget" element={<BudgetManagement1 />} />
+            </Route>
+         </Route>
   
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

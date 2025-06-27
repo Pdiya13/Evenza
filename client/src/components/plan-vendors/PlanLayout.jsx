@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Navbar1 from './Navbar';
+import Navbar1 from './PlanNavbar';
 
 const EventLayout = () => {
   return (
