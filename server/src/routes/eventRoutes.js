@@ -12,4 +12,5 @@ router.post('/checklist' , isLoggedIn , addChecklistController);
 router.post('/checklist/:id/toggle' , isLoggedIn ,toggleController );
 router.delete('/checklist/:id' , isLoggedIn , deleteChecklistController);
 router.post('/checklist/:id/update' , isLoggedIn , updateChecklistController);
+
 module.exports = router;

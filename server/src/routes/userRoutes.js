@@ -1,6 +1,7 @@
 const express = require('express');
 const { isLoggedIn } = require('../middlewares/authMiddleware');
 const { selectVendorController, queryController } = require('../controllers/userController');
+const { getAcceptedVendorsController } = require('../controllers/vendorController');
 
 const router = express.Router();
 
