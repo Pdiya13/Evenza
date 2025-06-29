@@ -22,7 +22,7 @@ import EventLayout from './components/EventLayout';
 import SmartChecklist from './components/events/SmartChecklist';
 import QueryVendor from './components/events/QueryVendor';
 
-import SmartChecklist1 from './components/plan-vendors/SmartChecklist';
+import SmartChecklist1 from './components/plan-vendors/smartChecklist';
 import BudgetManagement1 from './components/plan-vendors/BudgetManagement';
 
 import VendorDashboard from './components/Home_vendor/VendorDashboard';
@@ -47,7 +47,6 @@ function App() {
             <Route path="/create" element={<CreateEvent />} />
             <Route path="/manage" element={<ManageEvent />} />
             <Route path="/vendors" element={<Vendors />} />
-            <Route path="/query" element={<QueryVendor />} />
             <Route path="/event/:eventId/vendor/:vendorId/query" element={<QueryVendor />} />
           </Route>
 

@@ -97,31 +97,6 @@ const updatePersonalTask = async (id, label) => {
   }
 };
 
-
-
-//  
-//   useEffect(() => {
-//     const fetchTasks = async () => {
-//       try {
-//         const token = localStorage.getItem('token');
-//         const res = await axios.get('http://localhost:8080/api/event/checklist', {
-//           params: { eventId },
-//           headers: { authorization: token },
-//         });
-//         const checklist = res.data.checklist.map((task) => ({
-//           ...task,
-//           isEditing: false,
-//         }));
-//         setTasks(checklist);
-//       } catch (err) {
-//         console.error('Error fetching checklist items:', err);
-//       }
-//     };
-
-//     if (eventId) fetchTasks();
-//   }, [eventId]);
-
-
   useEffect(() => {
     const fetchAcceptedVendors = async () => {
       try {
@@ -163,49 +138,6 @@ const updatePersonalTask = async (id, label) => {
     if (acceptedVendors.length > 0) fetchVendorTasks();
   }, [acceptedVendors, eventId]);
 
-// 
-//   const toggleChecked = async (id) => {
-//     try {
-//       const token = localStorage.getItem('token');
-//       const res = await axios.post(
-//         `http://localhost:8080/api/event/checklist/${id}/toggle`,
-//         {},
-//         { headers: { authorization: token } }
-//       );
-//       setTasks((prev) =>
-//         prev.map((task) => (task._id === id ? { ...task, checked: res.data.checked } : task))
-//       );
-//     } catch (err) {
-//       console.error('Error toggling item:', err);
-//     }
-//   };
-
-//   const addTask = async () => {
-//     try {
-//       const token = localStorage.getItem('token');
-//       const res = await axios.post(
-//         `http://localhost:8080/api/event/checklist`,
-//         { label: newTask, eventId },
-//         { headers: { authorization: token } }
-//       );
-//       setTasks([...tasks, { ...res.data.checklistItem, isEditing: false }]);
-//       setNewTask('');
-//     } catch (err) {
-//       console.error('Error adding task:', err);
-//     }
-//   };
-
-//   const handleDelete = async (id) => {
-//     try {
-//       const token = localStorage.getItem('token');
-//       await axios.delete(`http://localhost:8080/api/event/checklist/${id}`, {
-//         headers: { authorization: token },
-//       });
-//       setTasks((prev) => prev.filter((task) => task._id !== id));
-//     } catch (err) {
-//       console.error('Error deleting task:', err);
-//     }
-//   };
 
   const enableEditing = (id) => {
     setTasks((prev) =>
@@ -241,7 +173,7 @@ const updatePersonalTask = async (id, label) => {
       const token = localStorage.getItem('token');
       const res = await axios.post(
             'http://localhost:8080/api/checklist/task',
-            { eventId, vendorId, label }, // label is correct
+            { eventId, vendorId, label },
             { headers: { authorization: token } }
         );
 

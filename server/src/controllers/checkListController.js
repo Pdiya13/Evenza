@@ -116,7 +116,8 @@ const deleteVendorTask = async (req, res) => {
 const createPersonalTask = async (req, res) => {
   try {
     const { label } = req.body;
-    const userId = req.user._id;
+    const userId = req.user.id;
+    console.log("Creating personal task for user:", req.user);
 
     const newTask = await Checklist.create({
       label,
@@ -133,7 +134,8 @@ const createPersonalTask = async (req, res) => {
 
 
 const getPersonalTask = async (req, res) => {
-  const userId = req.user._id;
+  const userId = req.user.id;
+  console.log("Creating personal task for user:", req.user);
 
   try {
     const tasks = await Checklist.find({ userId, isPersonal: true });

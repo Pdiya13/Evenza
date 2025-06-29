@@ -8,6 +8,5 @@ const router = express.Router();
 router.get('/:vendorId/payments', queryVController);
 router.post('/payments/:id' , queryHandleController);
 router.get('/vendor-tasks', isLoggedIn, getVendorChecklistTasks);
-// router.post('/payments/:id', queryController);
 
 module.exports = router;
