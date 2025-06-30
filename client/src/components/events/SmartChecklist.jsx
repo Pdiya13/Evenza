@@ -12,16 +12,20 @@ function SmartChecklist() {
   const [vendorInput, setVendorInput] = useState({});
 
   useEffect(() => {
+    if (!eventId) {
+      console.warn("No eventId found in URL");
+      return;
+    }
     async function fetchpersonaltask() {
       try {
         const res = await axios.get(`http://localhost:8080/api/event/checklist/task/personal/${eventId}`, {
           headers: { Authorization: localStorage.getItem('token') },
         });
         const tasksWithEditing = res.data.personalTask.map(task => ({
-        ...task,
-        isEditing: false,
-      }));
-      setPersonalTask(tasksWithEditing);
+          ...task,
+          isEditing: false,
+        }));
+        setPersonalTask(tasksWithEditing);
       } catch (err) {
         console.log(err);
       }
@@ -30,6 +34,10 @@ function SmartChecklist() {
   }, [eventId]);
 
   useEffect(() => {
+    if (!eventId) {
+      console.warn("No eventId found in URL");
+      return;
+    }
     async function fetchVendors() {
       try {
         const res = await axios.get(`http://localhost:8080/api/event/acceptedvendors/${eventId}`, {
@@ -45,59 +53,63 @@ function SmartChecklist() {
   }, [eventId]);
 
   useEffect(() => {
-  async function fetchVendorTask() {
-    const tasksObj = {};
-    for (const vendor of acceptedVendors) {
-      try {
-        const res = await axios.get(`http://localhost:8080/api/event/checklist/task/vendor/${eventId}/${vendor._id}`, {
-          headers: { Authorization: localStorage.getItem('token') },
-        });
-  
-        const tasksWithEditing = (res.data.vendorTasks || []).map(task => ({
-          ...task,
-          isEditing: false,
-        }));
-        tasksObj[vendor._id] = tasksWithEditing;
-      } catch (taskErr) {
-        console.error(`Failed to fetch tasks for vendor ${vendor.name}:`, taskErr);
-        tasksObj[vendor._id] = [];
-      }
+    if (!eventId) {
+      console.warn("No eventId found in URL");
+      return;
     }
-    setVendorTasks(tasksObj);
-  }
-  if (Array.isArray(acceptedVendors) && acceptedVendors.length > 0) {
-    fetchVendorTask();
-  }
-}, [acceptedVendors, eventId]);
+    async function fetchVendorTask() {
+      const tasksObj = {};
+      for (const vendor of acceptedVendors) {
+        try {
+          const res = await axios.get(`http://localhost:8080/api/event/checklist/task/vendor/${eventId}/${vendor._id}`, {
+            headers: { Authorization: localStorage.getItem('token') },
+          });
+
+          const tasksWithEditing = (res.data.vendorTasks || []).map(task => ({
+            ...task,
+            isEditing: false,
+          }));
+          tasksObj[vendor._id] = tasksWithEditing;
+        } catch (taskErr) {
+          console.error(`Failed to fetch tasks for vendor ${vendor.name}:`, taskErr);
+          tasksObj[vendor._id] = [];
+        }
+      }
+      setVendorTasks(tasksObj);
+    }
+    if (Array.isArray(acceptedVendors) && acceptedVendors.length > 0) {
+      fetchVendorTask();
+    }
+  }, [acceptedVendors, eventId]);
 
 
   const toggleTask = async (taskId) => {
-  try {
-    console.log(taskId);
-    const res = await axios.post(`http://localhost:8080/api/event/checklist/task/toggle/${taskId}`, {}, {
-      headers: { Authorization: localStorage.getItem('token') },
-    });
+    try {
+      console.log(taskId);
+      const res = await axios.post(`http://localhost:8080/api/event/checklist/task/toggle/${taskId}`, {}, {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
 
-    const { isPersonal, vendorId, checked } = res.data;
+      const { isPersonal, vendorId, checked } = res.data;
 
-    if (isPersonal) {
-      setPersonalTask((prev) =>
-        prev.map((task) =>
-          task._id === taskId ? { ...task, checked } : task
-        )
-      );
-    } else if (vendorId) {
-      setVendorTasks((prev) => ({
-        ...prev,
-        [vendorId]: prev[vendorId].map((task) =>
-          task._id === taskId ? { ...task, checked } : task
-        ),
-      }));
+      if (isPersonal) {
+        setPersonalTask((prev) =>
+          prev.map((task) =>
+            task._id === taskId ? { ...task, checked } : task
+          )
+        );
+      } else if (vendorId) {
+        setVendorTasks((prev) => ({
+          ...prev,
+          [vendorId]: prev[vendorId].map((task) =>
+            task._id === taskId ? { ...task, checked } : task
+          ),
+        }));
+      }
+    } catch (err) {
+      console.log(err);
     }
-  } catch (err) {
-    console.log(err);
-  }
-};
+  };
 
 
   const addPersonalTask = async () => {
@@ -134,31 +146,31 @@ function SmartChecklist() {
   };
 
   const updateTask = async (taskId, label) => {
-  try {
-    const res = await axios.post(`http://localhost:8080/api/event/checklist/task/update/${taskId}`, { label }, {
-      headers: { Authorization: localStorage.getItem('token') },
-    });
-    const updatedTask = res.data.newUpdatedTask;
+    try {
+      const res = await axios.post(`http://localhost:8080/api/event/checklist/task/update/${taskId}`, { label }, {
+        headers: { Authorization: localStorage.getItem('token') },
+      });
+      const updatedTask = res.data.newUpdatedTask;
 
-    if (res.data.personal) {
-      setPersonalTask((prev) =>
-        prev.map((task) =>
-          task._id === taskId ? { ...updatedTask, isEditing: false } : task
-        )
-      );
-    } else {
-      const vendorId = res.data.vendorId;
-      setVendorTasks((prev) => ({
-        ...prev,
-        [vendorId]: prev[vendorId].map((task) =>
-          task._id === taskId ? { ...updatedTask, isEditing: false } : task
-        ),
-      }));
+      if (res.data.personal) {
+        setPersonalTask((prev) =>
+          prev.map((task) =>
+            task._id === taskId ? { ...updatedTask, isEditing: false } : task
+          )
+        );
+      } else {
+        const vendorId = res.data.vendorId;
+        setVendorTasks((prev) => ({
+          ...prev,
+          [vendorId]: prev[vendorId].map((task) =>
+            task._id === taskId ? { ...updatedTask, isEditing: false } : task
+          ),
+        }));
+      }
+    } catch (err) {
+      console.log(err);
     }
-  } catch (err) {
-    console.log(err);
-  }
-};
+  };
 
 
   const handleAddVendorTask = async (vendorId, label) => {

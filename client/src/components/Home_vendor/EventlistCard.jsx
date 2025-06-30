@@ -1,6 +1,8 @@
 import React from 'react';
-import { FaMapMarkerAlt, FaCalendarAlt, FaTag, FaClipboardList, FaUser,
-  FaPhoneAlt, } from 'react-icons/fa';
+import {
+  FaMapMarkerAlt, FaCalendarAlt, FaTag, FaClipboardList, FaUser,
+  FaPhoneAlt,
+} from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 function EventlistCard({ event }) {
@@ -13,14 +15,14 @@ function EventlistCard({ event }) {
                  text-white flex flex-col"
       style={{ fontFamily: "'Poppins', sans-serif" }}
     >
-      <h3 className="text-3xl font-extrabold mb-4 tracking-wide drop-shadow-lg">{event.ename}</h3>
+      <h3 className="text-3xl font-extrabold mb-4 tracking-wide drop-shadow-lg">{event.title}</h3>
 
-       <p className="flex items-center text-sm mb-2 text-gray-300">
+      <p className="flex items-center text-sm mb-2 text-gray-300">
         <FaUser className="mr-2 text-blue-400" /> {event.userName || 'Users name'}
       </p>
 
       <p className="flex items-center text-sm mb-2 text-gray-300">
-        <FaPhoneAlt className="mr-2 text-green-400" /> {event.mobile || 'Users number'}
+        <FaPhoneAlt className="mr-2 text-green-400" /> {event.userPhone || 'Users number'}
       </p>
 
       <p className="flex items-center text-sm mb-2 text-blue-300">
@@ -35,16 +37,16 @@ function EventlistCard({ event }) {
         <FaTag className="mr-2" /> {event.type}
       </p>
 
-      <div className="mt-auto pt-6">
-        <button
-          onClick={() => navigate('/vendor-checklist')}
-          className="w-full flex items-center justify-center gap-2 bg-blue-400/20 hover:bg-blue-400/30 text-blue-200 font-semibold py-2 px-5 rounded-full shadow-sm
-             transition duration-300 transform hover:-translate-y-0.5 active:scale-95 border border-blue-300/30"
-          aria-label="Plan Event"
-        >
-          <FaClipboardList /> Plan
-        </button>
-      </div>
+        <div className="mt-auto pt-6">
+          <button
+            onClick={() => navigate(`/${event._id}/vendor-checklist`)}  
+            className="w-full flex items-center justify-center gap-2 bg-blue-400/20 hover:bg-blue-400/30 text-blue-200 font-semibold py-2 px-5 rounded-full shadow-sm
+       transition duration-300 transform hover:-translate-y-0.5 active:scale-95 border border-blue-300/30"
+            aria-label="Plan Event"
+          >
+            <FaClipboardList /> Plan
+          </button>
+        </div>
     </div>
   );
 }

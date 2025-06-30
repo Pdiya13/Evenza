@@ -22,7 +22,7 @@ import EventLayout from './components/EventLayout';
 import SmartChecklist from './components/events/SmartChecklist';
 import QueryVendor from './components/events/QueryVendor';
 
-import SmartChecklist1 from './components/plan-vendors/smartChecklist';
+import SmartChecklist1 from './components/plan-vendors/SmartChecklist';
 import BudgetManagement1 from './components/plan-vendors/BudgetManagement';
 
 import VendorDashboard from './components/Home_vendor/VendorDashboard';
@@ -35,12 +35,12 @@ function App() {
     <Router>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
-  
+
         <Route path="/" element={<Mainweb />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-   
+
         <Route element={<PrivateRoute allowedRoles={['user']} />}>
           <Route element={<Layout />}>
             <Route path="/dashboard" element={<Dashboard />} />
@@ -59,7 +59,7 @@ function App() {
           </Route>
         </Route>
 
- 
+
         <Route element={<PrivateRoute allowedRoles={['vendor']} />}>
           <Route element={<VendorLayout />}>
             <Route path="/vendor-dashboard" element={<VendorDashboard />} />
@@ -69,13 +69,14 @@ function App() {
           </Route>
         </Route>
 
-         <Route element={<PrivateRoute allowedRoles={['vendor']} />}>
-          <Route element={<PlanLayout />}>
-            <Route path="/vendor-checklist" element={<SmartChecklist1 />} />
-            <Route path="/vendor-budget" element={<BudgetManagement1 />} />
-            </Route>
-         </Route>
-  
+        <Route element={<PrivateRoute allowedRoles={['vendor']} />}>
+          <Route path="/:eventId" element={<PlanLayout />}>
+            <Route path="vendor-checklist" element={<SmartChecklist1 />} />
+            <Route path="vendor-budget" element={<BudgetManagement1 />} />
+          </Route>
+        </Route>
+
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

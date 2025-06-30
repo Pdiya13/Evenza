@@ -6,6 +6,7 @@ const isLoggedIn = (req , res, next)=>{
             return res.status(401).send({ status: false, message: "Token is missing" });
         }
         const decoded = jwt.verify(token , process.env.JWT_SECRET);
+        console.log(decoded);
         if(decoded)
         {
             req.user = decoded;

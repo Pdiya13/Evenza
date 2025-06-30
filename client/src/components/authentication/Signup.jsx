@@ -8,8 +8,9 @@ export default function Signup() {
     name: '',
     email: '',
     password: '',
-    role: 'user',  // Default to 'user'
-    category: '',  // vendor fields
+    phone: '',
+    role: 'user',
+    category: '',
     price: '',
     experience: '',
   });
@@ -27,22 +28,21 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Prepare the payload based on the selected role
       let res;
       if (formData.role === 'user') {
-        // User-specific signup
         res = await axios.post('http://localhost:8080/api/auth/user/signup', {
           name: formData.name,
           email: formData.email,
           password: formData.password,
+          phone: formData.phone,
           role: formData.role,
         });
       } else if (formData.role === 'vendor') {
-        // Vendor-specific signup
         res = await axios.post('http://localhost:8080/api/auth/vendor/signup', {
           name: formData.name,
           email: formData.email,
           password: formData.password,
+          phone: formData.phone,
           role: formData.role,
           category: formData.category,
           price: Number(formData.price),
@@ -96,6 +96,16 @@ export default function Signup() {
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
+          className="w-full mb-4 px-4 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
+        />
+
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Phone Number"
+          value={formData.phone}
+          onChange={handleChange}
           className="w-full mb-6 px-4 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
@@ -134,7 +144,7 @@ export default function Signup() {
               value={formData.category}
               onChange={handleChange}
               className="w-full mb-4 px-4 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required={formData.role === 'vendor'}
+              required
             />
             <input
               type="number"
@@ -143,7 +153,7 @@ export default function Signup() {
               value={formData.price}
               onChange={handleChange}
               className="w-full mb-4 px-4 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required={formData.role === 'vendor'}
+              required
               min={0}
             />
             <input
@@ -153,7 +163,7 @@ export default function Signup() {
               value={formData.experience}
               onChange={handleChange}
               className="w-full mb-6 px-4 py-2 bg-gray-800 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required={formData.role === 'vendor'}
+              required
               min={0}
             />
           </>

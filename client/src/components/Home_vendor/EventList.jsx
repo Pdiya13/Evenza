@@ -1,33 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import EventlistCard from './EventlistCard';
 
 function EventList() {
-  const navigate = useNavigate();
-  
-  const [events, setEvents] = useState([
-    {
-      _id: '1',
-      title: 'React Conference 2025',
-      description: 'Join developers around the world for React insights and networking.',
-      date: '2025-07-10',
-      location: 'San Francisco, CA',
-    },
-    {
-      _id: '2',
-      title: 'JavaScript Summit',
-      description: 'A summit focused on modern JavaScript and tooling.',
-      date: '2025-08-15',
-      location: 'New York, NY',
-    },
-    {
-      _id: '3',
-      title: 'UX/UI Bootcamp',
-      description: 'Hands-on workshop for improving design and usability skills.',
-      date: '2025-09-05',
-      location: 'Austin, TX',
-    },
-  ]);
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get('http://localhost:8080/api/vendor/accepted-events', {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        if (res.data.status) {
+          setEvents(res.data.events);
+        } else {
+          setError('Failed to fetch events');
+        }
+      } catch (err) {
+        setError('Error fetching events');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (loading) return <div>Loading events...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
 
   return (
     <div className="w-full min-h-screen bg-[#161B22] font-poppins-custom text-white">
@@ -36,11 +43,15 @@ function EventList() {
           Assigned Events
         </h2>
 
-        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center">
-          {events.map((event) => (
-            <EventlistCard key={event._id} event={event} />
-          ))}
-        </div>
+        {events.length === 0 ? (
+          <p className="text-center text-gray-400">No assigned events found.</p>
+        ) : (
+          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center">
+            {events.map((event) => (
+              <EventlistCard key={event._id} event={event} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

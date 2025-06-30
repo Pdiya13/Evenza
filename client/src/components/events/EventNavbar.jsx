@@ -10,8 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 function EventNavbar() {
   const navigate = useNavigate();
-  const { id: eventId } = useParams(); // get the event ID from URL
-
+  const {eventId } = useParams();
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-[#0D1117] p-6 w-24 hover:w-64 transition-width duration-300 group relative overflow-y-auto">
       {/* Title */}

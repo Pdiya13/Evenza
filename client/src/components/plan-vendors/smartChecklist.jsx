@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; // ⬅️ Import useParams
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-function SmartChecklist() {
-  const { eventId, vendorId } = useParams(); // ⬅️ Extract from URL
+function SmartChecklist1() {
+  const { eventId } = useParams();
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    if (!eventId || !vendorId) return;
-
     const fetchTasks = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:8080/api/checklist/vendor-tasks', {
-          params: { eventId, vendorId },
+        const res = await axios.get(`http://localhost:8080/api/vendor/${eventId}/vendor-tasks`, {
           headers: { authorization: token },
         });
         if (res.data.status) {
@@ -25,13 +22,13 @@ function SmartChecklist() {
     };
 
     fetchTasks();
-  }, [eventId, vendorId]);
+  }, [eventId]);
 
   const toggleTask = async (taskId, currentChecked) => {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        `http://localhost:8080/api/checklist/task/${taskId}/toggle`,
+        `http://localhost:8080/api/event/checklist/task/toggle/${taskId}`,
         {},
         { headers: { authorization: token } }
       );
@@ -46,17 +43,20 @@ function SmartChecklist() {
   };
 
   return (
-    <div>
-      <h2>Vendor Checklist</h2>
-      <ul>
+    <div className="mt-12 p-6 rounded-xl shadow-xl border border-gray-700 bg-[#0D1117] font-poppins-custom">
+      <h2 className="text-2xl font-extrabold text-white mb-4 tracking-wide">Vendor Checklist</h2>
+      <ul className="space-y-3">
         {tasks.map((task) => (
-          <li key={task._id}>
-            <input
-              type="checkbox"
-              checked={task.checked}
-              onChange={() => toggleTask(task._id, task.checked)}
-            />
-            <span>{task.label}</span>
+          <li key={task._id} className="flex items-center justify-between bg-[#161B22] border border-gray-700 p-3 rounded-md">
+            <div className="flex items-center gap-3 w-full">
+              <input
+                type="checkbox"
+                checked={task.checked}
+                onChange={() => toggleTask(task._id, task.checked)}
+                className="form-checkbox h-5 w-5 text-blue-400"
+              />
+              <span className="text-white">{task.label}</span>
+            </div>
           </li>
         ))}
       </ul>
@@ -64,4 +64,4 @@ function SmartChecklist() {
   );
 }
 
-export default SmartChecklist;
+export default SmartChecklist1;

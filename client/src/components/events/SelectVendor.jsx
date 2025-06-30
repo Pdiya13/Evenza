@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 function SelectVendor() {
-  const { id: eventId } = useParams(); // Event ID from URL
+  const { eventId } = useParams(); // Event ID from URL
   const [vendors, setVendors] = useState([]);
   const [queries, setQueries] = useState([]);
   const [loading, setLoading] = useState(true);

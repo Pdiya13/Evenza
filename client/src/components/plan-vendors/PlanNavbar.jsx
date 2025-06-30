@@ -1,20 +1,18 @@
 import React from 'react';
 import {
-  FaStore,           // for Select Vendor
-  FaClipboardList,   // for Smart Checklist
-  FaDollarSign,      // for Budget Management
-  FaUsers,           // for Guest Management
-  FaArrowLeft,       // for Back
+  FaStore,           
+  FaClipboardList,   
+  FaDollarSign,      
+  FaUsers,           
+  FaArrowLeft,       
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-function EventNavbar() {
+function PlanNavbar({ eventId }) {
   const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-[#0D1117] p-6 w-24 hover:w-64 transition-width duration-300 group relative overflow-y-auto">
-
-      {/* Title - collapsed by default, expands on hover */}
       <div
         className="font-bold text-2xl font-lexend-giga-custom text-[#C3D0E5] mb-10 select-none
                    max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300"
@@ -25,17 +23,15 @@ function EventNavbar() {
 
       <div className="w-full mt-20">
         <ul className="text-white flex flex-col justify-start gap-10 text-base font-normal">
-          {/* Each nav item */}
           {[
-
-            { icon: <FaClipboardList />, label: 'Smart Checklist', path: '/vendor-checklist' },
-            { icon: <FaDollarSign />, label: 'Budget Management', path: '/vendor-budget' },
-            { icon: <FaArrowLeft />, label: 'Back', path : 'vendor-dashboard' },
-          ].map(({ icon, label, path, action }) => (
+            { icon: <FaClipboardList />, label: 'Smart Checklist', path: `/${eventId}/vendor-checklist` },
+            { icon: <FaDollarSign />, label: 'Budget Management', path: `/${eventId}/vendor-budget` },
+            { icon: <FaArrowLeft />, label: 'Back', path: '/vendor-dashboard' },
+          ].map(({ icon, label, path }) => (
             <li
               key={label}
               className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
-              onClick={action ? action : () => navigate(path)}
+              onClick={() => navigate(path)}
             >
               <div className="min-w-[20px] text-xl">{icon}</div>
               <span
@@ -52,4 +48,4 @@ function EventNavbar() {
   );
 }
 
-export default EventNavbar;
+export default PlanNavbar;

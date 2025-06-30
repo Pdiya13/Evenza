@@ -4,7 +4,6 @@ const VendorTask = require("../models/checklist");
 const Checklist = require('../models/checklist');
 const mongoose = require('mongoose');
 
-// Fetch pending queries for a vendor
 const queryVController = async (req, res) => {
   try {
     const vendorId = req.params.vendorId;
@@ -31,7 +30,6 @@ const queryVController = async (req, res) => {
   }
 };
 
-// Handle Accept/Reject actions for a query
 const queryHandleController = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body; 
@@ -59,19 +57,63 @@ const queryHandleController = async (req, res) => {
 
 async function getVendorChecklistTasks(req, res) {
   try {
-    const { eventId, vendorId } = req.query;
+    console.log("VENDOR")
+    const { eventId } = req.params;
+    const vendorId = req.user.id;
+    // console.log(userId)
+
     if (!eventId || !vendorId) {
       return res.status(400).json({ status: false, message: "eventId and vendorId required" });
     }
 
     const tasks = await Checklist.find({ eventId, vendorId });
-
+    console.log(tasks);
     return res.json({ status: true, tasks });
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: false, message: 'Server error' });
   }
-}
+} 
+const fetchVendorEvents = async (req, res) => {
+  try {
+    const vendorId = req.user.id;
+    if (!vendorId) {
+      return res.status(400).json({ status: false, message: "Vendor ID missing" });
+    }
+
+    const acceptedEvents = await vendor_eventModel.find({
+      vendorId,
+      status: "Accepted"
+    })
+      .populate('eventId', 'ename date location type')  
+      .populate('userId', 'name phone')            
+      .select('eventId userId');               
+
+    console.log(acceptedEvents);
+
+    const events = acceptedEvents.map(item => {
+      if (!item.eventId || !item.userId) return null;
+
+      return {
+        _id: item.eventId._id,
+        title: item.eventId.ename || "Untitled Event",
+        date: item.eventId.date,
+        type:item.eventId.type,
+        location: item.eventId.location || '',
+        userName: item.userId.name || 'Unknown',
+        userPhone: item.userId.phone || 'N/A',
+      };
+    }).filter(Boolean);
+
+    console.log(events);
+
+    return res.status(200).json({ status: true, events });
+
+  } catch (err) {
+    console.error("Error fetching vendor accepted events:", err);
+    return res.status(500).json({ status: false, message: "Server error fetching events" });
+  }
+};
 
 
-module.exports = { queryVController, queryHandleController,getVendorChecklistTasks};
+module.exports = { queryVController, queryHandleController,getVendorChecklistTasks , fetchVendorEvents};

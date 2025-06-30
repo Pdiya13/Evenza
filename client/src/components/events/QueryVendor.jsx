@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 function QueryVendor() {
   const { eventId, vendorId } = useParams();
+  console.log(eventId , vendorId);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
