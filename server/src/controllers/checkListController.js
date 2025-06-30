@@ -1,33 +1,36 @@
 const vendor_eventModel = require("../models/vendor_event");
-const vendorModel = require("../models/vendor");
-const VendorTask = require("../models/checklist");
-const Checklist = require('../models/checklist');
+const Checklist = require("../models/checklist");
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const getAcceptedVendorsController = async (req, res) => {
+const fetchAcceptedVendors = async (req, res) => {
   try {
-    const { eventId } = req.query;
+   
+    const { eventId } = req.params;
     const userId = req.user.id;
 
     if (!eventId) {
-      return res.status(400).json({ status: false, message: "eventId is required" });
+      return res
+        .status(400)
+        .json({ status: false, message: "eventId is required" });
     }
 
-    const acceptedVendors = await vendor_eventModel.find({
-      eventId,
-      userId,
-      status: "Accepted",
-    }).populate("vendorId", "name category price");
+    const acceptedVendors = await vendor_eventModel
+      .find({
+        eventId,
+        userId,
+        status: "Accepted",
+      })
+      .populate("vendorId", "name category price");
 
-    const result = acceptedVendors.map(item => ({
+    const result = acceptedVendors.map((item) => ({
       _id: item.vendorId._id,
       name: item.vendorId.name,
       category: item.vendorId.category,
-      price: item.vendorId.price
+      price: item.vendorId.price,
     }));
 
-    return res.json({ status: true, vendors: result });
+    return res.json({ status: true, acceptedVendors: result });
   } catch (err) {
     console.error("Error fetching accepted vendors:", err);
     return res.status(500).json({
@@ -37,117 +40,127 @@ const getAcceptedVendorsController = async (req, res) => {
   }
 };
 
-
-
-const newVendorTask = async (req, res) => {
-  const { eventId, vendorId, label } = req.body;
+const addVendorTask = async (req, res) => {
+  const { eventId, vendorId } = req.params;
+  const { label } = req.body;
   const userId = req.user.id;
-
   try {
-    console.log("Request Data:", { userId, eventId, vendorId, label });
-    const ve = await vendor_eventModel.findOne({ eventId, vendorId, userId, status: "Accepted" });
-    if (!ve) {
-       console.log("VE not found with params:", { userId, eventId, vendorId });
-      return res.status(400).json({ status: false, message: "Vendor not accepted or not linked to user/event" });
-    }
-    const task = await VendorTask.create({
+    const task = await Checklist.create({
       eventId,
       vendorId,
       userId,
       label,
     });
-
     return res.status(201).json({ status: true, task });
   } catch (err) {
-    console.error("Error creating vendor task:", err);
     return res.status(500).json({ status: false, error: err.message });
   }
 };
 
-const getAllTaskVendorAndEvent = async (req, res) => {
-  const { eventId, vendorId } = req.query;
+const fetchVendorTask = async (req, res) => {
+  const { eventId, vendorId } = req.params;
   try {
-    const tasks = await VendorTask.find({ eventId, vendorId });
-    res.status(200).json({ status: true, tasks });
+    const vendorTasks = await Checklist.find({ eventId, vendorId });
+
+    res.status(200).json({ status: true, vendorTasks });
   } catch (err) {
     res.status(500).json({ status: false, error: err.message });
   }
 };
 
-
-const toggleVendorTaskCompletion = async (req, res) => {
+const updateTask = async (req, res) => {
   try {
-    const task = await VendorTask.findById(req.params.id);
-    if (!task) return res.status(404).json({ status: false, error: 'Task not found' });
+    const task = await Checklist.findById(req.params.taskId);
+    if (!task) {
+      return res.status(404).json({ status: false, error: "Task not found" });
+    }
+
+    const { label } = req.body;
+    task.label = label;
+    await task.save();
+
+    res.status(200).json({
+      status: true,
+      newUpdatedTask: task,
+      personal: task.isPersonal,
+      vendorId: task.vendorId || null,
+    });
+  } catch (err) {
+    res.status(500).json({ status: false, error: err.message });
+  }
+};
+
+const toggleTask = async (req, res) => {
+  try {
+    const task = await Checklist.findById(req.params.taskId);
+    if (!task) {
+      return res.status(404).json({ status: false, error: "Task not found" });
+    }
     task.checked = !task.checked;
     await task.save();
-    res.status(200).json({ status: true, checked: task.checked });
+
+    res.status(200).json({
+      status: true,
+      checked: task.checked,
+      isPersonal: task.isPersonal,
+      vendorId: task.vendorId || null,
+      taskId: task._id,
+    });
   } catch (err) {
     res.status(500).json({ status: false, error: err.message });
   }
 };
 
-
-const updateVendorTask =  async (req, res) => {
-  const { label } = req.body;
+const fetchPersonalTask = async (req, res) => {
+  const userId = req.user.id;
+  const { eventId } = req.params;
   try {
-    const task = await VendorTask.findByIdAndUpdate(
-      req.params.id,
-      { label },
-      { new: true }
-    );
-    res.status(200).json({ status: true, task });
+    const personalTask = await Checklist.find({
+      eventId,
+      userId,
+      isPersonal: true,
+    });
+    res.status(200).json({ status: true, personalTask });
   } catch (err) {
     res.status(500).json({ status: false, error: err.message });
   }
 };
 
-
-const deleteVendorTask = async (req, res) => {
-  try {
-    await VendorTask.findByIdAndDelete(req.params.id);
-    res.status(200).json({ status: true, message: 'Deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ status: false, error: err.message });
-  }
-};
-
-
-const createPersonalTask = async (req, res) => {
+const addPersonalTask = async (req, res) => {
   try {
     const { label } = req.body;
+    const { eventId } = req.params;
     const userId = req.user.id;
-    console.log("Creating personal task for user:", req.user);
 
     const newTask = await Checklist.create({
       label,
+      eventId,
       userId,
       isPersonal: true,
     });
 
-    res.json({ status: true, task: newTask });
+    res.json({ status: true, newTask });
   } catch (err) {
-    console.error('Failed to add personal task:', err);
-    res.status(500).json({ status: false, message: 'Failed to add task' });
+    res.status(500).json({ status: false, message: "Failed to add task" });
   }
 };
 
-
-const getPersonalTask = async (req, res) => {
-  const userId = req.user.id;
-  console.log("Creating personal task for user:", req.user);
-
+const deleteTask = async (req, res) => {
   try {
-    const tasks = await Checklist.find({ userId, isPersonal: true });
-    res.status(200).json({ status: true, tasks });
+    await Checklist.findByIdAndDelete(req.params.taskId);
+    res.status(200).json({ status: true, message: "Deleted successfully" });
   } catch (err) {
     res.status(500).json({ status: false, error: err.message });
   }
 };
 
-
-
-module.exports = {getAcceptedVendorsController ,newVendorTask,
-    getAllTaskVendorAndEvent,toggleVendorTaskCompletion,updateVendorTask,
-    deleteVendorTask,createPersonalTask,getPersonalTask
+module.exports = {
+  fetchAcceptedVendors,
+  addVendorTask,
+  fetchVendorTask,
+  toggleTask,
+  updateTask,
+  deleteTask,
+  addPersonalTask,
+  fetchPersonalTask,
 };

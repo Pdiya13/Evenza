@@ -8,5 +8,4 @@ router.get('/select-vendor', isLoggedIn, selectVendorController);
 router.post('/query-vendor', isLoggedIn, queryController);
 router.get("/vendor-itemized-budgets", isLoggedIn, getVendorItemizedBudgets);
 
-
 module.exports = router;

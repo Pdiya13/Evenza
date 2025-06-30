@@ -50,7 +50,7 @@ function App() {
             <Route path="/event/:eventId/vendor/:vendorId/query" element={<QueryVendor />} />
           </Route>
 
-          <Route path="/manage/:id" element={<EventLayout />}>
+          <Route path="/manage/:eventId" element={<EventLayout />}>
             <Route index element={<Navigate to="select-vendor" replace />} />
             <Route path="budget" element={<BudgetManagement />} />
             <Route path="guests" element={<GuestManagement />} />
