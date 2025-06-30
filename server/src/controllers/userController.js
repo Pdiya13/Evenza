@@ -1,4 +1,5 @@
 const vendorModel = require("../models/vendor");
+const { vendor_budgetModel } = require("../models/vendor_budget");
 const vendor_eventModel = require("../models/vendor_event");
 
 const selectVendorController = async (req, res) => {
@@ -59,4 +60,30 @@ const queryController = async (req, res) => {
   }
 };
 
-module.exports = { selectVendorController, queryController };
+const getVendorItemizedBudgets = async (req, res) => {
+  try {
+    const { eventId } = req.query;
+    console.log("event id ", eventId);
+
+    const data = await vendor_budgetModel.find({ eventId })
+      .populate("vendorId", "name category");
+
+      console.log("data", data);
+
+    const response = data.map(doc => ({
+      vendorId: doc.vendorId._id,
+      name: doc.vendorId.name,
+      category: doc.vendorId.category,
+      items: doc.items,
+      totalBudget: doc.budget,
+    }));
+
+    res.status(200).json({ success: true, data: response });
+
+  } catch (error) {
+    console.error("Error fetching vendor itemized budgets:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+module.exports = { selectVendorController, queryController,getVendorItemizedBudgets};
