@@ -116,90 +116,90 @@ useEffect(() => {
       </div>
 
       {/* Vendor wise */}
-<div className="mt-12">
-  <h2 className="text-xl font-semibold mb-4">Vendor Itemized Breakdown</h2>
+      <div className="mt-12">
+        <h2 className="text-3xl font-semibold mb-8">Vendor Itemized Breakdown</h2>
 
-  {vendorItemized.length === 0 ? (
-    <p className="text-gray-400">No itemized breakdown available.</p>
-  ) : (
-    vendorItemized.map(({ vendorId, name, category, items, totalBudget }) => {
-      const totalSpent = items.reduce((sum, item) => sum + item.cost, 0);
-      const remaining = totalBudget - totalSpent;
+        {vendorItemized.length === 0 ? (
+          <p className="text-gray-400">No itemized breakdown available.</p>
+        ) : (
+          vendorItemized.map(({ vendorId, name, category, items, totalBudget }) => {
+            const totalSpent = items.reduce((sum, item) => sum + item.cost, 0);
+            const remaining = totalBudget - totalSpent;
 
-      return (
-        <div
-          key={vendorId}
-          className="mb-10 bg-[#0d1117] rounded-xl shadow-lg border border-gray-700"
-        >
-          {/* Vendor Header */}
-          <div className="p-5 border-b border-gray-600">
-            <h3 className="text-2xl font-bold text-white">{name}</h3>
-            <p className="text-sm text-gray-400">{category}</p>
-          </div>
-
-          {/* Budget Summary and Speedometer */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5">
-            {/* Summary Boxes */}
-            <div className="space-y-4">
-              <div className="bg-[#0d1117] p-4 rounded-lg shadow-md hover:shadow-blue-500/30 transition border border-gray-700">
-                <h4 className="text-sm font-medium text-gray-300 mb-1">Total Budget</h4>
-                <p className="text-2xl font-semibold text-blue-300">${totalBudget.toLocaleString()}</p>
-              </div>
-
-              <div className="bg-[#0d1117] p-4 rounded-lg shadow-md border border-gray-700">
-                <h4 className="text-sm font-medium text-gray-300 mb-1">Total Spent</h4>
-                <p className="text-xl font-semibold">${totalSpent.toLocaleString()}</p>
-              </div>
-
+            return (
               <div
-                className={`p-4 rounded-lg shadow-md border border-gray-700 ${
-                  remaining < 0 ? 'bg-red-700 text-red-100' : 'bg-green-700 text-green-100'
-                }`}
+                key={vendorId}
+                className="mb-10 bg-[#0d1117] rounded-xl shadow-lg border border-gray-700"
               >
-                <h4 className="text-sm font-medium mb-1">Remaining</h4>
-                <p className="text-xl font-semibold">${remaining.toLocaleString()}</p>
+                {/* Vendor Header */}
+                <div className="p-5 border-b border-gray-600">
+                  <h3 className="text-2xl font-bold text-white">{name}</h3>
+                  <p className="text-sm text-gray-400">{category}</p>
+                </div>
+
+                {/* Budget Summary and Speedometer */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5">
+                  {/* Summary Boxes */}
+                  <div className="space-y-4">
+                    <div className="bg-[#0d1117] p-4 rounded-lg shadow-md hover:shadow-blue-500/30 transition border border-gray-700">
+                      <h4 className="text-sm font-medium text-gray-300 mb-1">Total Budget</h4>
+                      <p className="text-2xl font-semibold text-blue-300">${totalBudget.toLocaleString()}</p>
+                    </div>
+
+                    <div className="bg-[#0d1117] p-4 rounded-lg shadow-md border border-gray-700">
+                      <h4 className="text-sm font-medium text-gray-300 mb-1">Total Spent</h4>
+                      <p className="text-xl font-semibold">${totalSpent.toLocaleString()}</p>
+                    </div>
+
+                    <div
+                      className={`p-4 rounded-lg shadow-md border border-gray-700 ${
+                        remaining < 0 ? 'bg-red-700 text-red-100' : 'bg-green-700 text-green-100'
+                      }`}
+                    >
+                      <h4 className="text-sm font-medium mb-1">Remaining</h4>
+                      <p className="text-xl font-semibold">${remaining.toLocaleString()}</p>
+                    </div>
+                  </div>
+
+                  {/* Speedometer */}
+                  <div className="flex justify-center items-center p-4 border border-gray-700 rounded-lg bg-[#0d1117]">
+                    <ReactSpeedometer
+                      maxValue={totalBudget}
+                      value={totalSpent}
+                      needleColor="white"
+                      startColor="green"
+                      endColor="red"
+                      segments={10}
+                      currentValueText={`Spent: $${totalSpent.toLocaleString()}`}
+                      textColor="white"
+                      height={200}
+                      ringWidth={30}
+                      needleTransition="easeElastic"
+                      needleTransitionDuration={2000}
+                    />
+                  </div>
+                </div>
+
+                {/* Cost Breakdown */}
+                <div className="px-5 pb-5">
+                  <h4 className="text-lg font-semibold mb-3 mt-2">Cost Breakdown</h4>
+                  <ul className="divide-y divide-gray-700 rounded-lg overflow-hidden bg-[#0d1117] shadow-md">
+                    {items.map(({ category, cost }, index) => (
+                      <li
+                        key={index}
+                        className="flex justify-between items-center px-4 py-3 hover:bg-[#21262d] transition-colors"
+                      >
+                        <span className="text-base">{category}</span>
+                        <span className="text-green-300 font-medium">${cost.toLocaleString()}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
-            </div>
-
-            {/* Speedometer */}
-            <div className="flex justify-center items-center p-4 border border-gray-700 rounded-lg bg-[#0d1117]">
-              <ReactSpeedometer
-                maxValue={totalBudget}
-                value={totalSpent}
-                needleColor="white"
-                startColor="green"
-                endColor="red"
-                segments={10}
-                currentValueText={`Spent: $${totalSpent.toLocaleString()}`}
-                textColor="white"
-                height={200}
-                ringWidth={30}
-                needleTransition="easeElastic"
-                needleTransitionDuration={2000}
-              />
-            </div>
-          </div>
-
-          {/* Cost Breakdown */}
-          <div className="px-5 pb-5">
-            <h4 className="text-lg font-semibold mb-3 mt-2">Cost Breakdown</h4>
-            <ul className="divide-y divide-gray-700 rounded-lg overflow-hidden bg-[#0d1117] shadow-md">
-              {items.map(({ category, cost }, index) => (
-                <li
-                  key={index}
-                  className="flex justify-between items-center px-4 py-3 hover:bg-[#21262d] transition-colors"
-                >
-                  <span className="text-base">{category}</span>
-                  <span className="text-green-300 font-medium">${cost.toLocaleString()}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      );
-    })
-  )}
-</div>
+            );
+          })
+        )}
+      </div>
 
 
     </div>
