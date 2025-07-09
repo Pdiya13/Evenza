@@ -1,5 +1,5 @@
 const vendorModel = require("../models/vendor");
-const { vendor_budgetModel } = require("../models/vendor_budget");
+const vendor_budgetModel = require("../models/vendor_budget");
 const vendor_eventModel = require("../models/vendor_event");
 
 const selectVendorController = async (req, res) => {
@@ -10,7 +10,7 @@ const selectVendorController = async (req, res) => {
     const [availableVendors, vendorQueries] = await Promise.all([
       vendorModel.find({}),
       vendor_eventModel
-        .find({ userId,eventId })
+        .find({ userId, eventId })
         .populate("vendorId", "name category price")
         .populate("eventId", "title"),
     ]);
@@ -22,11 +22,11 @@ const selectVendorController = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching vendors or queries:", error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Error fetching vendor data",
     });
-  } 
+  }
 };
 
 const queryController = async (req, res) => {
@@ -35,10 +35,9 @@ const queryController = async (req, res) => {
     const { eventId, vendorId, budget, eventDate } = req.body;
 
     if (!vendorId || !eventId || !budget || !eventDate) {
-      return res
-        .status(400)
-        .json({ success: false, message: "All fields are required" });
+      return res.status(400).json({ success: false, message: "All fields are required" });
     }
+
     const newVendorEvent = new vendor_eventModel({
       vendorId,
       eventId,
@@ -46,10 +45,12 @@ const queryController = async (req, res) => {
       budget,
       eventDate,
     });
+
     await newVendorEvent.save();
+
     return res.status(201).json({
       success: true,
-      message: "query sent successfully",
+      message: "Query sent successfully",
       data: newVendorEvent,
     });
   } catch (err) {
@@ -61,29 +62,32 @@ const queryController = async (req, res) => {
   }
 };
 
-const getVendorItemizedBudgets = async (req, res) => {
+const getVendorBudgetsForEvent = async (req, res) => {
   try {
     const { eventId } = req.query;
-    console.log("event id ", eventId);
+    if (!eventId) return res.status(400).json({ success: false, message: "eventId required" });
 
-    const data = await vendor_budgetModel.find({ eventId })
-      .populate("vendorId", "name category");
+    const vendorEvents = await vendor_eventModel.find({ eventId }).populate('vendorId', 'name category');
 
-    const response = data.map(doc => ({
-      vendorId: doc.vendorId._id,
-      name: doc.vendorId.name,
-      category: doc.vendorId.category,
-      items: doc.items,
-      totalBudget: doc.budget,
-    }));
-    res.status(200).json({ success: true, data: response });
+    const result = await Promise.all(
+      vendorEvents.map(async (ve) => {
+        const vendorBudget = await vendor_budgetModel.findOne({ vendorId: ve.vendorId._id, eventId });
+        return {
+          vendorId: ve.vendorId._id,
+          name: ve.vendorId.name,
+          category: ve.vendorId.category || "",
+          totalBudget: ve.budget || 0,
+          items: vendorBudget ? vendorBudget.items : [],
+        };
+      })
+    );
 
-  } catch (error) {
-    console.error("Error fetching vendor itemized budgets:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    return res.status(200).json({ success: true, data: result });
+  } catch (err) {
+    console.error("Error fetching vendor budgets for event:", err);
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };
-
 
 const getUserBudget = async (req, res) => {
   try {
@@ -104,7 +108,7 @@ const getUserBudget = async (req, res) => {
       return res.status(200).json({ success: true, data: { budget: 0, items: [] } });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       data: {
         budget: userBudgetDoc.budget,
@@ -113,7 +117,7 @@ const getUserBudget = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching user budget:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
@@ -147,12 +151,17 @@ const saveUserBudget = async (req, res) => {
       await userBudgetDoc.save();
     }
 
-    res.status(200).json({ success: true, message: "Budget saved", data: userBudgetDoc });
+    return res.status(200).json({ success: true, message: "Budget saved", data: userBudgetDoc });
   } catch (error) {
     console.error("Error saving user budget:", error);
-    res.status(500).json({ success: false, message: "Server error" });
+    return res.status(500).json({ success: false, message: "Server error" });
   }
 };
 
-
-module.exports = { selectVendorController, queryController,getVendorItemizedBudgets, getUserBudget,saveUserBudget,};
+module.exports = {
+  selectVendorController,
+  queryController,
+  getVendorBudgetsForEvent,
+  getUserBudget,
+  saveUserBudget,
+};

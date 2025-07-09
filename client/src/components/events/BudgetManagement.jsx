@@ -41,7 +41,7 @@ export default function BudgetManagement() {
       if (!eventId) return;
       try {
         const res = await axios.get(
-          "http://localhost:8080/api/user/vendor-itemized-budgets",
+          "http://localhost:8080/api/user/vendor-budgets",
           {
             params: { eventId },
             headers: { authorization: token },
