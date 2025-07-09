@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 import ReactSpeedometer from 'react-d3-speedometer';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -7,56 +7,78 @@ import axios from 'axios';
 export default function BudgetManagement() {
   const { eventId } = useParams();
 
-  const [budget, setBudget] = useState(0);
-  const [costItems, setCostItems] = useState([]);
+  const [budget, setBudget] = useState(0);       // fixed total budget
+  const [costItems, setCostItems] = useState([]); // detailed cost items
   const [newCategory, setNewCategory] = useState('');
   const [newCost, setNewCost] = useState('');
 
+  // Calculate total spent as sum of cost items
   const totalSpent = costItems.reduce((sum, item) => sum + item.cost, 0);
   const remaining = budget - totalSpent;
 
-useEffect(() => {
-  const fetchBudget = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(
-        `http://localhost:8080/api/vendor/getBudget?eventId=${eventId}`, 
-        { headers: { authorization: token } }
-      );
+  useEffect(() => {
+    const fetchBudget = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(
+          `http://localhost:8080/api/vendor/getCombinedBudget?eventId=${eventId}`,
+          { headers: { authorization: token } }
+        );
 
-      if (response.data.status) {
-        setBudget(response.data.budget);      // ✅ total budget
-        setCostItems(response.data.items);    // ✅ item breakdown
+        if (response.data.status) {
+          setBudget(response.data.totalBudget);    // fixed total budget from vendor_eventModel
+          setCostItems(response.data.items);       // detailed cost items from vendor_budgetModel
+        }
+      } catch (err) {
+        console.error('Failed to fetch budget:', err);
       }
-    } catch (err) {
-      console.error('Failed to fetch budget:', err);
-    }
-  };
+    };
 
-  fetchBudget();
-}, [eventId]);
-
-
+    fetchBudget();
+  }, [eventId]);
 
   const addCostItem = async () => {
     if (newCategory.trim() === '' || isNaN(newCost) || newCost === '') return;
+
+    const costValue = parseFloat(newCost);
+
+    // Prevent adding if it exceeds the fixed total budget
+    if (totalSpent + costValue > budget) {
+      alert("Cannot add cost item. Total spent would exceed the total budget.");
+      return;
+    }
 
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
         'http://localhost:8080/api/vendor/addCostItem',
-        { eventId, category: newCategory.trim(), cost: parseFloat(newCost) },
+        { eventId, category: newCategory.trim(), cost: costValue },
         { headers: { authorization: token } }
       );
 
       if (response.data.status) {
-        setBudget(response.data.budget);
         setCostItems(response.data.items);
         setNewCategory('');
         setNewCost('');
       }
     } catch (err) {
       console.error('Failed to add cost item:', err);
+    }
+  };
+
+  const deleteCostItem = async (itemId) => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.delete(
+        `http://localhost:8080/api/vendor/deleteCostItem/${eventId}/${itemId}`,
+        { headers: { authorization: token } }
+      );
+
+      if (response.data.status) {
+        setCostItems(response.data.items);
+      }
+    } catch (err) {
+      console.error("Failed to delete cost item:", err);
     }
   };
 
@@ -70,10 +92,9 @@ useEffect(() => {
         <div className="space-y-4">
           <div className="p-4 bg-[#0d1117] rounded-lg shadow-md hover:shadow-blue-500/30 transition">
             <h2 className="text-lg font-semibold mb-1">Total Budget</h2>
-           <p className="text-2xl font-bold text-blue-300">
-  ${budget?.toLocaleString?.() || '0'}
-</p>
-
+            <p className="text-2xl font-bold text-blue-300">
+              ${budget?.toLocaleString?.() || '0'}
+            </p>
           </div>
           <div className="p-4 bg-[#0d1117] rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-1">Total Spent</h2>
@@ -92,7 +113,7 @@ useEffect(() => {
         <div className="p-4 bg-[#0d1117] rounded-lg shadow-md text-center flex flex-col justify-center items-center border border-gray-700">
           <h2 className="text-lg font-semibold mb-4">Budget Utilization</h2>
           <ReactSpeedometer
-            maxValue={budget || 100} // avoid zero max
+            maxValue={budget || 100}
             value={totalSpent}
             needleColor="white"
             startColor="green"
@@ -140,7 +161,16 @@ useEffect(() => {
               className="flex justify-between items-center px-4 py-3 hover:bg-[#21262d] transition-colors"
             >
               <span className="text-base text-white">{category}</span>
-              <span className="font-medium text-base text-white">${cost.toLocaleString()}</span>
+              <span className="font-medium text-base text-white flex items-center gap-4">
+                ${cost.toLocaleString()}
+                <button
+                  onClick={() => deleteCostItem(_id)}
+                  className="text-red-500 hover:text-red-700 transition"
+                  title="Delete cost item"
+                >
+                  <FaTrash />
+                </button>
+              </span>
             </li>
           ))}
         </ul>

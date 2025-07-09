@@ -143,8 +143,42 @@ const getEventBudget = async (req, res) => {
 };
 
 
+const getCombinedEventBudget = async (req, res) => {
+  try {
+    const vendorId = req.user.id;       // from auth middleware
+    const { eventId } = req.query;
 
-// Add a cost item to budget & update total budget
+    if (!eventId) {
+      return res.status(400).json({ status: false, message: "EventId is required" });
+    }
+
+    // Get fixed initial budget for event assigned to vendor
+    const vendorEvent = await vendor_eventModel.findOne({ vendorId, eventId });
+    if (!vendorEvent) {
+      return res.status(404).json({ status: false, message: "Vendor event not found" });
+    }
+    const initialBudget = vendorEvent.budget;
+
+    // Get cost items & detailed budget additions (sum of cost items)
+    const vendorBudget = await vendor_budgetModel.findOne({ vendorId, eventId });
+    const detailedBudget = vendorBudget ? vendorBudget.budget : 0;   // sum of cost items
+    const items = vendorBudget ? vendorBudget.items : [];
+
+    // totalBudget = fixed initial budget, NOT adding detailedBudget (spent)
+    // if you want, you can also send totalSpent (detailedBudget)
+    return res.status(200).json({
+      status: true,
+      totalBudget: initialBudget,
+      totalSpent: detailedBudget,
+      items,
+    });
+  } catch (err) {
+    console.error("Error fetching combined budget:", err);
+    return res.status(500).json({ status: false, message: "Server error" });
+  }
+};
+
+// Add a cost item (but don't increase fixed budget)
 const addCostItem = async (req, res) => {
   try {
     const vendorId = req.user.id;
@@ -154,33 +188,66 @@ const addCostItem = async (req, res) => {
       return res.status(400).json({ status: false, message: "Missing required fields" });
     }
 
+    // Find or create vendor_budget document
     let budgetDoc = await vendor_budgetModel.findOne({ vendorId, eventId });
 
     if (!budgetDoc) {
-  const userId = req.user.id;  
-
-  budgetDoc = new vendor_budgetModel({
-    userId,       
-    vendorId,
-    eventId,
-    budget: cost,
-    items: [{ category, cost }],
-  });
+      budgetDoc = new vendor_budgetModel({
+        vendorId,
+        eventId,
+        budget: cost,   // totalSpent (sum of costs)
+        items: [{ category, cost }],
+      });
     } else {
-      // Add new item & increase budget
       budgetDoc.items.push({ category, cost });
-      budgetDoc.budget += cost;
+      budgetDoc.budget += cost;   // update total spent, NOT total budget
     }
 
     await budgetDoc.save();
 
-    return res.status(200).json({ status: true, budget: budgetDoc.budget, items: budgetDoc.items });
+    return res.status(200).json({ status: true, items: budgetDoc.items });
   } catch (err) {
     console.error("Error adding cost item:", err);
     return res.status(500).json({ status: false, message: "Server error" });
   }
 };
 
+const deleteCostItem = async (req, res) => {
+  try {
+    const vendorId = req.user.id;
+    const { eventId, itemId } = req.params;
+
+    if (!eventId || !itemId) {
+      return res.status(400).json({ status: false, message: "EventId and ItemId are required" });
+    }
+
+    const budgetDoc = await vendor_budgetModel.findOne({ vendorId, eventId });
+    if (!budgetDoc) {
+      return res.status(404).json({ status: false, message: "Budget document not found" });
+    }
+
+    // Find the item index in array
+    const itemIndex = budgetDoc.items.findIndex(item => item._id.toString() === itemId);
+    if (itemIndex === -1) {
+      return res.status(404).json({ status: false, message: "Cost item not found" });
+    }
+
+    // Subtract cost from total budget
+    const itemCost = budgetDoc.items[itemIndex].cost;
+    budgetDoc.budget -= itemCost;
+
+    // Remove item from items array
+    budgetDoc.items.splice(itemIndex, 1);
+
+    await budgetDoc.save();
+
+    return res.status(200).json({ status: true, items: budgetDoc.items });
+  } catch (err) {
+    console.error("Error deleting cost item:", err);
+    return res.status(500).json({ status: false, message: "Server error" });
+  }
+};
 
 
-module.exports = { queryVController, queryHandleController,getVendorChecklistTasks , fetchVendorEvents,getEventBudget,addCostItem};
+
+module.exports = { queryVController, queryHandleController,getVendorChecklistTasks , fetchVendorEvents,getEventBudget,addCostItem,getCombinedEventBudget,deleteCostItem};
