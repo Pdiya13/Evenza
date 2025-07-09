@@ -14,7 +14,6 @@ export default function BudgetManagement() {
 
   const token = localStorage.getItem("token");
 
-  // Fetch user budget and cost items on load
   useEffect(() => {
     const fetchUserBudget = async () => {
       if (!eventId) return;
@@ -35,7 +34,6 @@ export default function BudgetManagement() {
     fetchUserBudget();
   }, [eventId, token]);
 
-  // Fetch vendor itemized budgets (your existing code)
   useEffect(() => {
     const fetchVendorItemizedBudgets = async () => {
       if (!eventId) return;
@@ -58,7 +56,6 @@ export default function BudgetManagement() {
     fetchVendorItemizedBudgets();
   }, [eventId, token]);
 
-  // Save user budget and cost items to DB
   const saveUserBudget = async (newBudget, newItems) => {
     try {
       await axios.post(
@@ -77,13 +74,11 @@ export default function BudgetManagement() {
     }
   };
 
-  // When budget changes, save
   const handleBudgetChange = (val) => {
     setBudget(val);
     saveUserBudget(val, costItems);
   };
 
-  // Add cost item and save
   const addCostItem = () => {
     if (!newCategory.trim() || !newCost) return;
     const costValue = parseFloat(newCost);
@@ -96,7 +91,6 @@ export default function BudgetManagement() {
     saveUserBudget(budget, updatedItems);
   };
 
-  // Remove cost item and save
   const removeCostItem = (id) => {
     const updatedItems = costItems.filter((item) => item.id !== id);
     setCostItems(updatedItems);
@@ -109,7 +103,6 @@ export default function BudgetManagement() {
 
   return (
     <div className="min-h-screen bg-[#161B22] text-white px-6 py-8 max-w-6xl mx-auto font-sans text-base">
-      {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">Budget Management</h1>
         <button className="px-5 py-2 text-sm rounded border border-blue-500 text-blue-400 hover:text-white hover:bg-blue-500 transition-all duration-300 shadow-md hover:shadow-blue-500/40">
@@ -117,7 +110,6 @@ export default function BudgetManagement() {
         </button>
       </div>
 
-      {/* User Input for Budget */}
       <div className="mb-8">
         <label className="block mb-2 text-lg font-semibold" htmlFor="budget-input">
           Enter Your Total Budget:
@@ -133,7 +125,7 @@ export default function BudgetManagement() {
         />
       </div>
 
-      {/* User Input to Add Cost Breakdown Items */}
+
       <div className="mb-10">
         <h2 className="text-xl font-semibold mb-4">Add Cost Breakdown Item</h2>
         <div className="flex flex-col sm:flex-row gap-4 max-w-md">
@@ -161,23 +153,21 @@ export default function BudgetManagement() {
         </div>
       </div>
 
-      {/* Summary and Speedometer */}
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-        {/* Budget Summary */}
+  
         <div className="space-y-4">
-          {/* Total Budget */}
+  
           <div className="p-4 bg-[#0d1117] rounded-lg shadow-md hover:shadow-blue-500/30 transition">
             <h2 className="text-lg font-semibold mb-1">Total Budget</h2>
             <p className="text-2xl font-bold text-blue-300">${budget.toLocaleString()}</p>
           </div>
 
-          {/* Total Spent */}
           <div className="p-4 bg-[#0d1117] rounded-lg shadow-md">
             <h2 className="text-lg font-semibold mb-1">Total Spent</h2>
             <p className="text-xl font-bold">${totalSpent.toLocaleString()}</p>
           </div>
 
-          {/* Remaining */}
           <div
             className={`p-4 rounded-lg shadow-md transition ${
               remaining < 0 ? "bg-red-700 text-red-100" : "bg-green-700 text-green-100"
@@ -188,7 +178,6 @@ export default function BudgetManagement() {
           </div>
         </div>
 
-        {/* Speedometer */}
         <div className="p-4 bg-[#0d1117] rounded-lg shadow-md text-center flex flex-col justify-center items-center border border-gray-700">
           <h2 className="text-lg font-semibold mb-4">Budget Utilization</h2>
           <ReactSpeedometer
@@ -208,7 +197,6 @@ export default function BudgetManagement() {
         </div>
       </div>
 
-      {/* Cost Breakdown List */}
       <div>
         <h2 className="text-xl font-semibold mb-4">Cost Breakdown</h2>
         {costItems.length === 0 ? (
@@ -235,7 +223,6 @@ export default function BudgetManagement() {
         )}
       </div>
 
-      {/* Vendor wise */}
       <div className="mt-12">
         <h2 className="text-3xl font-semibold mb-8">Vendor Itemized Breakdown</h2>
 
@@ -251,15 +238,15 @@ export default function BudgetManagement() {
                 key={vendorId}
                 className="mb-10 bg-[#0d1117] rounded-xl shadow-lg border border-gray-700"
               >
-                {/* Vendor Header */}
+
                 <div className="p-5 border-b border-gray-600">
                   <h3 className="text-2xl font-bold text-white">{name}</h3>
                   <p className="text-sm text-gray-400">{category}</p>
                 </div>
 
-                {/* Budget Summary and Speedometer */}
+        
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-5">
-                  {/* Summary Boxes */}
+             
                   <div className="space-y-4">
                     <div className="bg-[#0d1117] p-4 rounded-lg shadow-md hover:shadow-blue-500/30 transition border border-gray-700">
                       <h4 className="text-sm font-medium text-gray-300 mb-1">Total Budget</h4>
@@ -283,7 +270,7 @@ export default function BudgetManagement() {
                     </div>
                   </div>
 
-                  {/* Speedometer */}
+  
                   <div className="flex justify-center items-center p-4 border border-gray-700 rounded-lg bg-[#0d1117]">
                     <ReactSpeedometer
                       maxValue={totalBudget}
@@ -302,7 +289,7 @@ export default function BudgetManagement() {
                   </div>
                 </div>
 
-                {/* Cost Breakdown */}
+                
                 <div className="px-5 pb-5">
                   <h4 className="text-lg font-semibold mb-3 mt-2">Cost Breakdown</h4>
                   <ul className="divide-y divide-gray-700 rounded-lg overflow-hidden bg-[#0d1117] shadow-md">
