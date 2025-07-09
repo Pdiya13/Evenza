@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-const Schema = mongoose.Schema;
 
-const vendorBudgetSchema = new Schema({
+const vendorBudgetSchema = new mongoose.Schema({
   eventId: {
     type: ObjectId,
     ref: "eventModel",
@@ -11,16 +10,15 @@ const vendorBudgetSchema = new Schema({
   vendorId: {
     type: ObjectId,
     ref: "vendorModel",
-    required: false, 
+    required: false,
   },
   userId: {
     type: ObjectId,
     ref: "userModel",
-    required: true,
   },
   isVendor: {
     type: Boolean,
-    default: true, 
+    default: true,
   },
   budget: {
     type: Number,
@@ -34,5 +32,4 @@ const vendorBudgetSchema = new Schema({
   ],
 }, { timestamps: true });
 
-const vendor_budgetModel = mongoose.model('vendor_budget', vendorBudgetSchema);
-module.exports = { vendor_budgetModel };
+module.exports = mongoose.model('vendor_budget', vendorBudgetSchema);

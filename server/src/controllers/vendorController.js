@@ -3,6 +3,7 @@ const vendorModel = require("../models/vendor");
 const VendorTask = require("../models/checklist");
 const Checklist = require('../models/checklist');
 const mongoose = require('mongoose');
+const vendor_budgetModel = require('../models/vendor_budget');
 
 const queryVController = async (req, res) => {
   try {
@@ -54,29 +55,28 @@ const queryHandleController = async (req, res) => {
     res.status(500).json({ message: "Error updating query status" });
   }
 };
-
 async function getVendorChecklistTasks(req, res) {
   try {
     console.log("VENDOR")
     const { eventId } = req.params;
     const vendorId = req.user.id;
-    // console.log(userId)
 
     if (!eventId || !vendorId) {
       return res.status(400).json({ status: false, message: "eventId and vendorId required" });
     }
 
     const tasks = await Checklist.find({ eventId, vendorId });
-    console.log(tasks);
     return res.json({ status: true, tasks });
   } catch (err) {
     console.error(err);
     res.status(500).json({ status: false, message: 'Server error' });
   }
-} 
+}
+
 const fetchVendorEvents = async (req, res) => {
   try {
     const vendorId = req.user.id;
+
     if (!vendorId) {
       return res.status(400).json({ status: false, message: "Vendor ID missing" });
     }
@@ -116,4 +116,71 @@ const fetchVendorEvents = async (req, res) => {
 };
 
 
-module.exports = { queryVController, queryHandleController,getVendorChecklistTasks , fetchVendorEvents};
+const getEventBudget = async (req, res) => {
+  try {
+    const vendorId = req.user.id;
+    const { eventId } = req.query;
+
+    if (!eventId) {
+      return res.status(400).json({ status: false, message: "EventId is required" });
+    }
+
+    const budgetDoc = await vendor_budgetModel.findOne({ vendorId, eventId });
+
+    if (!budgetDoc) {
+      return res.status(404).json({ status: false, message: "Budget not found" });
+    }
+
+    return res.status(200).json({
+      status: true,
+      budget: budgetDoc.budget,
+      items: budgetDoc.items || [], // ✅ send items array
+    });
+  } catch (err) {
+    console.error("Error fetching budget:", err);
+    return res.status(500).json({ status: false, message: "Server error" });
+  }
+};
+
+
+
+// Add a cost item to budget & update total budget
+const addCostItem = async (req, res) => {
+  try {
+    const vendorId = req.user.id;
+    const { eventId, category, cost } = req.body;
+
+    if (!eventId || !category || cost == null) {
+      return res.status(400).json({ status: false, message: "Missing required fields" });
+    }
+
+    let budgetDoc = await vendor_budgetModel.findOne({ vendorId, eventId });
+
+    if (!budgetDoc) {
+  const userId = req.user.id;  
+
+  budgetDoc = new vendor_budgetModel({
+    userId,       
+    vendorId,
+    eventId,
+    budget: cost,
+    items: [{ category, cost }],
+  });
+    } else {
+      // Add new item & increase budget
+      budgetDoc.items.push({ category, cost });
+      budgetDoc.budget += cost;
+    }
+
+    await budgetDoc.save();
+
+    return res.status(200).json({ status: true, budget: budgetDoc.budget, items: budgetDoc.items });
+  } catch (err) {
+    console.error("Error adding cost item:", err);
+    return res.status(500).json({ status: false, message: "Server error" });
+  }
+};
+
+
+
+module.exports = { queryVController, queryHandleController,getVendorChecklistTasks , fetchVendorEvents,getEventBudget,addCostItem};
