@@ -22,8 +22,8 @@ import EventLayout from './components/EventLayout';
 import SmartChecklist from './components/events/SmartChecklist';
 import QueryVendor from './components/events/QueryVendor';
 
-import SmartChecklist1 from './components/plan-vendors/SmartChecklist';
-import BudgetManagement1 from './components/plan-vendors/BudgetManagement';
+import SmartChecklist1 from './components/plan-vendors/smartChecklist';
+import BudgetManagement1 from './components/plan-vendors/budgetManagement';
 
 import VendorDashboard from './components/Home_vendor/VendorDashboard';
 import Payments from './components/Home_vendor/Payments';

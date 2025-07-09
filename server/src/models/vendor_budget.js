@@ -11,7 +11,16 @@ const vendorBudgetSchema = new Schema({
   vendorId: {
     type: ObjectId,
     ref: "vendorModel",
+    required: false, 
+  },
+  userId: {
+    type: ObjectId,
+    ref: "userModel",
     required: true,
+  },
+  isVendor: {
+    type: Boolean,
+    default: true, 
   },
   budget: {
     type: Number,
@@ -26,5 +35,4 @@ const vendorBudgetSchema = new Schema({
 }, { timestamps: true });
 
 const vendor_budgetModel = mongoose.model('vendor_budget', vendorBudgetSchema);
-
 module.exports = { vendor_budgetModel };

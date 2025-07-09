@@ -12,11 +12,12 @@ function SelectVendor() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get("http://localhost:8080/api/user/select-vendor", {
-          headers: {
-            Authorization: localStorage.getItem("token"),
-          },
+        const res = await axios.get(`http://localhost:8080/api/user/select-vendor?eventId=${eventId}`, {
+            headers: {
+              Authorization: localStorage.getItem("token"),
+            },
         });
+
 
         setVendors(res.data.availableVendors);
         setQueries(res.data.vendorQueries);
