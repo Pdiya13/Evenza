@@ -7,12 +7,11 @@ import axios from 'axios';
 export default function BudgetManagement() {
   const { eventId } = useParams();
 
-  const [budget, setBudget] = useState(0);       // fixed total budget
-  const [costItems, setCostItems] = useState([]); // detailed cost items
+  const [budget, setBudget] = useState(0);       
+  const [costItems, setCostItems] = useState([]); 
   const [newCategory, setNewCategory] = useState('');
   const [newCost, setNewCost] = useState('');
 
-  // Calculate total spent as sum of cost items
   const totalSpent = costItems.reduce((sum, item) => sum + item.cost, 0);
   const remaining = budget - totalSpent;
 
@@ -26,8 +25,8 @@ export default function BudgetManagement() {
         );
 
         if (response.data.status) {
-          setBudget(response.data.totalBudget);    // fixed total budget from vendor_eventModel
-          setCostItems(response.data.items);       // detailed cost items from vendor_budgetModel
+          setBudget(response.data.totalBudget);   
+          setCostItems(response.data.items);       
         }
       } catch (err) {
         console.error('Failed to fetch budget:', err);
@@ -42,7 +41,6 @@ export default function BudgetManagement() {
 
     const costValue = parseFloat(newCost);
 
-    // Prevent adding if it exceeds the fixed total budget
     if (totalSpent + costValue > budget) {
       alert("Cannot add cost item. Total spent would exceed the total budget.");
       return;

@@ -68,7 +68,8 @@ const getVendorBudgetsForEvent = async (req, res) => {
     if (!eventId) return res.status(400).json({ success: false, message: "eventId required" });
 
     const vendorEvents = await vendor_eventModel.find({ eventId }).populate('vendorId', 'name category');
-
+    console.log(vendorEvents);
+    
     const result = await Promise.all(
       vendorEvents.map(async (ve) => {
         const vendorBudget = await vendor_budgetModel.findOne({ vendorId: ve.vendorId._id, eventId });
@@ -110,7 +111,7 @@ const getUserBudget = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      data: {
+      data:{
         budget: userBudgetDoc.budget,
         items: userBudgetDoc.items,
       },

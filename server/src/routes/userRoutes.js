@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/select-vendor', isLoggedIn, selectVendorController);
 router.post('/query-vendor', isLoggedIn, queryController);
 router.get('/vendor-budgets', isLoggedIn, getVendorBudgetsForEvent);
-router.get('/user/my-budget', isLoggedIn, getUserBudget);
-router.post('/user/my-budget', isLoggedIn, saveUserBudget);
+router.get('/my-budget', isLoggedIn, getUserBudget);
+router.post('/my-budget', isLoggedIn, saveUserBudget);
 
 module.exports = router;
