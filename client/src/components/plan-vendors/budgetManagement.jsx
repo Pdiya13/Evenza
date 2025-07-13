@@ -7,13 +7,27 @@ import axios from 'axios';
 export default function BudgetManagement() {
   const { eventId } = useParams();
 
-  const [budget, setBudget] = useState(0);       
-  const [costItems, setCostItems] = useState([]); 
+  const [budget, setBudget] = useState(0);
+  const [costItems, setCostItems] = useState([]);
   const [newCategory, setNewCategory] = useState('');
   const [newCost, setNewCost] = useState('');
 
   const totalSpent = costItems.reduce((sum, item) => sum + item.cost, 0);
   const remaining = budget - totalSpent;
+
+  const calculateSegments = (max) => {
+    if (max <= 1000) return 10;
+    if (max <= 10000) return 5;
+    return 3;
+  };
+
+  const generateCustomStops = (max, segments) => {
+    const stops = [];
+    for (let i = 0; i <= segments; i++) {
+      stops.push(Number(((max / segments) * i).toFixed(2)));
+    }
+    return stops;
+  };
 
   useEffect(() => {
     const fetchBudget = async () => {
@@ -25,8 +39,8 @@ export default function BudgetManagement() {
         );
 
         if (response.data.status) {
-          setBudget(response.data.totalBudget);   
-          setCostItems(response.data.items);       
+          setBudget(response.data.totalBudget);
+          setCostItems(response.data.items);
         }
       } catch (err) {
         console.error('Failed to fetch budget:', err);
@@ -99,9 +113,7 @@ export default function BudgetManagement() {
             <p className="text-xl font-bold">${totalSpent.toLocaleString()}</p>
           </div>
           <div
-            className={`p-4 rounded-lg shadow-md transition ${
-              remaining < 0 ? 'bg-red-700 text-red-100' : 'bg-green-700 text-green-100'
-            }`}
+            className={`p-4 rounded-lg shadow-md transition ${remaining < 0 ? 'bg-red-700 text-red-100' : 'bg-green-700 text-green-100'}`}
           >
             <h2 className="text-lg font-semibold mb-1">Remaining</h2>
             <p className="text-xl font-bold">${remaining.toLocaleString()}</p>
@@ -110,20 +122,22 @@ export default function BudgetManagement() {
 
         <div className="p-4 bg-[#0d1117] rounded-lg shadow-md text-center flex flex-col justify-center items-center border border-gray-700">
           <h2 className="text-lg font-semibold mb-4">Budget Utilization</h2>
-          <ReactSpeedometer
-            maxValue={budget || 100}
-            value={totalSpent}
+          {budget>0 && <ReactSpeedometer
+            maxValue={budget}
+            value={Math.min(totalSpent , budget) || 1}
             needleColor="white"
             startColor="green"
             endColor="red"
-            segments={10}
+            segments={calculateSegments(budget || 100)}
+            customSegmentStops={generateCustomStops(budget||100, calculateSegments(budget || 100))}
             currentValueText={`Spent: $${totalSpent.toLocaleString()}`}
             textColor="white"
             height={200}
             ringWidth={30}
             needleTransition="easeElastic"
             needleTransitionDuration={3000}
-          />
+          />}
+          
         </div>
       </div>
 

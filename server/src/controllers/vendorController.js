@@ -152,21 +152,23 @@ const getCombinedEventBudget = async (req, res) => {
       return res.status(400).json({ status: false, message: "EventId is required" });
     }
 
-   
+    console.log("get combined budeget");
     const vendorEvent = await vendor_eventModel.findOne({ vendorId, eventId });
+
     if (!vendorEvent) {
       return res.status(404).json({ status: false, message: "Vendor event not found" });
     }
     const initialBudget = vendorEvent.budget;
+    console.log(vendorEvent);
 
     const vendorBudget = await vendor_budgetModel.findOne({ vendorId, eventId });
-    const detailedBudget = vendorBudget ? vendorBudget.budget : 0;   // sum of cost items
+    const totalSpent = vendorBudget ? vendorBudget.budget : 0;   
     const items = vendorBudget ? vendorBudget.items : [];
 
     return res.status(200).json({
       status: true,
       totalBudget: initialBudget,
-      totalSpent: detailedBudget,
+      totalSpent,
       items,
     });
   } catch (err) {
@@ -191,6 +193,7 @@ const addCostItem = async (req, res) => {
         vendorId,
         eventId,
         budget: cost,  
+        isVendor: true,
         items: [{ category, cost }],
       });
     } else {
