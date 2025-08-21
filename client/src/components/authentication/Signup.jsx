@@ -37,6 +37,7 @@ export default function Signup() {
           phone: formData.phone,
           role: 'user',
         });
+        console.log(res);
       } else {
         res = await axios.post('http://localhost:8080/api/auth/vendor/signup', {
           name: formData.name,

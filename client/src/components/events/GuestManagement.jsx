@@ -1,94 +1,184 @@
-import React, { useState } from 'react';
-import { FaPaperPlane } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
 
-const mockGoogleContacts = [
-  { id: 1, name: "Priya Singh", email: "priya@gmail.com" },
-  { id: 2, name: "Vikas Mehta", email: "vikas.m@gmail.com" },
-  { id: 3, name: "Kavita Rao", email: "kavita.rao@gmail.com" },
-  { id: 4, name: "Ankit Sinha", email: "ankit.sinha@gmail.com" },
-];
+const GuestManagement = () => {
+  const [contacts, setContacts] = useState([]);
+  const [token, setToken] = useState(localStorage.getItem("google_token") || null);
 
-export default function GuestManagement() {
   const [selectedContacts, setSelectedContacts] = useState([]);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [contacts, setContacts] = useState(mockGoogleContacts);
+  const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
 
-  const toggleContact = (id) => {
-    setSelectedContacts(prev =>
-      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.onload = () => console.log("Google Identity script loaded");
+    document.body.appendChild(script);
+  }, []);
+
+  useEffect(() => {
+    if (token) fetchContacts(token);
+  }, [token]);
+
+  const handleLoginClick = () => {
+    if (!window.google) return alert("Google API not loaded yet. Please wait.");
+
+    const tokenClient = window.google.accounts.oauth2.initTokenClient({
+      client_id: "415432642850-0nrkfkvssmr6ea175b87jnuk3at9bau3.apps.googleusercontent.com",
+      scope: "https://www.googleapis.com/auth/contacts.readonly",
+      callback: (tokenResponse) => {
+        const accessToken = tokenResponse.access_token;
+        setToken(accessToken);
+        localStorage.setItem("google_token", accessToken);
+        fetchContacts(accessToken);
+      },
+    });
+
+    tokenClient.requestAccessToken();
+  };
+
+  const fetchContacts = async (accessToken) => {
+    try {
+      const res = await fetch(
+        "https://people.googleapis.com/v1/people/me/connections?personFields=names,emailAddresses,phoneNumbers",
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      const data = await res.json();
+      setContacts(data.connections || []);
+    } catch (err) {
+      console.error("Error fetching contacts:", err);
+      localStorage.removeItem("google_token");
+      setToken(null);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("google_token");
+    setToken(null);
+    setContacts([]);
+    setSelectedContacts([]);
+    setMessage("");
+  };
+
+  const toggleContact = (phone) => {
+    setSelectedContacts((prev) =>
+      prev.includes(phone) ? prev.filter((p) => p !== phone) : [...prev, phone]
     );
   };
 
-  const handleGoogleLogin = () => {
-    setIsLoggedIn(true);
+  const sendWhatsApp = async () => {
+    if (selectedContacts.length === 0 || !message.trim()) {
+      alert("Select contacts and write a message.");
+      return;
+    }
+
+    setSending(true);
+
+    try {
+      
+      await fetch("/api/event/send-message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contacts: selectedContacts, message }),
+      });
+
+      selectedContacts.forEach((phone) => {
+        const waLink = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
+        window.open(waLink, "_blank");
+      });
+
+      alert("WhatsApp links opened successfully!");
+      setSelectedContacts([]);
+      setMessage("");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to send WhatsApp messages.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-[#171B22] text-[#C3D0E5] p-6">
-      {!isLoggedIn ? (
-        <div className="text-center bg-[#21262D] p-8 rounded-lg shadow-md max-w-md mx-auto">
-          <h2 className="text-3xl font-bold mb-4 text-white">Welcome to Guest Management</h2>
-          <p className="mb-6 text-gray-300">Sign in with Google to access your contact list</p>
-          <button
-            onClick={handleGoogleLogin}
-            className="mx-auto flex items-center justify-center gap-2 bg-emerald-400/20 hover:bg-emerald-400/30 text-emerald-200 border border-emerald-300/30 font-semibold py-2 px-5 rounded-full shadow-sm
-      transition duration-300 transform hover:-translate-y-0.5 active:scale-95 w-full sm:w-auto"
-            aria-label="Login with Google"
-          >
-            Login with Google
-          </button>
-        </div>
+    <div className="mt-12 p-6 rounded-xl shadow-xl border border-gray-700 bg-[#0D1117] font-poppins-custom">
+      <h2 className="text-2xl font-extrabold text-white mb-4 tracking-wide">
+        Google Contacts
+      </h2>
+      <p className="text-sm text-gray-400 mb-6 leading-relaxed">
+        Connect with your Google account to fetch your contacts.
+      </p>
+
+      {!token ? (
+        <button
+          onClick={handleLoginClick}
+          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition"
+        >
+          Login with Google
+        </button>
       ) : (
-        <div className="bg-[#0D1117] p-8 rounded-lg border border-gray-700">
-          <div className="flex items-center justify-between mb-6 ">
-            <div className="flex items-center gap-4">
-              <img
-                src="https://via.placeholder.com/50"
-                alt="User Avatar"
-                className="w-12 h-12 rounded-full border border-[#30363d]"
-              />
-              <div>
-                <h2 className="text-2xl font-bold">Welcome, Diya!</h2>
-                <p className="text-sm text-[#8B949E]">Manage your guest invitations</p>
-              </div>
-            </div>
-            <div className="bg-[#238636] text-white px-3 py-1 rounded-md text-sm font-medium">
-              Gemini AI Mailer Enabled
-            </div>
-          </div>
+        <div className="mt-6">
+          <button
+            onClick={handleLogout}
+            className="mb-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
+          >
+            Logout
+          </button>
 
-          <h3 className="text-lg font-semibold mb-4">Your Google Contacts</h3>
-          <ul className="space-y-3">
-            {contacts.map(contact => (
-              <li
-                key={contact.id}
-                className="flex justify-between items-center border border-[#30363d] bg-[#21262D] p-3 rounded hover:bg-[#2A2F37] transition"
-              >
-                <div>
-                  <p className="font-medium">{contact.name}</p>
-                  <p className="text-sm text-[#8B949E]">{contact.email}</p>
-                </div>
-                <input
-                  type="checkbox"
-                  className="w-5 h-5 accent-[#238636]"
-                  checked={selectedContacts.includes(contact.id)}
-                  onChange={() => toggleContact(contact.id)}
-                />
-              </li>
-            ))}
-          </ul>
+          <h3 className="text-xl text-white font-bold mb-4">Your Contacts</h3>
+          {contacts.length === 0 ? (
+            <p className="text-gray-400">No contacts found.</p>
+          ) : (
+            <ul className="space-y-3 max-h-80 overflow-y-auto">
+              {contacts.map((c, i) => {
+                const phone = c.phoneNumbers?.[0]?.value;
+                return (
+                  <li
+                    key={i}
+                    className="flex items-center justify-between bg-[#161B22] border border-gray-700 p-3 rounded-lg hover:bg-[#1E222B] transition"
+                  >
+                    <div>
+                      <span className="text-white font-medium">
+                        {c.names?.[0]?.displayName || "No Name"}
+                      </span>
+                      <br />
+                      <span className="text-gray-400 text-sm">
+                        {c.emailAddresses?.[0]?.value || "No Email"}
+                      </span>
+                      <br />
+                      <span className="text-gray-400 text-sm">
+                        {phone || "No Phone"}
+                      </span>
+                    </div>
+                    {phone && (
+                      <input
+                        type="checkbox"
+                        checked={selectedContacts.includes(phone)}
+                        onChange={() => toggleContact(phone)}
+                      />
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+
+          <textarea
+            className="w-full mt-4 p-3 rounded-lg bg-[#161B22] border border-gray-700 text-white"
+            placeholder="Write your message here..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
 
           <button
-            className="mt-6 flex items-center justify-center gap-2 bg-emerald-400/20 hover:bg-emerald-400/30 text-emerald-200 border border-emerald-300/30 font-semibold py-2 px-5 rounded-full shadow-sm
-                         transition duration-300 transform hover:-translate-y-0.5 active:scale-95 w-full sm:w-auto"
-            aria-label="Send Invitations"
+            onClick={sendWhatsApp}
+            disabled={sending}
+            className="mt-3 px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition disabled:opacity-50"
           >
-            <FaPaperPlane className="text-sm" />
-            Send Invitations via Gemini
+            {sending ? "Sending..." : "Send via WhatsApp"}
           </button>
         </div>
       )}
     </div>
-
   );
-}
+};
+
+export default GuestManagement;

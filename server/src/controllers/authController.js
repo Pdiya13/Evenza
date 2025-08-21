@@ -105,6 +105,7 @@ const vendorLoginController = async (req, res) => {
 
 const userSignupController = async (req, res) => {
   try {
+    console.log("enterr")
     const body = zod.object({
       email: zod.string().min(5).max(30).email(),
       password: zod.string().min(4).max(30),
@@ -116,6 +117,7 @@ const userSignupController = async (req, res) => {
     });
 
     const parsedBody = body.safeParse(req.body);
+    console.log(parsedBody.success);
     if (!parsedBody.success) {
       return res.status(400).json({
         status: false,
