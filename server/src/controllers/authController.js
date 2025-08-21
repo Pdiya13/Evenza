@@ -106,12 +106,12 @@ const vendorLoginController = async (req, res) => {
 const userSignupController = async (req, res) => {
   try {
     const body = zod.object({
-      email: zod.string().min(15).max(30).email(),
+      email: zod.string().min(5).max(30).email(),
       password: zod.string().min(4).max(30),
       phone: zod
         .string()
         .regex(/^\+?[0-9]{7,15}$/, "Invalid phone number format"),
-      name: zod.string().min(4).max(30),
+      name: zod.string().min(2).max(30),
       role: zod.literal("user"),
     });
 
@@ -169,8 +169,8 @@ const userSignupController = async (req, res) => {
 const vendorSignupController = async (req, res) => {
   try {
     const body = zod.object({
-      name: zod.string().min(4).max(30),
-      email: zod.string().min(15).max(30).email(),
+      name: zod.string().min(2).max(30),
+      email: zod.string().min(5).max(30).email(),
       password: zod.string().min(4).max(30),
       phone: zod
         .string()
