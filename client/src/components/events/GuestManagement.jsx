@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 
 const GuestManagement = () => {
   const [contacts, setContacts] = useState([]);
-  const [token, setToken] = useState(localStorage.getItem("google_token") || null);
-
-  const [selectedContacts, setSelectedContacts] = useState([]);
+  const [token, setToken] = useState(localStorage.getItem("google_token") || "");
+  const [sendingContact, setSendingContact] = useState(null); // track which contact is sending
   const [message, setMessage] = useState("");
-  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -56,45 +54,26 @@ const GuestManagement = () => {
     localStorage.removeItem("google_token");
     setToken(null);
     setContacts([]);
-    setSelectedContacts([]);
     setMessage("");
   };
 
-  const toggleContact = (phone) => {
-    setSelectedContacts((prev) =>
-      prev.includes(phone) ? prev.filter((p) => p !== phone) : [...prev, phone]
-    );
-  };
-
-  const sendWhatsApp = async () => {
-    if (selectedContacts.length === 0 || !message.trim()) {
-      alert("Select contacts and write a message.");
+  const sendWhatsApp = (phone) => {
+    if (!message.trim()) {
+      alert("Write a message before sending.");
       return;
     }
 
-    setSending(true);
-
+    setSendingContact(phone);
     try {
-      
-      await fetch("/api/event/send-message", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contacts: selectedContacts, message }),
-      });
-
-      selectedContacts.forEach((phone) => {
-        const waLink = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
-        window.open(waLink, "_blank");
-      });
-
-      alert("WhatsApp links opened successfully!");
-      setSelectedContacts([]);
-      setMessage("");
+      // open WhatsApp link in new tab
+      const waLink = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
+      window.open(waLink, "_blank");
+      alert(`WhatsApp link opened for ${phone}`);
     } catch (err) {
       console.error(err);
-      alert("Failed to send WhatsApp messages.");
+      alert("Failed to send WhatsApp message.");
     } finally {
-      setSending(false);
+      setSendingContact(null);
     }
   };
 
@@ -144,16 +123,16 @@ const GuestManagement = () => {
                         {c.emailAddresses?.[0]?.value || "No Email"}
                       </span>
                       <br />
-                      <span className="text-gray-400 text-sm">
-                        {phone || "No Phone"}
-                      </span>
+                      <span className="text-gray-400 text-sm">{phone || "No Phone"}</span>
                     </div>
                     {phone && (
-                      <input
-                        type="checkbox"
-                        checked={selectedContacts.includes(phone)}
-                        onChange={() => toggleContact(phone)}
-                      />
+                      <button
+                        onClick={() => sendWhatsApp(phone)}
+                        disabled={sendingContact === phone}
+                        className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition disabled:opacity-50"
+                      >
+                        {sendingContact === phone ? "Sending..." : "Send"}
+                      </button>
                     )}
                   </li>
                 );
@@ -167,14 +146,6 @@ const GuestManagement = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
-
-          <button
-            onClick={sendWhatsApp}
-            disabled={sending}
-            className="mt-3 px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition disabled:opacity-50"
-          >
-            {sending ? "Sending..." : "Send via WhatsApp"}
-          </button>
         </div>
       )}
     </div>
