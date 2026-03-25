@@ -73,7 +73,7 @@ function App() {
         </Route>
 
         <Route element={<PrivateRoute allowedRoles={['vendor']} />}>
-          <Route path="/event/:eventId" element={<PlanLayout />}>
+          <Route path="/:eventId" element={<PlanLayout />}>
             <Route path="vendor-checklist" element={<SmartChecklist1 />} />
             <Route path="vendor-budget" element={<BudgetManagement1 />} />
           </Route>

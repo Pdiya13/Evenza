@@ -74,6 +74,33 @@ const getEventsController = async (req, res) => {
   }
 };
 
+const getSingleEventController = async (req, res) => {
+  try {
+    const { eventId } = req.params;
+
+    const event = await eventModel.findById(eventId);
+
+    if (!event) {
+      return res.status(404).json({
+        status: false,
+        message: "Event not found",
+      });
+    }
+
+    res.json({
+      status: true,
+      event,
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      status: false,
+      message: "Server error",
+    });
+  }
+};
+
 const updateEventController = async (req, res) => {
   try {
     const { ename, location, date, type } = req.body;
@@ -193,6 +220,7 @@ module.exports = {
   updateEventController,
   createEventController,
   deleteEventController,
+  getSingleEventController,
   // fetchChecklistController,
   // addChecklistController,
   // toggleController,
