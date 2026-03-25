@@ -55,23 +55,60 @@ const queryHandleController = async (req, res) => {
     res.status(500).json({ message: "Error updating query status" });
   }
 };
-async function getVendorChecklistTasks(req, res) {
+
+const getVendorChecklistTasks = async (req, res) => {
   try {
-    console.log("VENDOR")
-    const { eventId } = req.params;
     const vendorId = req.user.id;
+    const { eventId } = req.params;
 
-    if (!eventId || !vendorId) {
-      return res.status(400).json({ status: false, message: "eventId and vendorId required" });
-    }
+    // Assigned by user
+    const assignedTasks = await Checklist.find({
+      eventId,
+      vendorId,
+      isPersonal: false,
+    });
 
-    const tasks = await Checklist.find({ eventId, vendorId });
-    return res.json({ status: true, tasks });
+    // Vendor personal
+    const personalTasks = await Checklist.find({
+      eventId,
+      vendorId,
+      isPersonal: true,
+    });
+
+    res.status(200).json({
+      status: true,
+      assignedTasks,
+      personalTasks,
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: false, message: 'Server error' });
+    console.error("Vendor checklist error:", err);
+    res.status(500).json({ status: false, error: err.message });
   }
-}
+};
+
+const addVendorPersonalTask = async (req, res) => {
+  try {
+    console.log("BODY:", req.body);
+    console.log("USER:", req.user);
+
+    const vendorId = req.user.id;
+    const { eventId } = req.params;
+    const { label } = req.body;
+
+    const task = await Checklist.create({
+      label,
+      eventId,
+      vendorId,
+      userId: null, 
+      isPersonal: true,
+    });
+
+    res.status(201).json({ status: true, task });
+  } catch (err) {
+    
+    res.status(500).json({ status: false, error: err.message });
+  }
+};
 
 const fetchVendorEvents = async (req, res) => {
   try {
@@ -245,4 +282,13 @@ const deleteCostItem = async (req, res) => {
 
 
 
-module.exports = { queryVController, queryHandleController,getVendorChecklistTasks , fetchVendorEvents,getEventBudget,addCostItem,getCombinedEventBudget,deleteCostItem};
+module.exports = { 
+    queryVController,
+    queryHandleController,
+    getVendorChecklistTasks ,
+    fetchVendorEvents,
+    getEventBudget,
+    addCostItem,
+    getCombinedEventBudget,
+    addVendorPersonalTask,
+    deleteCostItem};

@@ -313,7 +313,7 @@ function SmartChecklist() {
                       <input
                         type="checkbox"
                         checked={task.checked}
-                        onChange={() => toggleTask(task._id)}
+                        disabled 
                         className="form-checkbox h-5 w-5 text-green-400"
                       />
                       <input

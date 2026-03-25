@@ -40,6 +40,7 @@ const fetchAcceptedVendors = async (req, res) => {
   }
 };
 
+//user assign task to vendor  
 const addVendorTask = async (req, res) => {
   const { eventId, vendorId } = req.params;
   const { label } = req.body;
@@ -50,6 +51,7 @@ const addVendorTask = async (req, res) => {
       vendorId,
       userId,
       label,
+      isPersonal: false,
     });
     return res.status(201).json({ status: true, task });
   } catch (err) {
@@ -60,7 +62,11 @@ const addVendorTask = async (req, res) => {
 const fetchVendorTask = async (req, res) => {
   const { eventId, vendorId } = req.params;
   try {
-    const vendorTasks = await Checklist.find({ eventId, vendorId });
+    const vendorTasks = await Checklist.find({
+      eventId,
+      vendorId,
+      isPersonal: false,   
+    });
 
     res.status(200).json({ status: true, vendorTasks });
   } catch (err) {
@@ -96,6 +102,24 @@ const toggleTask = async (req, res) => {
     if (!task) {
       return res.status(404).json({ status: false, error: "Task not found" });
     }
+
+    const userId = req.user.id;
+
+    // Personal task (user or vendor)
+    if (task.isPersonal) {
+      if (task.userId && task.userId.toString() !== userId &&
+          task.vendorId && task.vendorId.toString() !== userId) {
+        return res.status(403).json({ message: "Not allowed" });
+      }
+    }
+
+    //Vendor assigned task → ONLY vendor can toggle
+    if (!task.isPersonal && task.vendorId) {
+      if (task.vendorId.toString() !== userId) {
+        return res.status(403).json({ message: "Only vendor can update this task" });
+      }
+    }
+
     task.checked = !task.checked;
     await task.save();
 
@@ -106,6 +130,7 @@ const toggleTask = async (req, res) => {
       vendorId: task.vendorId || null,
       taskId: task._id,
     });
+
   } catch (err) {
     res.status(500).json({ status: false, error: err.message });
   }

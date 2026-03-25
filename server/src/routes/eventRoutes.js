@@ -1,4 +1,4 @@
-const {getEventsController , updateEventController , createEventController , fetchChecklistController , addChecklistController , toggleController , deleteChecklistController , updateChecklistController , sendWhatsAppController} = require('../controllers/eventController');
+const {getEventsController , updateEventController , createEventController, sendWhatsAppController, getSingleEventController} = require('../controllers/eventController');
 const {deleteEventController} = require('../controllers/eventController')
 const {fetchPersonalTask , toggleTask  , addPersonalTask , fetchAcceptedVendors , deleteTask , fetchVendorTask , addVendorTask, updateTask} = require('../controllers/checkListController')
 const express = require('express');
@@ -8,6 +8,8 @@ router.get('/all-events' ,isLoggedIn ,  getEventsController);
 router.post('/all-events/:id' ,isLoggedIn, updateEventController);
 router.post('/all-events/delete/:id' ,isLoggedIn, deleteEventController);
 router.post('/create' , isLoggedIn  ,  createEventController);
+
+router.get('/:eventId', isLoggedIn, getSingleEventController);
 
 router.post('/send-message', isLoggedIn, sendWhatsAppController);
 
