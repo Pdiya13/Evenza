@@ -5,6 +5,7 @@ const authRoutes = require('./routes/authRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const userRoutes = require('./routes/userRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
+const profileRoutes = require('./routes/profileRoutes');
 
 const connectDB = require('./config/db');
 connectDB();
@@ -19,5 +20,6 @@ app.use('/api/auth' , authRoutes);
 app.use('/api/event' , eventRoutes);
 app.use('/api/user' , userRoutes);
 app.use('/api/vendor' , vendorRoutes);
+app.use("/api/profile", profileRoutes)
 
 module.exports = app;  

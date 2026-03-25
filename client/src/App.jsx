@@ -29,6 +29,7 @@ import VendorDashboard from './components/Home_vendor/VendorDashboard';
 import Payments from './components/Home_vendor/Payments';
 import Ratings from './components/Home_vendor/Ratings';
 import EventList from './components/Home_vendor/EventList';
+import ProfilePage from './components/profile/ProfilePage';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/create" element={<CreateEvent />} />
             <Route path="/manage" element={<ManageEvent />} />
+            <Route path="/user" element={<ProfilePage />} />
             <Route path="/vendors" element={<Vendors />} />
             <Route path="/event/:eventId/vendor/:vendorId/query" element={<QueryVendor />} />
           </Route>
@@ -66,11 +68,12 @@ function App() {
             <Route path="/eventslist" element={<EventList />} />
             <Route path="/payments" element={<Payments />} />
             <Route path="/ratings" element={<Ratings />} />
+            <Route path="/VendorProfile" element={<ProfilePage />} />
           </Route>
         </Route>
 
         <Route element={<PrivateRoute allowedRoles={['vendor']} />}>
-          <Route path="/:eventId" element={<PlanLayout />}>
+          <Route path="/event/:eventId" element={<PlanLayout />}>
             <Route path="vendor-checklist" element={<SmartChecklist1 />} />
             <Route path="vendor-budget" element={<BudgetManagement1 />} />
           </Route>

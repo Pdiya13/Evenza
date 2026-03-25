@@ -121,71 +121,71 @@ const deleteEventController = async (req, res) => {
   }
 };
 
-// ------------------- Checklist Controllers -------------------
-const fetchChecklistController = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const { eventId } = req.query;
-    const checklist = await checklistModel.find({ userId, eventId });
-    res.json({ status: true, checklist });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: false, message: "Failed to fetch checklist", error: err.message });
-  }
-};
+// // ------------------- Checklist Controllers -------------------
+// const fetchChecklistController = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const { eventId } = req.query;
+//     const checklist = await checklistModel.find({ userId, eventId });
+//     res.json({ status: true, checklist });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ status: false, message: "Failed to fetch checklist", error: err.message });
+//   }
+// };
 
-const addChecklistController = async (req, res) => {
-  try {
-    const { label, eventId } = req.body;
-    const userId = req.user.id;
-    if (!label || !eventId) return res.json({ status: false });
+// const addChecklistController = async (req, res) => {
+//   try {
+//     const { label, eventId } = req.body;
+//     const userId = req.user.id;
+//     if (!label || !eventId) return res.json({ status: false });
 
-    const newItem = new checklistModel({ label, eventId, userId, checked: false });
-    const savedItem = await newItem.save();
-    res.json({ status: true, checklistItem: savedItem });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: false, message: "Failed to add checklist item", error: err.message });
-  }
-};
+//     const newItem = new checklistModel({ label, eventId, userId, checked: false });
+//     const savedItem = await newItem.save();
+//     res.json({ status: true, checklistItem: savedItem });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ status: false, message: "Failed to add checklist item", error: err.message });
+//   }
+// };
 
-const toggleController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const item = await checklistModel.findById(id);
-    if (!item) return res.status(404).json({ status: false, message: "Checklist item not found" });
+// const toggleController = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const item = await checklistModel.findById(id);
+//     if (!item) return res.status(404).json({ status: false, message: "Checklist item not found" });
 
-    item.checked = !item.checked;
-    await item.save();
-    res.json({ status: true, checked: item.checked });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: false, message: "Failed to toggle item", error: err.message });
-  }
-};
+//     item.checked = !item.checked;
+//     await item.save();
+//     res.json({ status: true, checked: item.checked });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ status: false, message: "Failed to toggle item", error: err.message });
+//   }
+// };
 
-const deleteChecklistController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    await checklistModel.deleteOne({ _id: id });
-    res.json({ status: true, message: "Checklist item deleted successfully" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: false, message: "Failed to delete checklist item", error: err.message });
-  }
-};
+// const deleteChecklistController = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     await checklistModel.deleteOne({ _id: id });
+//     res.json({ status: true, message: "Checklist item deleted successfully" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ status: false, message: "Failed to delete checklist item", error: err.message });
+//   }
+// };
 
-const updateChecklistController = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { label } = req.body;
-    await checklistModel.updateOne({ _id: id }, { label });
-    res.json({ status: true, message: "Checklist item updated successfully" });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: false, message: "Failed to update checklist item", error: err.message });
-  }
-};
+// const updateChecklistController = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { label } = req.body;
+//     await checklistModel.updateOne({ _id: id }, { label });
+//     res.json({ status: true, message: "Checklist item updated successfully" });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ status: false, message: "Failed to update checklist item", error: err.message });
+//   }
+// };
 
 module.exports = {
   sendWhatsAppController,
@@ -193,9 +193,9 @@ module.exports = {
   updateEventController,
   createEventController,
   deleteEventController,
-  fetchChecklistController,
-  addChecklistController,
-  toggleController,
-  deleteChecklistController,
-  updateChecklistController,
+  // fetchChecklistController,
+  // addChecklistController,
+  // toggleController,
+  // deleteChecklistController,
+  // updateChecklistController,
 };

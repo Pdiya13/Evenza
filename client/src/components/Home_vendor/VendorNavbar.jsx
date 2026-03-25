@@ -5,6 +5,7 @@ import {
   FaMoneyCheckAlt,
   FaStar,
   FaSignOutAlt,
+  FaUser,
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
@@ -72,6 +73,17 @@ function VendorNavbar() {
             <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300" style={{ display: 'inline-block' }}>
               Ratings
             </span>
+          </li>
+
+          {/* User */}
+          <li
+              className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
+              onClick={() => navigate('/VendorProfile')}
+          >
+          <div className="min-w-[20px] text-xl"><FaUser /></div>
+              <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300" style={{ display: 'inline-block' }}>
+                  User
+              </span>
           </li>
 
           {/* Logout */}
