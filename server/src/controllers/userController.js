@@ -67,7 +67,7 @@ const getVendorBudgetsForEvent = async (req, res) => {
     const { eventId } = req.query;
     if (!eventId) return res.status(400).json({ success: false, message: "eventId required" });
 
-    const vendorEvents = await vendor_eventModel.find({ eventId }).populate('vendorId', 'name category');
+    const vendorEvents = await vendor_eventModel.find({ eventId ,status: "Accepted"}).populate('vendorId', 'name category');
     console.log(vendorEvents);
     
     const result = await Promise.all(
