@@ -34,4 +34,9 @@ const vendor_eventSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+vendor_eventSchema.index(
+  { eventId: 1, vendorId: 1 },
+  { unique: true }
+);
+
 module.exports = mongoose.model("vendor_eventModel", vendor_eventSchema);
