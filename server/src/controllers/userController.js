@@ -28,16 +28,47 @@ const selectVendorController = async (req, res) => {
     });
   }
 };
-
 const queryController = async (req, res) => {
   try {
     const userId = req.user.id;
     const { eventId, vendorId, budget, eventDate } = req.body;
 
     if (!vendorId || !eventId || !budget || !eventDate) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
     }
 
+    // CHECK IF ALREADY EXISTS
+    const existing = await vendor_eventModel.findOne({
+        eventId,
+        vendorId,
+      });
+
+      // CASE HANDLING
+      if (existing) {
+        if (existing.status === "Accepted") {
+          return res.status(400).json({
+            success: false,
+            message: "Vendor already accepted",
+          });
+        }
+
+        if (existing.status === "Pending") {
+          return res.status(400).json({
+            success: false,
+            message: "Vendor query already pending",
+          });
+        }
+
+  // IF REJECTED → DELETE OLD & ALLOW NEW
+  if (existing.status === "Rejected") {
+    await vendor_eventModel.deleteOne({ _id: existing._id });
+  }
+}
+
+    // CREATE ONLY IF NOT EXISTS
     const newVendorEvent = new vendor_eventModel({
       vendorId,
       eventId,
@@ -53,8 +84,18 @@ const queryController = async (req, res) => {
       message: "Query sent successfully",
       data: newVendorEvent,
     });
+
   } catch (err) {
     console.error("Error creating vendor query:", err);
+
+    //HANDLE DUPLICATE KEY ERROR (from unique index)
+    if (err.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: "Vendor already queried (duplicate prevented)",
+      });
+    }
+
     return res.status(500).json({
       success: false,
       message: "Server error while creating vendor event",
