@@ -1,40 +1,51 @@
 import React from 'react';
 
 function RatingCard({ userName, comment, rating, eventName, date }) {
-  const getRatingColor = () => {
-    if (rating >= 4) return 'bg-green-500';
-    if (rating >= 2.5) return 'bg-yellow-400';
-    return 'bg-red-500';
+
+  const getColor = () => {
+    if (rating >= 4) return 'text-green-400';
+    if (rating >= 2.5) return 'text-yellow-400';
+    return 'text-red-400';
   };
 
   return (
-    <div
-      className="relative w-full max-w-sm p-6 rounded-3xl bg-white/10 backdrop-blur-md
-                 border border-white/20 shadow-xl transition-transform hover:scale-[1.03] hover:shadow-2xl
-                 text-white flex flex-col"
-      style={{ fontFamily: "'Poppins', sans-serif" }}
-    >
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="text-xl font-semibold text-white">{userName}</h3>
-        <p className="text-sm text-gray-400">{date}</p>
+    <div className="w-full max-w-sm p-6 rounded-2xl bg-[#0D1117] border border-[#30363d] shadow-lg hover:shadow-blue-500/20 transition-all duration-300">
+
+      {/* TOP */}
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="text-lg font-semibold text-white">{userName}</h3>
+        <p className="text-xs text-gray-400">{date}</p>
       </div>
 
-      <p className="text-sm text-blue-300 font-medium mb-2">
-        Event: <span className="text-white">{eventName}</span>
+      {/* EVENT */}
+      <p className="text-sm text-blue-400 mb-3">
+        Event: <span className="text-gray-300">{eventName}</span>
       </p>
 
-      {/* Rating Bar */}
-      <div className="mb-4">
-        <div className="w-full h-3 bg-gray-600 rounded-full overflow-hidden">
-          <div
-            className={`h-3 ${getRatingColor()} rounded-full transition-all duration-300`}
-            style={{ width: `${(rating / 5) * 100}%` }}
-          ></div>
-        </div>
-        <p className="mt-1 text-sm text-gray-300">{rating.toFixed(1)} / 5</p>
+      {/* ⭐ STARS */}
+      <div className="flex items-center gap-1 mb-2">
+        {[1,2,3,4,5].map((star) => (
+          <span
+            key={star}
+            className={`text-lg ${
+              star <= Math.round(rating) ? getColor() : 'text-gray-600'
+            }`}
+          >
+            ★
+          </span>
+        ))}
       </div>
 
-      <p className="text-gray-300 text-sm">{comment}</p>
+      {/* RATING TEXT */}
+      <p className={`text-sm font-medium ${getColor()} mb-3`}>
+        {rating.toFixed(1)} / 5
+      </p>
+
+      {/* COMMENT */}
+      <p className="text-gray-400 text-sm leading-relaxed">
+        {comment || "No review provided"}
+      </p>
+
     </div>
   );
 }

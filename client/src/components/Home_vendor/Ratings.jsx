@@ -1,47 +1,79 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import RatingCard from './RatingCard';
 
-const mockRatings = [
-  {
-    userName: 'Anjali Sharma',
-    comment: 'Great vendor, very cooperative and timely service.',
-    rating: 4.8,
-    eventName: 'Wedding Ceremony',
-    date: 'Jun 10, 2025',
-  },
-  {
-    userName: 'Ravi Mehta',
-    comment: 'Good experience overall, but there were slight delays.',
-    rating: 3.5,
-    eventName: 'Corporate Meetup',
-    date: 'May 28, 2025',
-  },
-  {
-    userName: 'Priya Singh',
-    comment: 'Average service, but staff was friendly.',
-    rating: 3,
-    eventName: 'Birthday Bash',
-    date: 'May 12, 2025',
-  },
-  {
-    userName: 'Aman Verma',
-    comment: 'Poor communication and late setup. Not recommended.',
-    rating: 2.3,
-    eventName: 'Product Launch',
-    date: 'Apr 21, 2025',
-  },
-];
-
 function Ratings() {
-  return (
-    <div className="min-h-screen  p-8 font-poppins-custom text-white">
-      <h1 className="text-3xl font-bold mb-8 border-b border-gray-700 pb-3">Vendor Ratings</h1>
+  const [ratings, setRatings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [avg, setAvg] = useState(0);
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockRatings.map((rating, index) => (
-          <RatingCard key={index} {...rating} />
-        ))}
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    fetchRatings();
+  }, []);
+
+  const fetchRatings = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:8080/api/vendor/getvendorRatings",
+        {
+          headers: { Authorization: token },
+        }
+      );
+
+      if (res.data.success) {
+        setRatings(res.data.data);
+        setAvg(res.data.avgRating || 0);
+      }
+
+    } catch (err) {
+      console.error("Error fetching ratings:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen p-8 font-poppins-custom text-white">
+
+      {/* HEADER */}
+      <div className="flex items-center justify-between mb-8 border-b border-gray-700 pb-3">
+        <h1 className="text-3xl font-bold">Vendor Ratings</h1>
+
+        <div className="flex items-center gap-2 text-yellow-400 text-lg font-semibold">
+          ⭐ Average Rating : {avg} / 5
+        </div>
       </div>
+
+      {/* LOADING */}
+      {loading ? (
+        <p className="text-gray-400">Loading ratings...</p>
+
+      ) : ratings.length === 0 ? (
+
+        /* EMPTY STATE */
+        <div className="text-center text-gray-400 mt-20">
+          <p className="text-xl mb-2">No ratings yet 😕</p>
+          <p className="text-sm">Once users rate you, they will appear here</p>
+        </div>
+
+      ) : (
+
+        /* GRID */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {ratings.map((r) => (
+            <RatingCard
+              key={r._id}
+              userName={r.userId?.name || "User"}
+              comment={r.review}
+              rating={r.rating}
+              eventName={r.eventId?.ename || "Event"}
+              date={new Date(r.createdAt).toLocaleDateString()}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

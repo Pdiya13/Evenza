@@ -9,7 +9,9 @@ const {
   getEventBudget,
   addCostItem,
   getCombinedEventBudget,
-  deleteCostItem 
+  deleteCostItem, 
+  getVendorRatings,
+  addRating
 } = require('../controllers/vendorController');
 
 const { isLoggedIn } = require('../middlewares/authMiddleware');
@@ -36,5 +38,8 @@ router.get('/getBudget', isLoggedIn, getEventBudget);
 router.post('/addCostItem', isLoggedIn, addCostItem);
 router.get('/getCombinedBudget', isLoggedIn, getCombinedEventBudget);
 router.delete('/deleteCostItem/:eventId/:itemId', isLoggedIn, deleteCostItem);
+
+router.get('/getvendorRatings', isLoggedIn, getVendorRatings);
+router.post('/addRating', isLoggedIn, addRating);
 
 module.exports = router;
