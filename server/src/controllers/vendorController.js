@@ -4,6 +4,7 @@ const VendorTask = require("../models/checklist");
 const Checklist = require('../models/checklist');
 const mongoose = require('mongoose');
 const vendor_budgetModel = require('../models/vendor_budget');
+const ratingModel = require('../models/vendor_rating');
 
 const queryVController = async (req, res) => {
   try {
@@ -280,7 +281,76 @@ const deleteCostItem = async (req, res) => {
   }
 };
 
+const addRating = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { eventId, vendorId, rating, review } = req.body;
 
+      const existing = await ratingModel.findOne({
+        eventId,
+        vendorId,
+        userId,
+      });
+
+      if (existing) {
+        return res.status(400).json({
+          success: false,
+          message: "You already rated this vendor",
+        });
+      }
+
+    const accepted = await vendor_eventModel.findOne({
+      eventId,
+      vendorId,
+      userId,
+      status: "Accepted",
+    });
+
+    if (!accepted) {
+      return res.status(400).json({
+        success: false,
+        message: "You can only rate accepted vendors",
+      });
+    }
+
+    const newRating = await ratingModel.create({
+      eventId,
+      vendorId,
+      userId,
+      rating,
+      review,
+    });
+
+    res.json({ success: true, data: newRating });
+
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+const getVendorRatings = async (req, res) => {
+  try {
+    const vendorId = req.user.id;
+
+    const ratings = await ratingModel
+      .find({ vendorId })
+      .populate("userId", "name")
+      .populate("eventId", "ename");
+
+    const avg =
+      ratings.reduce((sum, r) => sum + r.rating, 0) /
+      (ratings.length || 1);
+
+    res.json({
+      success: true,
+      data: ratings,
+      avgRating: avg.toFixed(1),
+    });
+
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
 
 module.exports = { 
     queryVController,
@@ -291,4 +361,7 @@ module.exports = {
     addCostItem,
     getCombinedEventBudget,
     addVendorPersonalTask,
-    deleteCostItem};
+    deleteCostItem,
+    addRating,
+    getVendorRatings,
+  };

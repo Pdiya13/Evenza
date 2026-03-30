@@ -73,8 +73,7 @@ function QueryVendor() {
       }
     } catch (error) {
       console.error("Query Vendor Error:", error);
-      toast.error("Failed to submit vendor query");
-    } finally {
+      toast.error(error.response?.data?.message || "Server error");
       setLoading(false);
     }
   };
@@ -82,6 +81,16 @@ function QueryVendor() {
   return (
     <div className="min-h-screen bg-[#161B22] px-4 py-10 text-white">
       <div className="max-w-2xl mx-auto">
+
+         {/* 🔙 BACK BUTTON */}
+       <div className="max-w-7xl mx-auto px-6 mb-6">
+          <button
+                onClick={() => navigate(-1)}
+                className="px-3 py-1 rounded bg-[#1c1f26] border border-gray-600 hover:bg-[#2a2f3a] transition"
+                >
+                ← Back
+            </button>
+        </div>
 
         <div className="mb-10 text-center">
           <h1 className="text-3xl font-bold mb-2">
