@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
 
+
 function QueryVendor() {
   const { eventId, vendorId } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [isEventExpired, setIsEventExpired] = useState(false);
 
   const [queryData, setQueryData] = useState({
     eventDate: '',
@@ -21,23 +23,27 @@ function QueryVendor() {
   }, []);
 
   const fetchEvent = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:8080/api/event/${eventId}`,
-        { headers: { Authorization: token } }
-      );
+  try {
+    const res = await axios.get(
+      `http://localhost:8080/api/event/${eventId}`,
+      { headers: { Authorization: token } }
+    );
 
-      const event = res.data.event;
+    const event = res.data.event;
 
-      setQueryData((prev) => ({
-        ...prev,
-        eventDate: event.date,
-      }));
+    const expired = new Date(event.date) < new Date();
 
-    } catch (err) {
-      console.log(err);
-    }
-  };
+    setIsEventExpired(expired);
+
+    setQueryData((prev) => ({
+      ...prev,
+      eventDate: event.date,
+    }));
+
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,8 +54,14 @@ function QueryVendor() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+
+  if (isEventExpired) {
+    toast.error("Event expired. Cannot send request.");
+    return;
+  }
+
+  setLoading(true);
 
     const data = {
       eventId,
@@ -141,16 +153,20 @@ function QueryVendor() {
 
           {/* BUTTON */}
           <button
-            type="submit"
-            disabled={loading}
-            className={`w-full py-2 rounded font-semibold transition ${
-              loading
-                ? "bg-blue-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700"
-            }`}
-          >
-            {loading ? "Submitting..." : "Submit Query"}
-          </button>
+              type="submit"
+              disabled={loading || isEventExpired}
+              className={`w-full py-2 rounded font-semibold transition ${
+                loading || isEventExpired
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-blue-600 hover:bg-blue-700"
+              }`}
+            >
+              {isEventExpired
+                ? "Event Expired"
+                : loading
+                ? "Submitting..."
+                : "Submit Query"}
+            </button>
 
         </form>
       </div>

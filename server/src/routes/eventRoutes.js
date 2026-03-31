@@ -11,7 +11,7 @@ router.post('/create' , isLoggedIn  ,  createEventController);
 
 router.get('/:eventId', isLoggedIn, getSingleEventController);
 
-router.post('/send-message', isLoggedIn, sendWhatsAppController);
+// router.post('/send-message', isLoggedIn, sendWhatsAppController);
 
 router.get('/acceptedvendors/:eventId', isLoggedIn, (req, res, next) => {
   console.log('Request reached backend route', req.params.eventId);

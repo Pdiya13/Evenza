@@ -10,6 +10,8 @@ function SmartChecklist() {
   const [acceptedVendors, setAcceptedVendors] = useState([]);
   const [vendorTasks, setVendorTasks] = useState({});
   const [vendorInput, setVendorInput] = useState({});
+  const [eventDate, setEventDate] = useState(null);
+  const [isEventExpired, setIsEventExpired] = useState(false);
 
   useEffect(() => {
     if (!eventId) {
@@ -53,6 +55,27 @@ function SmartChecklist() {
   }, [eventId]);
 
   useEffect(() => {
+  const fetchEvent = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8080/api/event/${eventId}`,
+        { headers: { Authorization: localStorage.getItem('token') } }
+      );
+
+      const date = res.data.event.date;
+
+      setEventDate(date);
+      setIsEventExpired(new Date(date) < new Date());
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  if (eventId) fetchEvent();
+}, [eventId]);
+
+  useEffect(() => {
     if (!eventId) {
       console.warn("No eventId found in URL");
       return;
@@ -85,6 +108,10 @@ function SmartChecklist() {
 
   const toggleTask = async (taskId) => {
     try {
+      if (isEventExpired) {
+        alert("Event expired. Cannot modify.");
+        return;
+      }
       console.log(taskId);
       const res = await axios.post(`http://localhost:8080/api/event/checklist/task/toggle/${taskId}`, {}, {
         headers: { Authorization: localStorage.getItem('token') },
@@ -113,21 +140,33 @@ function SmartChecklist() {
 
 
   const addPersonalTask = async () => {
-    try {
-      const res = await axios.post(`http://localhost:8080/api/event/checklist/task/personal/${eventId}`, {
-        label: newPersonalTask,
-      }, {
+  if (isEventExpired) {
+    alert("Event expired. Cannot add task.");
+    return;
+  }
+
+  try {
+    const res = await axios.post(
+      `http://localhost:8080/api/event/checklist/task/personal/${eventId}`,
+      { label: newPersonalTask },
+      {
         headers: { Authorization: localStorage.getItem('token') },
-      });
-      setPersonalTask((prev) => [...prev, res.data.newTask]);
-      setNewPersonalTask('');
-    } catch (err) {
-      console.log(err);
-    }
-  };
+      }
+    );
+
+    setPersonalTask((prev) => [...prev, res.data.newTask]);
+    setNewPersonalTask('');
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   const deleteTask = async (taskId) => {
     try {
+      if (isEventExpired) {
+        alert("Event expired. Cannot delete.");
+        return;
+      }
       console.log(taskId);
       await axios.post(`http://localhost:8080/api/event/checklist/task/delete/${taskId}`, {}, {
         headers: { Authorization: localStorage.getItem('token') },
@@ -147,6 +186,10 @@ function SmartChecklist() {
 
   const updateTask = async (taskId, label) => {
     try {
+      if (isEventExpired) {
+        alert("Event expired. Cannot update.");
+        return;
+      }
       const res = await axios.post(`http://localhost:8080/api/event/checklist/task/update/${taskId}`, { label }, {
         headers: { Authorization: localStorage.getItem('token') },
       });
@@ -174,20 +217,28 @@ function SmartChecklist() {
 
 
   const handleAddVendorTask = async (vendorId, label) => {
-    try {
-      const res = await axios.post(`http://localhost:8080/api/event/checklist/task/vendor/${eventId}/${vendorId}`, {
-        label,
-      }, {
+  if (isEventExpired) {
+    alert("Event expired. Cannot assign task.");
+    return;
+  }
+
+  try {
+    const res = await axios.post(
+      `http://localhost:8080/api/event/checklist/task/vendor/${eventId}/${vendorId}`,
+      { label },
+      {
         headers: { Authorization: localStorage.getItem('token') },
-      });
-      setVendorTasks((prev) => ({
-        ...prev,
-        [vendorId]: [...(prev[vendorId] || []), res.data.task],
-      }));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+      }
+    );
+
+    setVendorTasks((prev) => ({
+      ...prev,
+      [vendorId]: [...(prev[vendorId] || []), res.data.task],
+    }));
+  } catch (err) {
+    console.log(err);
+  }
+};
 
   return (
     <div className="mt-12 p-6 rounded-xl shadow-xl border border-gray-700 bg-[#0D1117] font-poppins-custom">
@@ -207,12 +258,13 @@ function SmartChecklist() {
                   type="checkbox"
                   className="form-checkbox h-5 w-5 text-blue-400"
                   checked={task.checked}
+                  disabled={isEventExpired}
                   onChange={() => toggleTask(task._id)}
                 />
                 <input
                   type="text"
+                  disabled={isEventExpired || !task.isEditing}
                   value={task.label}
-                  disabled={!task.isEditing}
                   onChange={(e) =>
                     setPersonalTask((prev) =>
                       prev.map((t) =>
@@ -228,6 +280,7 @@ function SmartChecklist() {
                 {task.isEditing ? (
                   <button
                     className="text-blue-300"
+                    disabled={isEventExpired}
                     onClick={() => updateTask(task._id, task.label)}
                   >
                     Save
@@ -235,6 +288,7 @@ function SmartChecklist() {
                 ) : (
                   <button
                     className="text-green-300"
+                    disabled={isEventExpired}
                     onClick={() =>
                       setPersonalTask((prev) =>
                         prev.map((t) =>
@@ -248,6 +302,7 @@ function SmartChecklist() {
                 )}
                 <button
                   className="text-red-300"
+                  disabled={isEventExpired}
                   onClick={() => deleteTask(task._id)}
                 >
                   Delete
@@ -260,6 +315,7 @@ function SmartChecklist() {
         <div className="mt-4 flex flex-col sm:flex-row items-center gap-3">
           <input
             type="text"
+            disabled={isEventExpired}
             placeholder="Add new personal task..."
             value={newPersonalTask}
             onChange={(e) => setNewPersonalTask(e.target.value)}
@@ -267,7 +323,12 @@ function SmartChecklist() {
           />
           <button
             onClick={addPersonalTask}
-            className="flex items-center gap-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 px-4 py-2 rounded"
+            disabled={isEventExpired}
+            className={`flex items-center gap-2 px-4 py-2 rounded ${
+              isEventExpired
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-blue-500/20 hover:bg-blue-500/30 text-blue-200"
+            }`}
           >
             <FaPlus />
             Add Task
@@ -285,6 +346,7 @@ function SmartChecklist() {
               <h4 className="text-lg text-amber-300 font-semibold mb-2">{vendor.name} ({vendor.category})</h4>
               <input
                 type="text"
+                disabled={isEventExpired}
                 value={vendorInput[vendor._id] || ''}
                 placeholder={`Assign task to ${vendor.name}`}
                 onChange={(e) =>
@@ -293,6 +355,7 @@ function SmartChecklist() {
                 className="w-full bg-[#0D1117] border border-gray-600 text-white p-2 rounded"
               />
               <button
+                 disabled={isEventExpired}
                 className="mt-2 flex items-center gap-2 bg-blue-500/20 hover:bg-blue-500/30 text-blue-200 py-1 px-4 rounded"
                 onClick={() => {
                   const inputVal = vendorInput[vendor._id]?.trim();
@@ -313,13 +376,13 @@ function SmartChecklist() {
                       <input
                         type="checkbox"
                         checked={task.checked}
-                        disabled 
+                        disabled={isEventExpired}
                         className="form-checkbox h-5 w-5 text-green-400"
                       />
                       <input
                         type="text"
                         value={task.label}
-                        disabled={!task.isEditing}
+                        disabled={isEventExpired || !task.isEditing}
                         onChange={(e) => {
                           const newLabel = e.target.value;
                           setVendorTasks((prev) => ({
@@ -334,9 +397,9 @@ function SmartChecklist() {
                     </div>
                     <div className="flex gap-2 text-xs">
                       {task.isEditing ? (
-                        <button onClick={() => updateTask(task._id, task.label)} className="text-blue-300 hover:underline">Save</button>
+                        <button disabled={isEventExpired} onClick={() => updateTask(task._id, task.label)} className="text-blue-300 hover:underline">Save</button>
                       ) : (
-                        <button onClick={() => {
+                        <button disabled={isEventExpired} onClick={() => {
                           setVendorTasks((prev) => ({
                             ...prev,
                             [vendor._id]: prev[vendor._id].map((t) =>
@@ -345,7 +408,7 @@ function SmartChecklist() {
                           }));
                         }} className="text-green-300 hover:underline">Edit</button>
                       )}
-                      <button onClick={() => deleteTask(task._id)} className="text-red-300 hover:underline">Delete</button>
+                      <button disabled={isEventExpired} onClick={() => deleteTask(task._id)} className="text-red-300 hover:underline">Delete</button>
                     </div>
                   </div>
                 ))}

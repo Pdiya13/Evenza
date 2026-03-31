@@ -13,10 +13,31 @@ export default function BudgetManagement() {
   const [newCost, setNewCost] = useState("");
   const [vendorItemized, setVendorItemized] = useState([]);
 
+  const [isEventExpired, setIsEventExpired] = useState(false);
+
   const token = localStorage.getItem("token");
 
   const totalSpent = costItems.reduce((sum, item) => sum + item.cost, 0);
   const remaining = budget - totalSpent;
+
+  useEffect(() => {
+  const fetchEvent = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8080/api/event/${eventId}`,
+        { headers: { authorization: token } }
+      );
+
+      const date = res.data.event.date;
+      setIsEventExpired(new Date(date) < new Date());
+
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchEvent();
+}, [eventId]);
 
   const calculateSegments = (max) => {
     if (max <= 1000) return 10;
@@ -139,6 +160,7 @@ export default function BudgetManagement() {
         <input
           type="number"
           id="budget-input"
+          disabled={isEventExpired}
           className="w-full max-w-xs p-2 rounded bg-[#0d1117] text-white border border-gray-600"
           value={budget}
           min={0}
@@ -168,6 +190,7 @@ export default function BudgetManagement() {
           />
           <button
             onClick={addCostItem}
+            disabled={isEventExpired}
             className="px-5 py-2 bg-blue-600 rounded hover:bg-blue-700 transition text-white"
           >
             Add Item
@@ -239,6 +262,7 @@ export default function BudgetManagement() {
                   onClick={() => removeCostItem(id)}
                   className="ml-4 text-red-500 hover:text-red-700"
                   title="Remove"
+                  disabled={isEventExpired}
                 >
                   &times;
                 </button>
