@@ -33,8 +33,7 @@ const GuestManagement = () => {
         "407584180231-qa8unfr0vgobg8cra96pjof4k37a65n6.apps.googleusercontent.com",
 
       // FIXED (ONE LINE)
-      scope:
-        "https://www.googleapis.com/auth/contacts.readonly https://www.googleapis.com/auth/gmail.send",
+      scope: "https://www.googleapis.com/auth/contacts.readonly",
 
       callback: (res) => {
         if (res.error) {
