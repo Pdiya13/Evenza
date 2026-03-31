@@ -31,6 +31,7 @@ import Ratings from './components/Home_vendor/Ratings';
 import EventList from './components/Home_vendor/EventList';
 import ProfilePage from './components/profile/ProfilePage';
 import RateVendor from './components/events/RateVendor';
+import VendorQueries from './components/Home_vendor/VendorQueries';
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
             <Route path="/payments" element={<Payments />} />
             <Route path="/ratings" element={<Ratings />} />
             <Route path="/VendorProfile" element={<ProfilePage />} />
+            <Route path="/vendor-queries" element={<VendorQueries />} />
           </Route>
         </Route>
 

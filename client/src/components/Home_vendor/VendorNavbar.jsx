@@ -6,6 +6,7 @@ import {
   FaStar,
   FaSignOutAlt,
   FaUser,
+  FaClipboardList,
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
@@ -53,6 +54,18 @@ function VendorNavbar() {
             </span>
           </li>
 
+          {/* Queries */}
+          <li
+              className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
+              onClick={() => navigate('/vendor-queries')}
+            >
+              <div className="min-w-[20px] text-xl"><FaClipboardList /></div>
+              <span className="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs transition-all duration-300">
+                Queries
+              </span>
+          </li>
+
+
           {/* Payments */}
           <li
             className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"
@@ -64,6 +77,7 @@ function VendorNavbar() {
             </span>
           </li>
 
+        
           {/* Ratings */}
           <li
             className="hover:bg-[#F4F4F4] px-3 py-2 rounded-md hover:text-[#0D1117] flex items-center gap-4 cursor-pointer transition-colors duration-200"

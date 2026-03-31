@@ -8,24 +8,16 @@ const ratingModel = require('../models/vendor_rating');
 
 const queryVController = async (req, res) => {
   try {
-    const vendorId = req.params.vendorId;
-    console.log(vendorId);
+     const vendorId = req.params.vendorId;
 
-    if (!vendorId) {
-      return res.status(400).json({ message: "vendorId is required" });
-    }
+    const queries = await vendor_eventModel.find({
+      vendorId
+    })
+    .populate('userId', 'name')
+    .populate('eventId', "ename date")
+    .populate('vendorId', 'name');
 
-    const vendorObjectId = new mongoose.Types.ObjectId(vendorId);
-
-    const pendingQueries = await vendor_eventModel.find({
-      status: "Pending",
-      vendorId: vendorObjectId,
-    }).populate('userId', 'name') 
-      .populate('eventId', "ename date")
-      .populate('vendorId', 'name');
-
-    console.log(pendingQueries);
-    res.status(200).json(pendingQueries);
+    res.status(200).json(queries);
   } catch (error) {
     console.error("Error fetching vendor queries:", error);
     res.status(500).json({ message: "Server error fetching queries" });
