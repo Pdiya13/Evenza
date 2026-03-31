@@ -58,7 +58,11 @@ function Payments() {
   const handleAction = async (id, action) => {
     try {
       await axios.post(`http://localhost:8080/api/vendor/payments/${id}`, { status: action });
-      setQueries((prev) => prev.filter((q) => q._id !== id));
+      setQueries(prev =>
+        prev.map(q =>
+          q._id === id ? { ...q, status: action } : q
+        )
+      );
       toast.success(`Query ${action === 'Accepted' ? 'Accepted' : 'Rejected'}`);
     } catch (error) {
       console.log(error);
@@ -111,65 +115,7 @@ function Payments() {
         </div>
       </div>
 
-      <div className="p-6 rounded-xl shadow-xl border border-gray-700 bg-[#161B22]">
-        <h2 className="text-2xl font-extrabold text-white mb-4 tracking-wide border-b border-gray-700 pb-3">
-          Vendor Queries
-        </h2>
-        <div className="overflow-x-auto rounded-xl bg-[#0D1117] border border-gray-700">
-          <table className="min-w-full table-auto text-sm text-left">
-            <thead className="text-gray-400 bg-[#161B22]/50 uppercase tracking-wider">
-              <tr>
-                <th className="px-6 py-4">User</th>
-                <th className="px-6 py-4">Event</th>
-                <th className="px-6 py-4">Vendor</th>
-                <th className="px-6 py-4">Event Date</th>
-                <th className="px-6 py-4">Budget (₹)</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4 text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-800 text-gray-200">
-              {queries.map((query) => (
-                <tr key={query._id} className="hover:bg-white/5 transition duration-200">
-                  <td className="px-6 py-4 whitespace-nowrap">{query.userId.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{query.eventId.ename}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{query.vendorId.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{query.eventId.date}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-amber-200">
-                    ₹{query.budget.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap font-semibold">
-                    <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-400/10 text-yellow-300 border border-yellow-400/30">
-                      {query.status.toUpperCase()}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center space-x-2">
-                    <button
-                      onClick={() => handleAction(query._id, 'Accepted')}
-                      className="px-3 py-1 text-xs rounded bg-green-600 hover:bg-green-700"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => handleAction(query._id, 'Rejected')}
-                      className="px-3 py-1 text-xs rounded bg-red-600 hover:bg-red-700"
-                    >
-                      Reject
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {queries.length === 0 && (
-                <tr>
-                  <td colSpan="7" className="text-center text-gray-400 p-4">
-                    No pending queries.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+     
     </div>
   );
 }

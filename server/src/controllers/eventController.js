@@ -22,44 +22,44 @@ const invitedSchema = new mongoose.Schema({
 module.exports = mongoose.model("Invited", invitedSchema);
 
 
-const sendWhatsAppController = async (req, res) => {
-  try {
-    const userId = req.user.id;
-    const { contacts, message, eventId } = req.body;
+// const sendWhatsAppController = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const { contacts, message, eventId } = req.body;
 
-    if (!contacts || !contacts.length || !message || !eventId) {
-      return res.status(400).json({ status: false, message: "Missing contacts, message, or eventId" });
-    }
+//     if (!contacts || !contacts.length || !message || !eventId) {
+//       return res.status(400).json({ status: false, message: "Missing contacts, message, or eventId" });
+//     }
 
-    const results = [];
+//     const results = [];
 
-    for (const phone of contacts) {
-      try {    
-        const invited = new Invited({
-          phone,
-          message,
-          eventId,
-          userId,
-          sentAt: new Date(),
-          status: "pending", 
-        });
-        await invited.save();
+//     for (const phone of contacts) {
+//       try {    
+//         const invited = new Invited({
+//           phone,
+//           message,
+//           eventId,
+//           userId,
+//           sentAt: new Date(),
+//           status: "pending", 
+//         });
+//         await invited.save();
 
-        const waLink = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
+//         const waLink = `https://wa.me/${phone.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
 
-        results.push({ phone, status: "pending", waLink });
-      } catch (err) {
-        console.error(`Failed to save ${phone}:`, err.message);
-        results.push({ phone, status: "failed", error: err.message });
-      }
-    }
+//         results.push({ phone, status: "pending", waLink });
+//       } catch (err) {
+//         console.error(`Failed to save ${phone}:`, err.message);
+//         results.push({ phone, status: "failed", error: err.message });
+//       }
+//     }
 
-    res.json({ status: true, message: "Contacts saved", results });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ status: false, message: "Server error", error: err.message });
-  }
-};
+//     res.json({ status: true, message: "Contacts saved", results });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ status: false, message: "Server error", error: err.message });
+//   }
+// };
 
 
 const getEventsController = async (req, res) => {
@@ -215,7 +215,7 @@ const deleteEventController = async (req, res) => {
 // };
 
 module.exports = {
-  sendWhatsAppController,
+  // sendWhatsAppController,
   getEventsController,
   updateEventController,
   createEventController,
