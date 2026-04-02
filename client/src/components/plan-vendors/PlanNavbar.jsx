@@ -4,7 +4,8 @@ import {
   FaClipboardList,   
   FaDollarSign,      
   FaUsers,           
-  FaArrowLeft,       
+  FaArrowLeft,   
+  FaRobot       
 } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,6 +27,7 @@ function PlanNavbar({ eventId }) {
           {[
             { icon: <FaClipboardList />, label: 'Smart Checklist', path: `/${eventId}/vendor-checklist` },
             { icon: <FaDollarSign />, label: 'Budget Management', path: `/${eventId}/vendor-budget` },
+            { icon: <FaRobot />, label: 'AI Assistant', path: `/${eventId}/vendor-ai` },
             { icon: <FaArrowLeft />, label: 'Back', path: '/vendor-dashboard' },
           ].map(({ icon, label, path }) => (
             <li

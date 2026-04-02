@@ -8,6 +8,7 @@
     "mongoose": "^8.16.0",
     "node": "^24.2.0",
     "nodemon": "^3.1.10",
+    "openai": "^6.33.0",
     "react-hot-toast": "^2.5.2",
     "twilio": "^5.8.0",
     "zod": "^3.25.67"
