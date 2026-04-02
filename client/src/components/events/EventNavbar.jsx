@@ -5,6 +5,7 @@ import {
   FaDollarSign,
   FaUsers,
   FaArrowLeft,
+  FaRobot   
 } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -29,7 +30,9 @@ function EventNavbar() {
             { icon: <FaClipboardList />, label: 'Smart Checklist', path: `/manage/${eventId}/checklist` },
             { icon: <FaDollarSign />, label: 'Budget Management', path: `/manage/${eventId}/budget` },
             { icon: <FaUsers />, label: 'Guest Management', path: `/manage/${eventId}/guests` },
+            { icon: <FaRobot />, label: 'AI Assistant', path: `/manage/${eventId}/ai` },
             { icon: <FaArrowLeft />, label: 'Back', path: '/dashboard' },
+            
           ].map(({ icon, label, path }) => (
             <li
               key={label}

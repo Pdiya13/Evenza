@@ -33,7 +33,7 @@ import ProfilePage from './components/profile/ProfilePage';
 import RateVendor from './components/events/RateVendor';
 import VendorQueries from './components/Home_vendor/VendorQueries';
 
-import AIAssistant from './components/plan-vendors/AIAssistant';
+import AIAssistant from './components/plan-vendors/aiAssistant';
 
 function App() {
   return (
@@ -64,6 +64,7 @@ function App() {
             <Route path="guests" element={<GuestManagement />} />
             <Route path="select-vendor" element={<SelectVendor />} />
             <Route path="checklist" element={<SmartChecklist />} />
+            <Route path="ai" element={<AIAssistant />} />
           </Route>
         </Route>
 
