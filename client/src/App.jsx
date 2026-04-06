@@ -33,6 +33,8 @@ import ProfilePage from './components/profile/ProfilePage';
 import RateVendor from './components/events/RateVendor';
 import VendorQueries from './components/Home_vendor/VendorQueries';
 
+import AIAssistant from './components/plan-vendors/aiAssistant';
+
 function App() {
   return (
     <Router>
@@ -62,6 +64,7 @@ function App() {
             <Route path="guests" element={<GuestManagement />} />
             <Route path="select-vendor" element={<SelectVendor />} />
             <Route path="checklist" element={<SmartChecklist />} />
+            <Route path="ai" element={<AIAssistant />} />
           </Route>
         </Route>
 
@@ -81,9 +84,9 @@ function App() {
           <Route path="/:eventId" element={<PlanLayout />}>
             <Route path="vendor-checklist" element={<SmartChecklist1 />} />
             <Route path="vendor-budget" element={<BudgetManagement1 />} />
+            <Route path="vendor-ai" element={<AIAssistant />} />
           </Route>
         </Route>
-
 
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
