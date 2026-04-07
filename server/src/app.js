@@ -11,7 +11,6 @@ const vendorRoutes = require('./routes/vendorRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const aiRoutes = require("./routes/aiRoutes");
 
-
 const connectDB = require('./config/db');
 connectDB();
 dotenv.config();
