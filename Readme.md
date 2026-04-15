@@ -1,5 +1,4 @@
 
-
 <h1 align="center"> Event Management System</h1>
 <p align="center"><i>A smart platform to manage events, vendors, guests, and budgets efficiently.</i></p>
 
@@ -87,3 +86,4 @@ npm run dev
 # Run frontend
 cd ../frontend
 npm start
+
